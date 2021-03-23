@@ -55,17 +55,48 @@ namespace EcoClean.Data
             //modelBuilder.Entity<ProfessionalSchedule>()
             //    .HasKey(c => new { c.ProfessionalId, c.Weekday, c.DateTimeBegin, c.DateTimeEnd });
 
-            //modelBuilder.Entity<Client>().HasData(
-            //    new Client
-            //    {
-            //        ClientId = 1,
-            //        FirstName = "Tyler",
-            //        LastName = "Joseph",
-            //        PhoneNumber = "+40097656789",
-            //        DateOfBirth = DateTime.Parse("1988-12-01"),
-            //        Address = "Riverside st, 33b"
-            //    }
-            //);
+
+            modelBuilder.Entity<Enterprise>().HasData(
+                new Enterprise
+                {
+                    EnterpriseId = 1,
+                    Name = "WOG",
+                    Kind = "Gas Station",
+                    PhoneNumber = "+40097656789",
+                    Product = "Fuel",
+                    Address = "Riverside st, 33b",
+                    Rate = 0,
+                    ClientId = 1
+                }
+            );
+
+            modelBuilder.Entity<Enterprise>().HasData(
+                new Enterprise
+                {
+                    EnterpriseId = 2,
+                    Name = "Johnny's",
+                    Kind = "Restaurant",
+                    PhoneNumber = "+40054776512",
+                    Product = "Food",
+                    Address = "DownCreek st, 16",
+                    Rate = 0,
+                    ClientId = 2
+                }
+            );
+
+            modelBuilder.Entity<Enterprise>().HasData(
+                new Enterprise
+                {
+                    EnterpriseId = 3,
+                    Name = "Shoes On",
+                    Kind = "Shoes Fabric",
+                    PhoneNumber = "+380951332455",
+                    Product = "Shoes",
+                    Address = "Central st, 1",
+                    Rate = 0,
+                    ClientId = 1
+                }
+            );
 
             //modelBuilder.Entity<Client>().HasData(
             //    new Client
