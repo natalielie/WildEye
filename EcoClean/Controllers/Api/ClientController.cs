@@ -8,6 +8,7 @@ using EcoClean.Models.SmartDevice;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,16 @@ namespace EcoClean.Controllers.Api
     [ApiController]
     public class ClientController : ControllerBase
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
-        private string id = "a96c31ed-8efc-4239-9b6b-10ddc2eb3970";
+        private string id = "cf38fb1b-0b68-4cbb-a74c-f1983be40010";
 
        // string[] airSubstance = new string[] { "NO", "CO2", "CH2O", "Hg", "H2S" };
         //string[] waterSubstance = new string[] { "NH4+", "", "", "", ""};
 
         public ClientController(ApplicationDbContext dbContext,
-            UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -45,9 +46,9 @@ namespace EcoClean.Controllers.Api
 
         [HttpPost]
         [Route("addEnterprise")]
-        public void addEnterprise(EnterpriseRequestModel request)
+        public void AddEnterprise(EnterpriseRequestModel request)
         {
-            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == id);
             Enterprise enterprise = new Enterprise
             {
                 Name = request.Name,
@@ -64,10 +65,23 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getAllEnterprises")]
-        public List<EnterpriseResponseModel> getAllClientsEnterprises()
+        public List<EnterpriseResponseModel> GetAllClientsEnterprises()
         {
             Client client = _dbContext.Clients.Single(x => x.UserId == id);
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
+
+            List<EnterpriseResponseModel> responseModels = enterprises
+                .Select(x => new EnterpriseResponseModel(x.EnterpriseId, x.Name,
+                x.Kind, x.PhoneNumber, x.Product, x.Address, x.Rate))
+                .ToList();
+            return responseModels;
+        }
+
+        [HttpGet]
+        [Route("getAllEnterprisesInSystem")]
+        public List<EnterpriseResponseModel> GetAllEnterprisesInSystem()
+        {
+            List<Enterprise> enterprises = _dbContext.Enterprises.ToList();
 
             List<EnterpriseResponseModel> responseModels = enterprises
                 .Select(x => new EnterpriseResponseModel(x.EnterpriseId, x.Name,
@@ -80,7 +94,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getEnterpriseById")]
-        public Enterprise getEnterpriseById(int enterpriseId)
+        public Enterprise GetEnterpriseById(int enterpriseId)
         {
             Client client = _dbContext.Clients.Single(x => x.UserId == id);
             Enterprise enterprise = _dbContext.Enterprises.SingleOrDefault(x => x.ClientId == client.ClientId && x.EnterpriseId == enterpriseId);
@@ -112,7 +126,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getStatistics")]
-        public List<EnterpriseResponseModel> getStatistics()
+        public List<EnterpriseResponseModel> GetStatistics()
         {
             List<Enterprise> enterprises = _dbContext.Enterprises.ToList();
 
@@ -126,7 +140,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getReversedStatistics")]
-        public List<EnterpriseResponseModel> getReversedStatistics()
+        public List<EnterpriseResponseModel> GetReversedStatistics()
         {
             List<Enterprise> enterprises = _dbContext.Enterprises.ToList();
 
@@ -140,7 +154,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getStatisticsWthinOneKind")]
-        public List<EnterpriseResponseModel> getStatisticsWthinOneKind(string kind)
+        public List<EnterpriseResponseModel> GetStatisticsWthinOneKind(string kind)
         {
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.Kind == kind).ToList();
 
@@ -154,7 +168,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getTop")]
-        public List<EnterpriseResponseModel> getTop(int topNumber)
+        public List<EnterpriseResponseModel> GetTop(int topNumber)
         {
             List<Enterprise> enterprises = _dbContext.Enterprises.ToList();
 
@@ -164,7 +178,7 @@ namespace EcoClean.Controllers.Api
             }
             else
             {
-                List<EnterpriseResponseModel> responseModels = getStatistics().Take(topNumber).ToList();
+                List<EnterpriseResponseModel> responseModels = GetStatistics().Take(topNumber).ToList();
                 return responseModels;
             }
 
@@ -176,9 +190,9 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getCertificate")]
-        public List<CertificateResponseModel> getCertificates(int enterpriseId)
+        public List<CertificateResponseModel> GetCertificates(int enterpriseId)
         {
-            Enterprise enterprise = getEnterpriseById(enterpriseId);
+            Enterprise enterprise = GetEnterpriseById(enterpriseId);
             List<Certificate> certificates = _dbContext.Certificates.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
 
             List<CertificateResponseModel> responseModels = certificates
@@ -190,7 +204,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getCertificateById")]
-        public Certificate getCertificateById(int certificateId)
+        public Certificate GetCertificateById(int certificateId)
         {
             Certificate certificate = _dbContext.Certificates.SingleOrDefault(x => x.CertificateId == certificateId);
 
@@ -199,7 +213,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpPost]
         [Route("createCertificate")]
-        public void createCertificate(CertificateRequestModel request)
+        public void CreateCertificate(CertificateRequestModel request)
         {
             Certificate certificate = new Certificate
             {
@@ -212,7 +226,7 @@ namespace EcoClean.Controllers.Api
         }
 
         [HttpDelete]
-        [Route("DeleteCertificateById")]
+        [Route("deleteCertificateById")]
         public void DeleteCertificateById(int certificateId)
         {
             Certificate chosenCertificate = _dbContext.Certificates.SingleOrDefault(x => x.CertificateId == certificateId);
@@ -228,17 +242,6 @@ namespace EcoClean.Controllers.Api
         }
 
 
-        // rating //
-
-        [HttpGet]
-        [Route("getEnterpriseRateById")]
-        public double getEnterpriseRateById(int enterpriseId)
-        {
-            Enterprise enterprise = getEnterpriseById(enterpriseId);
-            return enterprise.Rate;
-        }
-
-
         // tax //
 
         // formula: et = Σ(Mi * Npi)
@@ -246,7 +249,7 @@ namespace EcoClean.Controllers.Api
         //Нпi - rates of eco-tax in the current year for a ton of the i-th pollutant
         [HttpPost]
         [Route("countTax")]
-        public void countTax(TaxInformationRequestModel request)
+        public void CountTax(TaxInformationRequestModel request)
         {
 
             double tax = 0;
@@ -305,7 +308,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getTaxOfEnterprise")]
-        public Tax getTaxOfEnterprise(int enterpriseId)
+        public Tax GetTaxOfEnterprise(int enterpriseId)
         {
             Tax tax = _dbContext.Taxes.Where(x => x.EnterpriseId == enterpriseId)
                 .OrderByDescending(x => x.TaxId).FirstOrDefault();
@@ -317,7 +320,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpPost]
         [Route("createReport")]
-        public void createReport(ReportRequestModel request)
+        public void CreateReport(ReportRequestModel request)
         {
 
             Report report  = new Report
@@ -334,19 +337,19 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getAllReportsOfEnterprise")]
-        public List<ReportResponseModel> getAllReportsOfEnterprise(int enterpriseId)
+        public List<ReportResponseModel> GetAllReportsOfEnterprise(int enterpriseId)
         {
-            Enterprise enterprise = getEnterpriseById(enterpriseId);
+            Enterprise enterprise = GetEnterpriseById(enterpriseId);
             List<Report> reports = _dbContext.Reports.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
-            List<Tax> taxes = _dbContext.Taxes.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
-            List<ReportResponseModel> responseModels = GetLisOfReports(reports, taxes);
+           // List<Tax> taxes = _dbContext.Taxes.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
+            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
 
             return responseModels;
         }
 
         [HttpGet]
         [Route("getSingleReportOfEnterprise")]
-        public ReportResponseModel getSingleReportOfEnterprise(int reportId)
+        public ReportResponseModel GetSingleReportOfEnterprise(int reportId)
         {
             List<Report> reports = _dbContext.Reports.Where(x => x.ReportId == reportId).ToList();
             List<Tax> taxes = _dbContext.Taxes.ToList();
@@ -379,29 +382,29 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getReportOfEnterpriseByDate")]
-        public List<ReportResponseModel> getReportOfEnterpriseByDate(DateTime date)
+        public List<ReportResponseModel> GetReportOfEnterpriseByDate(DateTime date)
         {
             List<Report> reports = _dbContext.Reports.Where(x => x.ReportDate == date).ToList();
-            List<Tax> taxes = _dbContext.Taxes.ToList();
-            List<ReportResponseModel> responseModels = GetLisOfReports(reports, taxes);
+            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
 
             return responseModels;
         }
 
         [HttpGet]
         [Route("getAllReports")]
-        public List<ReportResponseModel> getAllReports()
+        public List<ReportResponseModel> GetAllReports()
         {
             List<Report> reports = _dbContext.Reports.ToList();
-            List<Tax> taxes = _dbContext.Taxes.ToList();
-            List<ReportResponseModel> responseModels = GetLisOfReports(reports, taxes);
+            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
 
             return responseModels;
         }
 
-        public List<ReportResponseModel> GetLisOfReports(List<Report> reports, List<Tax> taxes)
+        public List<ReportResponseModel> GetLisOfReports(List<Report> reports)
         {
             List<ReportResponseModel> responseModels = new List<ReportResponseModel>();
+
+            List<Tax> taxes = _dbContext.Taxes.ToList();
 
             foreach (var report in reports)
             {
@@ -431,7 +434,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getLatestPollutionData")]
-        public SmartDeviceDataResponseModel getLatestPollutionData(int enterpriseId)
+        public SmartDeviceDataResponseModel GetLatestPollutionData(int enterpriseId)
         {
             SmartDeviceData latestPollutionData = _dbContext.SmartDeviceData
                 .Where(x => x.EnterpriseId == enterpriseId)
@@ -454,6 +457,125 @@ namespace EcoClean.Controllers.Api
             );
 
             return response;
+        }
+
+        // rating //
+
+        [HttpGet]
+        [Route("getAveragePollutionOfEnterprise")]
+        public PollutionResponseModel GetAveragePollutionOfEnterprise(int enterpriseId)
+        {
+            Enterprise enterprise = GetEnterpriseById(enterpriseId);
+
+            List<SmartDeviceData> latestPollutionData = _dbContext.SmartDeviceData
+               .Where(x => x.EnterpriseId == enterpriseId)
+               .OrderByDescending(x => x.SmartDeviceDataDate)
+               .Take(4).ToList();
+
+            double airPollutionAverage = 0;
+            double waterPollutionAverage = 0;
+
+            foreach (SmartDeviceData data in latestPollutionData)
+            {
+                airPollutionAverage += data.AirPollution;
+                waterPollutionAverage += data.WaterPollution;
+            }
+
+            airPollutionAverage /= 4;
+            waterPollutionAverage /= 4;
+
+            PollutionResponseModel response = new PollutionResponseModel(airPollutionAverage, waterPollutionAverage);
+
+            return response;
+
+        }
+
+        [HttpGet]
+        [Route("getAveragePollutionData")]
+        public PollutionResponseModel GetAveragePollutionData()
+        {
+            List<Enterprise> enterprises = _dbContext.Enterprises.ToList();
+
+            double airPollutionAverage = 0;
+            double waterPollutionAverage = 0;
+                        
+
+            foreach (Enterprise enterprise in enterprises)
+            {
+                PollutionResponseModel response = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
+                airPollutionAverage += response.AirPollutionAverage;
+                waterPollutionAverage += response.WaterPollutionAverage;
+            }
+
+            airPollutionAverage /= enterprises.Count;
+            waterPollutionAverage /= enterprises.Count;
+
+
+            PollutionResponseModel responseModel = new PollutionResponseModel(
+                airPollutionAverage, waterPollutionAverage);
+
+            return responseModel;
+        }
+
+        [HttpPost]
+        [Route("setEnterpriseRate")]
+        public async void SetEnterpriseRate(int enterpriseId)
+        {
+            Enterprise enterprise = GetEnterpriseById(enterpriseId);
+
+            PollutionResponseModel enterpriseData = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
+            PollutionResponseModel allEnterprisesData = GetAveragePollutionData();
+
+            //if(enterpriseData.AirPollutionAverage > 350)
+            //{
+            double airRatio = enterpriseData.AirPollutionAverage / allEnterprisesData.AirPollutionAverage;
+            //}
+            //if (enterpriseData.AirPollutionAverage >)
+            //{
+            double waterRatio = enterpriseData.WaterPollutionAverage / allEnterprisesData.WaterPollutionAverage;
+            //}
+
+            double averageRatio = (airRatio + waterRatio) / 2;
+
+            // 10-point system
+            double rate = 10 - (averageRatio * 10);
+
+
+            var enterpriseToUpdate = await _dbContext.Enterprises.FindAsync(enterpriseId);
+
+
+            await TryUpdateModelAsync<Enterprise>(
+                enterpriseToUpdate,
+                "",
+                x => x.EnterpriseId,
+                x => x.Name,
+                x => x.Kind,
+                x => x.PhoneNumber,
+                x => x.Product,
+                x => x.Address);
+
+                enterprise.Rate = rate;
+
+                try
+                {
+                    await _dbContext.SaveChangesAsync();
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            
+        }
+
+
+        [HttpGet]
+        [Route("getEnterpriseRateById")]
+        public double getEnterpriseRateById(int enterpriseId)
+        {
+            Enterprise enterprise = GetEnterpriseById(enterpriseId);
+            return enterprise.Rate;
         }
 
 
