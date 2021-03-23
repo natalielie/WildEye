@@ -98,6 +98,73 @@ namespace EcoClean.Data
                 }
             );
 
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 1,
+                    EnterpriseId = 1,
+                    AirPollution = 780,
+                    WaterPollution = 2.5,
+                    SmartDeviceDataDate = Convert.ToDateTime("2020-06-05"),
+                }
+            );
+
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 2,
+                    EnterpriseId = 1,
+                    AirPollution = 830,
+                    WaterPollution = 2.8,
+                    SmartDeviceDataDate = Convert.ToDateTime("2020-09-08"),
+                }
+            );
+
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 3,
+                    EnterpriseId = 2,
+                    AirPollution = 640,
+                    WaterPollution = 1.7,
+                    SmartDeviceDataDate = Convert.ToDateTime("2020-09-12"),
+                }
+            );
+
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 4,
+                    EnterpriseId = 1,
+                    AirPollution = 797,
+                    WaterPollution = 2.1,
+                    SmartDeviceDataDate = Convert.ToDateTime("2020-12-01"),
+                }
+            );
+
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 5,
+                    EnterpriseId = 3,
+                    AirPollution = 1246,
+                    WaterPollution = 3.1,
+                    SmartDeviceDataDate = Convert.ToDateTime("2020-12-02"),
+                }
+            );
+
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 6,
+                    EnterpriseId = 2,
+                    AirPollution = 530,
+                    WaterPollution = 1.1,
+                    SmartDeviceDataDate = Convert.ToDateTime("2020-12-15"),
+                }
+            );
+
+
             //modelBuilder.Entity<Client>().HasData(
             //    new Client
             //    {

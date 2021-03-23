@@ -27,7 +27,7 @@ namespace EcoClean.Models.Enterprise
             this.PhoneNumber = phoneNumber;
             this.Product = product;
             this.Address = address;
-            this.Rate = Rate;
+            this.Rate = rate;
             this.ClientId = clientId;
         }
 

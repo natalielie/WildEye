@@ -46,6 +46,7 @@ namespace EcoClean
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddMvc();
             services.AddControllersWithViews();

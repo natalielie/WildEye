@@ -4,14 +4,16 @@ using EcoClean.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EcoClean.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210323215443_init4")]
+    partial class init4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,8 +260,8 @@ namespace EcoClean.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("AirPollution")
-                        .HasColumnType("float");
+                    b.Property<float>("AirPollution")
+                        .HasColumnType("real");
 
                     b.Property<int>("EnterpriseId")
                         .HasColumnType("int");
@@ -267,62 +269,12 @@ namespace EcoClean.Data.Migrations
                     b.Property<DateTime>("SmartDeviceDataDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("WaterPollution")
-                        .HasColumnType("float");
+                    b.Property<float>("WaterPollution")
+                        .HasColumnType("real");
 
                     b.HasKey("SmartDeviceDataId");
 
                     b.ToTable("SmartDeviceData");
-
-                    b.HasData(
-                        new
-                        {
-                            SmartDeviceDataId = 1,
-                            AirPollution = 780.0,
-                            EnterpriseId = 1,
-                            SmartDeviceDataDate = new DateTime(2020, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 2.5
-                        },
-                        new
-                        {
-                            SmartDeviceDataId = 2,
-                            AirPollution = 830.0,
-                            EnterpriseId = 1,
-                            SmartDeviceDataDate = new DateTime(2020, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 2.7999999999999998
-                        },
-                        new
-                        {
-                            SmartDeviceDataId = 3,
-                            AirPollution = 640.0,
-                            EnterpriseId = 2,
-                            SmartDeviceDataDate = new DateTime(2020, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 1.7
-                        },
-                        new
-                        {
-                            SmartDeviceDataId = 4,
-                            AirPollution = 797.0,
-                            EnterpriseId = 1,
-                            SmartDeviceDataDate = new DateTime(2020, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 2.1000000000000001
-                        },
-                        new
-                        {
-                            SmartDeviceDataId = 5,
-                            AirPollution = 1246.0,
-                            EnterpriseId = 3,
-                            SmartDeviceDataDate = new DateTime(2020, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 3.1000000000000001
-                        },
-                        new
-                        {
-                            SmartDeviceDataId = 6,
-                            AirPollution = 530.0,
-                            EnterpriseId = 2,
-                            SmartDeviceDataDate = new DateTime(2020, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 1.1000000000000001
-                        });
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>

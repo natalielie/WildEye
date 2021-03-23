@@ -258,15 +258,15 @@ namespace EcoClean.Controllers.Api
                 .OrderByDescending(x => x.SmartDeviceDataDate).FirstOrDefault();
 
 
-            if(latestPollutionData.AirPollution > 1000)
-            {
+            //if(latestPollutionData.AirPollution > 1000)
+            //{
                 if((request.AirPollutionSubstance == 1 && request.AirEmissions > 500)
                     || request.AirPollutionSubstance != 1)
                 {
                     double ecotaxRate = DefineAirEcoTaxRate(request.AirPollutionSubstance);
                     tax += request.AirEmissions * ecotaxRate;
                 }
-            }
+            //}
 
             if((request.WaterPollutionSubstance == 0 && request.WaterEmissions >= 0.4)
                 || (request.WaterPollutionSubstance == 1 && request.WaterEmissions > 1.5)
@@ -470,7 +470,7 @@ namespace EcoClean.Controllers.Api
             List<SmartDeviceData> latestPollutionData = _dbContext.SmartDeviceData
                .Where(x => x.EnterpriseId == enterpriseId)
                .OrderByDescending(x => x.SmartDeviceDataDate)
-               .Take(4).ToList();
+               .Take(3).ToList();
 
             double airPollutionAverage = 0;
             double waterPollutionAverage = 0;
@@ -538,7 +538,7 @@ namespace EcoClean.Controllers.Api
             double averageRatio = (airRatio + waterRatio) / 2;
 
             // 10-point system
-            double rate = 10 - (averageRatio * 10);
+            double rate = Math.Abs(10 - (averageRatio * 10));
 
 
             var enterpriseToUpdate = await _dbContext.Enterprises.FindAsync(enterpriseId);
@@ -558,7 +558,7 @@ namespace EcoClean.Controllers.Api
 
                 try
                 {
-                    await _dbContext.SaveChangesAsync();
+                    _dbContext.SaveChanges();
                 }
                 catch (DbUpdateException /* ex */)
                 {
@@ -575,7 +575,7 @@ namespace EcoClean.Controllers.Api
         public double getEnterpriseRateById(int enterpriseId)
         {
             Enterprise enterprise = GetEnterpriseById(enterpriseId);
-            return enterprise.Rate;
+            return Math.Round(enterprise.Rate, 2);
         }
 
 
