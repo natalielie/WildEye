@@ -8,7 +8,6 @@ namespace EcoClean.Models.Request
     public class CertificateRequestModel
     {
         public int EnterpriseId { get; set; }
-        public int CertificateId { get; set; }
         public DateTime CertificateDate { get; set; }
     }
 }

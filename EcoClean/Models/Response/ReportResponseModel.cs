@@ -17,6 +17,7 @@ namespace EcoClean.Models.Response
         public string Comment { get; set; }
         public DateTime ReportDate { get; set; }
 
+        public ReportResponseModel() { }
         public ReportResponseModel(int reportId, 
             int airPollutionSubstance, int waterPollutionSubstance, 
             double airEmissions, double waterEmissions, 

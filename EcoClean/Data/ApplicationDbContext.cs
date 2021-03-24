@@ -164,54 +164,38 @@ namespace EcoClean.Data
                 }
             );
 
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 7,
+                    EnterpriseId = 2,
+                    AirPollution = 499,
+                    WaterPollution = 1.23,
+                    SmartDeviceDataDate = Convert.ToDateTime("2021-02-03"),
+                }
+            );
+            modelBuilder.Entity<SmartDeviceData>().HasData(
+                new SmartDeviceData
+                {
+                    SmartDeviceDataId = 8,
+                    EnterpriseId = 3,
+                    AirPollution = 1189,
+                    WaterPollution = 2.93,
+                    SmartDeviceDataDate = Convert.ToDateTime("2021-02-05"),
+                }
+            );
 
-            //modelBuilder.Entity<Client>().HasData(
-            //    new Client
+            //modelBuilder.Entity<SmartDeviceData>().HasData(
+            //    new SmartDeviceData
             //    {
-            //        ClientId = 2,
-            //        FirstName = "Joshua",
-            //        LastName = "Dun",
-            //        PhoneNumber = "+40054776512",
-            //        DateOfBirth = DateTime.Parse("1988-06-12"),
-            //        Address = "Riverside st, 33a"
+            //        SmartDeviceDataId = 9,
+            //        EnterpriseId = 3,
+            //        AirPollution = 530,
+            //        WaterPollution = 1.1,
+            //        SmartDeviceDataDate = Convert.ToDateTime("2021-05-05"),
             //    }
             //);
 
-            //modelBuilder.Entity<Pet>().HasData(
-            //    new Pet
-            //    {
-            //        PetId = 1,
-            //        PetName = "Twinkie",
-            //        AnimalKind = "Cat",
-            //        PetSex = "Female",
-            //        PetAge = 1,
-            //        ClientId = 1
-            //    }
-            //);
-
-            //modelBuilder.Entity<Pet>().HasData(
-            //    new Pet
-            //    {
-            //        PetId = 2,
-            //        PetName = "Jim",
-            //        AnimalKind = "Dog",
-            //        PetSex = "Male",
-            //        PetAge = 3,
-            //        ClientId = 2
-            //    }
-            //);
-
-            //modelBuilder.Entity<Pet>().HasData(
-            //    new Pet
-            //    {
-            //        PetId = 3,
-            //        PetName = "Cinnabon",
-            //        AnimalKind = "Cat",
-            //        PetSex = "Male",
-            //        PetAge = 1,
-            //        ClientId = 2
-            //    }
-            //);
         }
     }
 }

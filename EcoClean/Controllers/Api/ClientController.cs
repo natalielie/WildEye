@@ -48,18 +48,32 @@ namespace EcoClean.Controllers.Api
         [Route("addEnterprise")]
         public void AddEnterprise(EnterpriseRequestModel request)
         {
-            Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == id);
-            Enterprise enterprise = new Enterprise
+
+            if(request != null)
             {
-                Name = request.Name,
-                Kind = request.Kind,
-                PhoneNumber = request.PhoneNumber,
-                Product = request.Product,
-                Address = request.Address,
-                ClientId = client.ClientId
-            };
-            _dbContext.Enterprises.Add(enterprise);
-            _dbContext.SaveChanges();
+                Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == id);
+                Enterprise enterprise = new Enterprise
+                {
+                    Name = request.Name,
+                    Kind = request.Kind,
+                    PhoneNumber = request.PhoneNumber,
+                    Product = request.Product,
+                    Address = request.Address,
+                    ClientId = client.ClientId
+                };
+                try
+                {
+                    _dbContext.Enterprises.Add(enterprise);
+                    _dbContext.SaveChanges();
+                }
+                catch(DbUpdateException)
+                {
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Something went wrong, try again, please");
+            }
 
         }
 
@@ -96,8 +110,8 @@ namespace EcoClean.Controllers.Api
         [Route("getEnterpriseById")]
         public Enterprise GetEnterpriseById(int enterpriseId)
         {
-            Client client = _dbContext.Clients.Single(x => x.UserId == id);
-            Enterprise enterprise = _dbContext.Enterprises.SingleOrDefault(x => x.ClientId == client.ClientId && x.EnterpriseId == enterpriseId);
+           // Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            Enterprise enterprise = _dbContext.Enterprises.SingleOrDefault(x => x.EnterpriseId == enterpriseId);
 
             return enterprise;
         }
@@ -118,9 +132,14 @@ namespace EcoClean.Controllers.Api
                 throw new ArgumentException("Something wrong happened. Please, try again.");
             }
 
-            _dbContext.Enterprises.Remove(chosenEnterprise);
-            _dbContext.SaveChanges();
+            try
+            {
+                _dbContext.Enterprises.Remove(chosenEnterprise);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException) { }
         }
+            
 
         // statistics //
 
@@ -193,13 +212,21 @@ namespace EcoClean.Controllers.Api
         public List<CertificateResponseModel> GetCertificates(int enterpriseId)
         {
             Enterprise enterprise = GetEnterpriseById(enterpriseId);
-            List<Certificate> certificates = _dbContext.Certificates.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
+            if(enterprise == null)
+            {
+                throw new ArgumentException("Something went wrong, try again, please");
+            }
+            else
+            {
+                List<Certificate> certificates = _dbContext.Certificates.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
 
-            List<CertificateResponseModel> responseModels = certificates
-                .Select(x => new CertificateResponseModel(x.EnterpriseId, x.CertificateId,
-                x.CertificateDate))
-                .ToList();
-            return responseModels;
+                List<CertificateResponseModel> responseModels = certificates
+                    .Select(x => new CertificateResponseModel(x.EnterpriseId, x.CertificateId,
+                    x.CertificateDate))
+                    .ToList();
+                return responseModels;
+            }
+            
         }
 
         [HttpGet]
@@ -208,7 +235,14 @@ namespace EcoClean.Controllers.Api
         {
             Certificate certificate = _dbContext.Certificates.SingleOrDefault(x => x.CertificateId == certificateId);
 
-            return certificate;
+            if (certificate == null)
+            {
+                throw new ArgumentException("Something went wrong, try again, please");
+            }
+            else
+            {
+                return certificate;
+            }
         }
 
         [HttpPost]
@@ -220,8 +254,15 @@ namespace EcoClean.Controllers.Api
                 EnterpriseId = request.EnterpriseId,
                 CertificateDate = request.CertificateDate
             };
-            _dbContext.Certificates.Add(certificate);
-            _dbContext.SaveChanges();
+            try
+            {
+                _dbContext.Certificates.Add(certificate);
+                _dbContext.SaveChanges();
+            }
+            catch(DbUpdateException)
+            {
+
+            }
 
         }
 
@@ -236,9 +277,12 @@ namespace EcoClean.Controllers.Api
             {
                 throw new ArgumentException("Something wrong happened. Please, try again.");
             }
-
-            _dbContext.Certificates.Remove(chosenCertificate);
-            _dbContext.SaveChanges();
+            try 
+            { 
+                _dbContext.Certificates.Remove(chosenCertificate);
+                _dbContext.SaveChanges();
+            }
+            catch(DbUpdateException) { }
         }
 
 
@@ -257,38 +301,48 @@ namespace EcoClean.Controllers.Api
             SmartDeviceData latestPollutionData = _dbContext.SmartDeviceData.Where(x => x.EnterpriseId == request.EnterpriseId)
                 .OrderByDescending(x => x.SmartDeviceDataDate).FirstOrDefault();
 
-
-            //if(latestPollutionData.AirPollution > 1000)
-            //{
-                if((request.AirPollutionSubstance == 1 && request.AirEmissions > 500)
+            if (latestPollutionData == null)
+            {
+                return;
+            }
+            else
+            {
+                //if(latestPollutionData.AirPollution > 1000)
+                //{
+                if ((request.AirPollutionSubstance == 1 && request.AirEmissions > 500)
                     || request.AirPollutionSubstance != 1)
                 {
                     double ecotaxRate = DefineAirEcoTaxRate(request.AirPollutionSubstance);
                     tax += request.AirEmissions * ecotaxRate;
                 }
-            //}
+                //}
 
-            if((request.WaterPollutionSubstance == 0 && request.WaterEmissions >= 0.4)
-                || (request.WaterPollutionSubstance == 1 && request.WaterEmissions > 1.5)
-                || (request.WaterPollutionSubstance == 2 && request.WaterEmissions >= 1)
-                || request.WaterEmissions >= 6)
-            {
-                double ecotaxRate = DefineWaterEcoTaxRate(request.WaterPollutionSubstance);
-                tax += request.WaterEmissions * ecotaxRate;
+                if ((request.WaterPollutionSubstance == 0 && request.WaterEmissions >= 0.4)
+                    || (request.WaterPollutionSubstance == 1 && request.WaterEmissions > 1.5)
+                    || (request.WaterPollutionSubstance == 2 && request.WaterEmissions >= 1)
+                    || request.WaterEmissions >= 6)
+                {
+                    double ecotaxRate = DefineWaterEcoTaxRate(request.WaterPollutionSubstance);
+                    tax += request.WaterEmissions * ecotaxRate;
+                }
+
+                Tax taxInfo = new Tax
+                (
+                    request.EnterpriseId,
+                    request.AirPollutionSubstance,
+                    request.WaterPollutionSubstance,
+                    request.AirEmissions,
+                    request.WaterEmissions,
+                    tax
+                );
+
+                try
+                {
+                    _dbContext.Taxes.Add(taxInfo);
+                    _dbContext.SaveChanges();
+                }
+                catch (DbUpdateException) { }
             }
-
-            Tax taxInfo = new Tax
-            (
-                request.EnterpriseId,
-                request.AirPollutionSubstance,
-                request.WaterPollutionSubstance,
-                request.AirEmissions,
-                request.WaterEmissions,
-                tax
-            );
-
-            _dbContext.Taxes.Add(taxInfo);
-            _dbContext.SaveChanges();
 
         }
 
@@ -312,7 +366,15 @@ namespace EcoClean.Controllers.Api
         {
             Tax tax = _dbContext.Taxes.Where(x => x.EnterpriseId == enterpriseId)
                 .OrderByDescending(x => x.TaxId).FirstOrDefault();
-            return tax;
+
+            if (tax == null)
+            {
+                throw new ArgumentException("Something went wrong, try again, please");
+            }
+            else
+            {
+                return tax;
+            }
         }
 
 
@@ -330,8 +392,14 @@ namespace EcoClean.Controllers.Api
                 Comment = request.Comment,
                 ReportDate = DateTime.Now
             };
-            _dbContext.Reports.Add(report);
-            _dbContext.SaveChanges();
+
+            try
+            {
+                _dbContext.Reports.Add(report);
+                _dbContext.SaveChanges();
+            }
+            catch(DbUpdateException) { }
+            
 
         }
 
@@ -340,11 +408,27 @@ namespace EcoClean.Controllers.Api
         public List<ReportResponseModel> GetAllReportsOfEnterprise(int enterpriseId)
         {
             Enterprise enterprise = GetEnterpriseById(enterpriseId);
-            List<Report> reports = _dbContext.Reports.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
-           // List<Tax> taxes = _dbContext.Taxes.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
-            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+            if(enterprise == null)
+            {
+                throw new ArgumentException("There's no such eneterprise");
+            }
+            else
+            {            
+                List<Report> reports = _dbContext.Reports.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
 
-            return responseModels;
+                if(reports.Count == 0)
+                {
+                    throw new ArgumentException("There's no reports");
+                }
+                else
+                {
+                    // List<Tax> taxes = _dbContext.Taxes.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
+                    List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+
+                    return responseModels;
+                }
+            }
+           
         }
 
         [HttpGet]
@@ -352,32 +436,38 @@ namespace EcoClean.Controllers.Api
         public ReportResponseModel GetSingleReportOfEnterprise(int reportId)
         {
             List<Report> reports = _dbContext.Reports.Where(x => x.ReportId == reportId).ToList();
+
             List<Tax> taxes = _dbContext.Taxes.ToList();
 
 
-            foreach (var report in reports)
+            if (reports.Count == 0 || taxes.Count == 0)
             {
-                foreach (var tax in taxes)
+                throw new ArgumentException("There's no reports");
+            }
+            else
+            {
+                ReportResponseModel response = new ReportResponseModel();
+                foreach (var report in reports)
                 {
-                    if (report.TaxId == tax.TaxId)
+                    foreach (var tax in taxes)
                     {
-                        ReportResponseModel response = new ReportResponseModel
-                        (
-                            report.ReportId,
-                            tax.AirPollutionSubstance,
-                            tax.WaterPollutionSubstance,
-                            tax.AirEmissions,
-                            tax.WaterEmissions,
-                            tax.TaxCost,
-                            report.Comment,
-                            report.ReportDate
-                        );
-
-                        return response;
+                        if (report.TaxId == tax.TaxId)
+                        {
+                            response.ReportId = report.ReportId;
+                            response.AirPollutionSubstance = tax.AirPollutionSubstance;
+                            response.WaterPollutionSubstance = tax.WaterPollutionSubstance;
+                            response.AirEmissions = tax.AirEmissions;
+                            response.WaterEmissions = tax.WaterEmissions;
+                            response.TaxCost = tax.TaxCost;
+                            response.Comment = report.Comment;
+                            response.ReportDate = report.ReportDate;
+                           
+                        }
                     }
                 }
+                return response;
             }
-            throw new ArgumentException("There's no report. Try again later, please.");
+            
         }
 
         [HttpGet]
@@ -385,9 +475,17 @@ namespace EcoClean.Controllers.Api
         public List<ReportResponseModel> GetReportOfEnterpriseByDate(DateTime date)
         {
             List<Report> reports = _dbContext.Reports.Where(x => x.ReportDate == date).ToList();
-            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
 
-            return responseModels;
+            if (reports.Count == 0)
+            {
+                throw new ArgumentException("There's no reports");
+            }
+            else
+            {
+                List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+
+                return responseModels;
+            }
         }
 
         [HttpGet]
@@ -395,9 +493,17 @@ namespace EcoClean.Controllers.Api
         public List<ReportResponseModel> GetAllReports()
         {
             List<Report> reports = _dbContext.Reports.ToList();
-            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
 
-            return responseModels;
+            if (reports.Count == 0)
+            {
+                throw new ArgumentException("There's no reports");
+            }
+            else
+            {
+                List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+
+                return responseModels;
+            }
         }
 
         public List<ReportResponseModel> GetLisOfReports(List<Report> reports)
@@ -406,28 +512,36 @@ namespace EcoClean.Controllers.Api
 
             List<Tax> taxes = _dbContext.Taxes.ToList();
 
-            foreach (var report in reports)
+            if (taxes.Count == 0)
             {
-                foreach (var tax in taxes)
+                throw new ArgumentException("There's no data");
+            }
+            else
+            {
+
+                foreach (var report in reports)
                 {
-                    if (report.TaxId == tax.TaxId)
+                    foreach (var tax in taxes)
                     {
-                        ReportResponseModel response = new ReportResponseModel
-                        (
-                            report.ReportId,
-                            tax.AirPollutionSubstance,
-                            tax.WaterPollutionSubstance,
-                            tax.AirEmissions,
-                            tax.WaterEmissions,
-                            tax.TaxCost,
-                            report.Comment,
-                            report.ReportDate
-                        );
-                        responseModels.Add(response);
+                        if (report.TaxId == tax.TaxId)
+                        {
+                            ReportResponseModel response = new ReportResponseModel
+                            (
+                                report.ReportId,
+                                tax.AirPollutionSubstance,
+                                tax.WaterPollutionSubstance,
+                                tax.AirEmissions,
+                                tax.WaterEmissions,
+                                tax.TaxCost,
+                                report.Comment,
+                                report.ReportDate
+                            );
+                            responseModels.Add(response);
+                        }
                     }
                 }
+                return responseModels;
             }
-            return responseModels;
         }
 
         // pollution data //
@@ -440,11 +554,16 @@ namespace EcoClean.Controllers.Api
                 .Where(x => x.EnterpriseId == enterpriseId)
                 .OrderByDescending(x => x.SmartDeviceDataDate)
                 .FirstOrDefault();
-
-            Tax tax = _dbContext.Taxes.Where(x => x.EnterpriseId == enterpriseId)
+                Tax tax = _dbContext.Taxes.Where(x => x.EnterpriseId == enterpriseId)
                 .OrderByDescending(x => x.TaxId).FirstOrDefault();
 
-            SmartDeviceDataResponseModel response = new SmartDeviceDataResponseModel
+            if (tax == null || latestPollutionData == null)
+            {
+                throw new ArgumentException("There's no data");
+            }
+            else
+            {
+                SmartDeviceDataResponseModel response = new SmartDeviceDataResponseModel
             (
                 enterpriseId,
                 latestPollutionData.AirPollution,
@@ -456,7 +575,8 @@ namespace EcoClean.Controllers.Api
                 latestPollutionData.SmartDeviceDataDate
             );
 
-            return response;
+                return response;
+            }
         }
 
         // rating //
@@ -469,8 +589,17 @@ namespace EcoClean.Controllers.Api
 
             List<SmartDeviceData> latestPollutionData = _dbContext.SmartDeviceData
                .Where(x => x.EnterpriseId == enterpriseId)
-               .OrderByDescending(x => x.SmartDeviceDataDate)
-               .Take(3).ToList();
+               .OrderByDescending(x => x.SmartDeviceDataDate).ToList();
+
+            if(latestPollutionData.Count >= 3)
+            {
+                latestPollutionData = latestPollutionData.Take(3).ToList();
+            }
+            else
+            {
+                throw new ArgumentException("There's not enough data to get an average pollution");
+            }
+               
 
             double airPollutionAverage = 0;
             double waterPollutionAverage = 0;
@@ -502,9 +631,15 @@ namespace EcoClean.Controllers.Api
 
             foreach (Enterprise enterprise in enterprises)
             {
-                PollutionResponseModel response = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
-                airPollutionAverage += response.AirPollutionAverage;
-                waterPollutionAverage += response.WaterPollutionAverage;
+                try
+                {
+                    PollutionResponseModel response = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
+                    airPollutionAverage += response.AirPollutionAverage;
+                    waterPollutionAverage += response.WaterPollutionAverage;
+                }
+                catch(ArgumentException ex)
+                {
+                }
             }
 
             airPollutionAverage /= enterprises.Count;
@@ -523,7 +658,16 @@ namespace EcoClean.Controllers.Api
         {
             Enterprise enterprise = GetEnterpriseById(enterpriseId);
 
-            PollutionResponseModel enterpriseData = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
+            PollutionResponseModel enterpriseData = new PollutionResponseModel();
+
+            try
+            {
+                enterpriseData = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
+            }
+            catch(ArgumentException ex)
+            {
+            }
+
             PollutionResponseModel allEnterprisesData = GetAveragePollutionData();
 
             //if(enterpriseData.AirPollutionAverage > 350)
@@ -538,7 +682,7 @@ namespace EcoClean.Controllers.Api
             double averageRatio = (airRatio + waterRatio) / 2;
 
             // 10-point system
-            double rate = Math.Abs(10 - (averageRatio * 10));
+            double rate = 10 - Math.Abs(10 - (averageRatio * 10));
 
 
             var enterpriseToUpdate = await _dbContext.Enterprises.FindAsync(enterpriseId);

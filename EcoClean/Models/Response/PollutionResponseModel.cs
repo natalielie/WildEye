@@ -10,6 +10,7 @@ namespace EcoClean.Models.Response
         public double AirPollutionAverage { get; set; }
         public double WaterPollutionAverage {get; set;}
 
+        public PollutionResponseModel() {  }
         public PollutionResponseModel(double airPollutionAverage,
             double waterPollutionAverage)
         {

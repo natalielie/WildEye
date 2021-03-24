@@ -4,14 +4,16 @@ using EcoClean.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EcoClean.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210324094938_init7")]
+    partial class init7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,24 +111,6 @@ namespace EcoClean.Data.Migrations
                     b.HasKey("ClientId");
 
                     b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("EcoClean.Models.Enterprise.Certificate", b =>
-                {
-                    b.Property<int>("CertificateId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CertificateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EnterpriseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CertificateId");
-
-                    b.ToTable("Certificates");
                 });
 
             modelBuilder.Entity("EcoClean.Models.Enterprise.Enterprise", b =>
