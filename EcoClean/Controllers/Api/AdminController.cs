@@ -1,4 +1,8 @@
 ﻿using EcoClean.Data;
+using EcoClean.Models.Enterprise;
+using EcoClean.Models.Request;
+using EcoClean.Models.Response;
+using EcoClean.Models.SmartDevice;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +39,252 @@ namespace EcoClean.Controllers.Api
         public IActionResult Index()
         {
             return View();
+        }
+
+        // enterprises //
+
+        [HttpGet]
+        [Route("getEnterpriseById")]
+        public Enterprise GetEnterpriseById(int enterpriseId)
+        {
+            // Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            Enterprise enterprise = _dbContext.Enterprises.SingleOrDefault(x => x.EnterpriseId == enterpriseId);
+
+            return enterprise;
+        }
+
+        // certificate //
+
+        [HttpPost]
+        [Route("createCertificate")]
+        public void CreateCertificate(CertificateRequestModel request)
+        {
+            Certificate certificate = new Certificate
+            {
+                EnterpriseId = request.EnterpriseId,
+                CertificateDate = request.CertificateDate
+            };
+            try
+            {
+                _dbContext.Certificates.Add(certificate);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+
+            }
+
+        }
+
+        [HttpDelete]
+        [Route("deleteCertificateById")]
+        public void DeleteCertificateById(int certificateId)
+        {
+            Certificate chosenCertificate = _dbContext.Certificates.SingleOrDefault(x => x.CertificateId == certificateId);
+
+
+            if (chosenCertificate == null)
+            {
+                throw new ArgumentException("Something wrong happened. Please, try again.");
+            }
+            try
+            {
+                _dbContext.Certificates.Remove(chosenCertificate);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException) { }
+        }
+
+        // reports //
+
+        [HttpGet]
+        [Route("getAllReports")]
+        public List<ReportResponseModel> GetAllReports()
+        {
+            List<Report> reports = _dbContext.Reports.ToList();
+
+            if (reports.Count == 0)
+            {
+                throw new ArgumentException("There's no reports");
+            }
+            else
+            {
+                List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+
+                return responseModels;
+            }
+        }
+
+        public List<ReportResponseModel> GetLisOfReports(List<Report> reports)
+        {
+            List<ReportResponseModel> responseModels = new List<ReportResponseModel>();
+
+            List<Tax> taxes = _dbContext.Taxes.ToList();
+
+            if (taxes.Count == 0)
+            {
+                throw new ArgumentException("There's no data");
+            }
+            else
+            {
+
+                foreach (var report in reports)
+                {
+                    foreach (var tax in taxes)
+                    {
+                        if (report.TaxId == tax.TaxId)
+                        {
+                            ReportResponseModel response = new ReportResponseModel
+                            (
+                                report.ReportId,
+                                tax.AirPollutionSubstance,
+                                tax.WaterPollutionSubstance,
+                                tax.AirEmissions,
+                                tax.WaterEmissions,
+                                tax.TaxCost,
+                                report.Comment,
+                                report.ReportDate
+                            );
+                            responseModels.Add(response);
+                        }
+                    }
+                }
+                return responseModels;
+            }
+        }
+
+        // rating //
+
+        [HttpGet]
+        [Route("getAveragePollutionOfEnterprise")]
+        public PollutionResponseModel GetAveragePollutionOfEnterprise(int enterpriseId)
+        {
+            Enterprise enterprise = GetEnterpriseById(enterpriseId);
+
+            List<SmartDeviceData> latestPollutionData = _dbContext.SmartDeviceData
+               .Where(x => x.EnterpriseId == enterpriseId)
+               .OrderByDescending(x => x.SmartDeviceDataDate).ToList();
+
+            if (latestPollutionData.Count >= 3)
+            {
+                latestPollutionData = latestPollutionData.Take(3).ToList();
+            }
+            else
+            {
+                throw new ArgumentException("There's not enough data to get an average pollution");
+            }
+
+
+            double airPollutionAverage = 0;
+            double waterPollutionAverage = 0;
+
+            foreach (SmartDeviceData data in latestPollutionData)
+            {
+                airPollutionAverage += data.AirPollution;
+                waterPollutionAverage += data.WaterPollution;
+            }
+
+            airPollutionAverage /= 4;
+            waterPollutionAverage /= 4;
+
+            PollutionResponseModel response = new PollutionResponseModel(airPollutionAverage, waterPollutionAverage);
+
+            return response;
+
+        }
+
+        [HttpGet]
+        [Route("getAveragePollutionData")]
+        public PollutionResponseModel GetAveragePollutionData()
+        {
+            List<Enterprise> enterprises = _dbContext.Enterprises.ToList();
+
+            double airPollutionAverage = 0;
+            double waterPollutionAverage = 0;
+
+
+            foreach (Enterprise enterprise in enterprises)
+            {
+                try
+                {
+                    PollutionResponseModel response = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
+                    airPollutionAverage += response.AirPollutionAverage;
+                    waterPollutionAverage += response.WaterPollutionAverage;
+                }
+                catch (ArgumentException)
+                {
+                }
+            }
+
+            airPollutionAverage /= enterprises.Count;
+            waterPollutionAverage /= enterprises.Count;
+
+
+            PollutionResponseModel responseModel = new PollutionResponseModel(
+                airPollutionAverage, waterPollutionAverage);
+
+            return responseModel;
+        }
+
+        [HttpPost]
+        [Route("setEnterpriseRate")]
+        public async void SetEnterpriseRate(int enterpriseId)
+        {
+            Enterprise enterprise = GetEnterpriseById(enterpriseId);
+
+            PollutionResponseModel enterpriseData = new PollutionResponseModel();
+
+            try
+            {
+                enterpriseData = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
+            }
+            catch (ArgumentException ex)
+            {
+            }
+
+            PollutionResponseModel allEnterprisesData = GetAveragePollutionData();
+
+            //if(enterpriseData.AirPollutionAverage > 350)
+            //{
+            double airRatio = enterpriseData.AirPollutionAverage / allEnterprisesData.AirPollutionAverage;
+            //}
+            //if (enterpriseData.AirPollutionAverage >)
+            //{
+            double waterRatio = enterpriseData.WaterPollutionAverage / allEnterprisesData.WaterPollutionAverage;
+            //}
+
+            double averageRatio = (airRatio + waterRatio) / 2;
+
+            // 10-point system
+            double rate = 10 - Math.Abs(10 - (averageRatio * 10));
+
+
+            var enterpriseToUpdate = await _dbContext.Enterprises.FindAsync(enterpriseId);
+
+
+            await TryUpdateModelAsync<Enterprise>(
+                enterpriseToUpdate,
+                "",
+                x => x.EnterpriseId,
+                x => x.Name,
+                x => x.Kind,
+                x => x.PhoneNumber,
+                x => x.Product,
+                x => x.Address);
+
+            enterprise.Rate = rate;
+
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, " +
+                    "see your system administrator.");
+            }
+
         }
 
         // database

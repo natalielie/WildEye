@@ -206,6 +206,45 @@ namespace EcoClean.Controllers.Api
 
         // certificates //
 
+        [HttpPost]
+        [Route("createCertificate")]
+        public void CreateCertificate(CertificateRequestModel request)
+        {
+            Certificate certificate = new Certificate
+            {
+                EnterpriseId = request.EnterpriseId,
+                CertificateDate = request.CertificateDate
+            };
+            try
+            {
+                _dbContext.Certificates.Add(certificate);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+
+            }
+
+        }
+
+        [HttpDelete]
+        [Route("deleteCertificateById")]
+        public void DeleteCertificateById(int certificateId)
+        {
+            Certificate chosenCertificate = _dbContext.Certificates.SingleOrDefault(x => x.CertificateId == certificateId);
+
+
+            if (chosenCertificate == null)
+            {
+                throw new ArgumentException("Something wrong happened. Please, try again.");
+            }
+            try
+            {
+                _dbContext.Certificates.Remove(chosenCertificate);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException) { }
+        }
 
         [HttpGet]
         [Route("getCertificate")]
@@ -245,46 +284,7 @@ namespace EcoClean.Controllers.Api
             }
         }
 
-        [HttpPost]
-        [Route("createCertificate")]
-        public void CreateCertificate(CertificateRequestModel request)
-        {
-            Certificate certificate = new Certificate
-            {
-                EnterpriseId = request.EnterpriseId,
-                CertificateDate = request.CertificateDate
-            };
-            try
-            {
-                _dbContext.Certificates.Add(certificate);
-                _dbContext.SaveChanges();
-            }
-            catch(DbUpdateException)
-            {
-
-            }
-
-        }
-
-        [HttpDelete]
-        [Route("deleteCertificateById")]
-        public void DeleteCertificateById(int certificateId)
-        {
-            Certificate chosenCertificate = _dbContext.Certificates.SingleOrDefault(x => x.CertificateId == certificateId);
-
-
-            if (chosenCertificate == null)
-            {
-                throw new ArgumentException("Something wrong happened. Please, try again.");
-            }
-            try 
-            { 
-                _dbContext.Certificates.Remove(chosenCertificate);
-                _dbContext.SaveChanges();
-            }
-            catch(DbUpdateException) { }
-        }
-
+       
 
         // tax //
 
@@ -307,15 +307,12 @@ namespace EcoClean.Controllers.Api
             }
             else
             {
-                //if(latestPollutionData.AirPollution > 1000)
-                //{
                 if ((request.AirPollutionSubstance == 1 && request.AirEmissions > 500)
                     || request.AirPollutionSubstance != 1)
                 {
                     double ecotaxRate = DefineAirEcoTaxRate(request.AirPollutionSubstance);
                     tax += request.AirEmissions * ecotaxRate;
                 }
-                //}
 
                 if ((request.WaterPollutionSubstance == 0 && request.WaterEmissions >= 0.4)
                     || (request.WaterPollutionSubstance == 1 && request.WaterEmissions > 1.5)
@@ -345,7 +342,6 @@ namespace EcoClean.Controllers.Api
             }
 
         }
-
 
         public double DefineAirEcoTaxRate(int airPollutionSubstance)
         {
@@ -488,23 +484,7 @@ namespace EcoClean.Controllers.Api
             }
         }
 
-        [HttpGet]
-        [Route("getAllReports")]
-        public List<ReportResponseModel> GetAllReports()
-        {
-            List<Report> reports = _dbContext.Reports.ToList();
-
-            if (reports.Count == 0)
-            {
-                throw new ArgumentException("There's no reports");
-            }
-            else
-            {
-                List<ReportResponseModel> responseModels = GetLisOfReports(reports);
-
-                return responseModels;
-            }
-        }
+      
 
         public List<ReportResponseModel> GetLisOfReports(List<Report> reports)
         {
@@ -543,6 +523,26 @@ namespace EcoClean.Controllers.Api
                 return responseModels;
             }
         }
+
+
+        [HttpGet]
+        [Route("getAllReports")]
+        public List<ReportResponseModel> GetAllReports()
+        {
+            List<Report> reports = _dbContext.Reports.ToList();
+
+            if (reports.Count == 0)
+            {
+                throw new ArgumentException("There's no reports");
+            }
+            else
+            {
+                List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+
+                return responseModels;
+            }
+        }
+
 
         // pollution data //
 
@@ -664,7 +664,7 @@ namespace EcoClean.Controllers.Api
             {
                 enterpriseData = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
             }
-            catch(ArgumentException ex)
+            catch(ArgumentException)
             {
             }
 
