@@ -3,6 +3,7 @@ import { NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import authService from './AuthorizeService';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
+import { withTranslation } from "react-i18next";
 
 export class LoginMenu extends Component {
     constructor(props) {
@@ -45,15 +46,57 @@ export class LoginMenu extends Component {
     }
 
     authenticatedView(userName, profilePath, logoutPath) {
-        return (<Fragment>
-            <NavItem>
-                <NavLink tag={Link} className="text-dark" to={profilePath}>Hello {userName}</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink tag={Link} className="text-dark" to={logoutPath}>Logout</NavLink>
-            </NavItem>
-        </Fragment>);
-
+        const { t } = this.props;
+        if (userName != "admin@gmail.com") {
+            return (<Fragment>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/my-enterprise">{t("My Enterprise")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/statistics">{t("Statistics")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/my-reports">{t("My Reports")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/my-certificates">{t("My Certificates")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/smart-device-data">{t("Smart Device Data")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello, ")} {userName}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to={logoutPath}>{t("Logout")}</NavLink>
+                </NavItem>
+            </Fragment>);
+        }
+        else {
+            return (<Fragment>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/all-enterprises">{t("All Enterprises")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/statistics">{t("Statistics")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/reports">{t("Reports")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/certificates">{t("Certificates")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/taxes">{t("Taxes")}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello, ")} {userName}</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to={logoutPath}>{t("Logout")}</NavLink>
+                </NavItem>
+            </Fragment>);
+        }
     }
 
     anonymousView(registerPath, loginPath) {
@@ -67,3 +110,5 @@ export class LoginMenu extends Component {
         </Fragment>);
     }
 }
+
+export default withTranslation()(LoginMenu);

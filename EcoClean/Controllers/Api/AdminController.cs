@@ -18,24 +18,25 @@ using System.Threading.Tasks;
 namespace EcoClean.Controllers.Api
 {
     [Route("api/admin")]
+    //[Authorize(Roles = "Administrator")]
     [ApiController]
     public class AdminController : Controller
     {
 
-        RoleManager<IdentityRole> _roleManager;
+      //  RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _dbContext;
 
-        public AdminController(RoleManager<IdentityRole> manager, ApplicationDbContext dbContext)
+        public AdminController(ApplicationDbContext dbContext)
         {
-            _roleManager = manager;
+           // _roleManager = manager;
             _dbContext = dbContext;
         }
 
-        public async Task<IActionResult> GetRoles()
-        {
-            await _roleManager.CreateAsync(new IdentityRole { Name = "admin", NormalizedName = "ADMIN" });
-            return View(await _roleManager.Roles.ToListAsync());
-        }
+        //public async Task<IActionResult> GetRoles()
+        //{
+        //    await _roleManager.CreateAsync(new IdentityRole { Name = "admin", NormalizedName = "ADMIN" });
+        //    return View(await _roleManager.Roles.ToListAsync());
+        //}
         public IActionResult Index()
         {
             return View();
@@ -54,6 +55,22 @@ namespace EcoClean.Controllers.Api
         }
 
         // certificate //
+
+        [HttpGet]
+        [Route("getAllCertificates")]
+        public List<Certificate> GetAllCertificates()
+        {
+            List<Certificate> certificates = _dbContext.Certificates.ToList();
+
+            if (certificates.Count == 0)
+            {
+                throw new ArgumentException("There's no certificate");
+            }
+            else
+            {
+                return certificates;
+            }
+        }
 
         [HttpPost]
         [Route("createCertificate")]
@@ -293,7 +310,7 @@ namespace EcoClean.Controllers.Api
         public async Task<string> BackupDatabase()
         {
             // read connectionstring from config file
-            var connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-PetthyDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+            var connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-EcoCleanDb;Trusted_Connection=True;MultipleActiveResultSets=true";
 
             // read backup folder from config file ("C:/temp/")
             var backupFolder = "C:/Program Files/Microsoft SQL Server/MSSQL12.SQLEXPRESS/MSSQL/Backup/";
@@ -333,7 +350,7 @@ namespace EcoClean.Controllers.Api
         MOVE @fileListDataName TO @fileListDataPath,
         MOVE @fileListLogName TO @fileListLogPath";
 
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-PetthyDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-EcoCleanDb;Trusted_Connection=True;MultipleActiveResultSets=true";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();

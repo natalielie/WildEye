@@ -544,6 +544,26 @@ namespace EcoClean.Controllers.Api
         }
 
 
+        [HttpDelete]
+        [Route("deleteReportById")]
+        public void deleteReportById(int reportId)
+        {
+            Report chosenReport = _dbContext.Reports.SingleOrDefault(x => x.ReportId == reportId);
+
+
+            if (chosenReport == null)
+            {
+                throw new ArgumentException("Something wrong happened. Please, try again.");
+            }
+            try
+            {
+                _dbContext.Reports.Remove(chosenReport);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException) { }
+        }
+
+
         // pollution data //
 
         [HttpGet]
