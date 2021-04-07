@@ -1,6 +1,6 @@
 ﻿import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
-//import HttpApi from "i18next-http-backend";
+import HttpApi from "i18next-http-backend";
 
 import { withTranslation } from 'react-i18next';
 
@@ -23,35 +23,27 @@ i18n
 
                     Home: "Home",
                     Name: "Name",
-                    ProfessionalRole: "Professional Role",
                     Edit: "Edit",
                     Delete: "Delete",
-                    Veterinerian: "Veterinerian",
-                    Specialist: "Specialist",
-                    Professionals: "Professionals",
                     Workplace: "Workplace",
 
-                    Pets: "Pets",
-                    PetName: "PetName",
+                    "All Enterprises": "All Enterprises",
+                    "My Enterprises": "My Enterprises",
+                    Statistics: "Statistics",
+                    "Reports": "Reports",
+                    "Certificates": "Certificates",
+                    "Smart Device Data": "Smart Device Data",
+                    Taxes: "Taxes",
+                    
                     Kind: "Kind",
-                    Gender: "Gender",
-                    "Pet Owner Name": "Pet Owner's Name",
 
-                    ProfessionalsName: "Professional's Name",
                     Date: "Date",
-                    Appointments: "Appointments",
-                    "Add a new appointment": "Add a new appointment",
                     "Begin Date": "Begin Date",
                     "End Date": "End Date",
 
-                    Assignments: "Assignments",
                     Terminate: "Terminate",
 
-                    "My Assignments": "My Assignments",
-                    "My Appointments": "My Appointments",
-                    "My Schedule": "My Schedule",
-
-                    "Add Assignment": "Add Assignment",
+                    
                     Submit: "Submit",
                     "Date and time": "Date and time",
                     "Add Dates": "Add Dates",
@@ -65,8 +57,6 @@ i18n
                     Cancel: "Cancel",
                     "Are you sure?": "Are you sure?",
 
-                    "Pet's medcard": "Pet's medcard",
-                    "Pet's diary": "Pet's diary"
                 },
             },
             ua: {
@@ -80,35 +70,30 @@ i18n
 
                     Home: "Головна",
                     Name: "Ім'я",
-                    ProfessionalRole: "Посада",
                     Edit: "Відредагувати",
                     Delete: "Видалити",
-                    Veterinerian: "Ветеринар",
-                    Specialist: "Спеціаліст з догляду",
-                    Professionals: "Спеціалісти",
                     Workplace: "Місце роботи",
 
-                    Pets: "Тварини",
-                    PetName: "Ім'я тварини",
-                    Kind: "Вид",
-                    Gender: "Стать",
-                    "Pet Owner Name": "Ім'я господаря",
+                    "All Enterprises": "Підприємства",
+                    "My Enterprises": "Мої підприємства",
+                    Statistics: "Статистика",
+                    "Reports": "Звіти",
+                    "Certificates": "Сертифікати",
+                    "Smart Device Data": "Смарт-Пристрій",
+                    Taxes: "Податки",
 
-                    ProfessionalsName: "Ім'я спеціаліста",
+                    Kind: "Вид",
+                    
+                   
                     Date: "Дата",
-                    Appointments: "Прийоми лікаря",
-                    "Add a new appointment": "Новий прийом",
+                    
                     "Begin Date": "Початок",
                     "End Date": "Кінець",
 
-                    Assignments: "Договри",
+                   
                     Terminate: "Розірвати договір",
 
-                    "My Assignments": "Мої договори",
-                    "My Appointments": "Мої прийоми",
-                    "My Schedule": "Мій розклад",
-
-                    "Add Assignment": "Заключити договір",
+                    
                     Submit: "Підтвердити",
                     "Date and time": "Дата та час",
                     "Add Dates": "Додати дати",
@@ -122,8 +107,6 @@ i18n
                     Cancel: "Відмінити",
                     "Are you sure?": "Ви впевнені?",
 
-                    "Pet's medcard": "Медична картка тварини",
-                    "Pet's diary": "Щоденник  тварини"
                 },
             },
         },

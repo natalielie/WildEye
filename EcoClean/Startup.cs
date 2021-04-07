@@ -1,6 +1,9 @@
 using EcoClean.Data;
 using EcoClean.Models;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Security.Claims;
 
 namespace EcoClean
 {
@@ -30,27 +35,91 @@ namespace EcoClean
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-    //        services.AddIdentity<ApplicationUser>(options =>
-    //        {
-    //            options.User.RequireUniqueEmail = false;
-    //        })
-    //.AddEntityFrameworkStores<ApplicationDbContext>()
-    //.AddDefaultTokenProviders();
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerJwt()
+            .AddCookie();
+
+            //services.AddIdentityServer()
+            //    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+            //services.AddAuthentication()
+            //    .AddIdentityServerJwt()
+            // .AddCookie();
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin",
+                    policy =>
+                    {
+                        // Even though we are using JwtClaimTypes in the ProfileService of the IdentityServer
+                        // the actual user claims are converted to those in ClaimTypes so check for them here
+                        policy.RequireClaim(ClaimTypes.Role, "administrator");
+                    });
+            });
+
+            services.Configure<JwtBearerOptions>(
+        IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
+        options =>
+        {
+            var onTokenValidated = options.Events.OnTokenValidated;
+
+            options.Events.OnTokenValidated = async context =>
+            {
+                await onTokenValidated(context);
+            };
+        });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "àabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                "àáâãäå¸æçèéêëìíîïðñòóôõö÷øùúûüýþÿº¿ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßª¯" +
+                "0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            //    options.LoginPath = "/Identity/Account/Login";
+            //    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            //    options.SlidingExpiration = true;
+            //    options.Cookie.Name = GlobalConstants.AuthCookieName;
+            //});
 
             services.AddControllers().AddNewtonsoftJson();
 
             services.AddMvc();
-            services.AddControllersWithViews();
-
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -77,6 +146,7 @@ namespace EcoClean
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -85,18 +155,19 @@ namespace EcoClean
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
+
+            app.UseCors(options => options.AllowAnyOrigin());
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/ClientApp/{id?}");
                 endpoints.MapRazorPages();
             });
 
-            app.UseSpa(spa =>
-            {
+            app.UseSpa(spa => {
                 spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");

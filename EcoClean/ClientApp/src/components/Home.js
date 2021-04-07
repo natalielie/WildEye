@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 
+
 export class Home extends Component {
     static displayName = Home.name;
 

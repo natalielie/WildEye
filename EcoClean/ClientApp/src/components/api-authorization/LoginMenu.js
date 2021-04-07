@@ -3,6 +3,7 @@ import { NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import authService from './AuthorizeService';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
+
 import { withTranslation } from "react-i18next";
 
 export class LoginMenu extends Component {
@@ -33,6 +34,7 @@ export class LoginMenu extends Component {
     }
 
     render() {
+        const { t } = this.props;
         const { isAuthenticated, userName } = this.state;
         if (!isAuthenticated) {
             const registerPath = `${ApplicationPaths.Register}`;
@@ -49,23 +51,23 @@ export class LoginMenu extends Component {
         const { t } = this.props;
         if (userName != "admin@gmail.com") {
             return (<Fragment>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/my-enterprise">{t("My Enterprise")}</NavLink>
+                 <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/my-enterprise">{t("My Enterprises")}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/statistics">{t("Statistics")}</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/my-reports">{t("My Reports")}</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/my-reports">{t("Reports")}</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/my-certificates">{t("My Certificates")}</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/my-certificates">{t("Certificates")}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/smart-device-data">{t("Smart Device Data")}</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello, ")} {userName}</NavLink>
+                    <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello")} {userName}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to={logoutPath}>{t("Logout")}</NavLink>
@@ -90,7 +92,7 @@ export class LoginMenu extends Component {
                     <NavLink tag={Link} className="text-dark" to="/taxes">{t("Taxes")}</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello, ")} {userName}</NavLink>
+                    <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello")} {userName}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to={logoutPath}>{t("Logout")}</NavLink>
