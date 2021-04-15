@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, Switch } from "react-router";
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -16,7 +16,8 @@ import { withTranslation } from 'react-i18next';
 
 
 import i18n from "i18next";
-//import Professionals from "./components/views/Professionals/Professionals";
+import Enterprises from "./components/views/Enterprises/Enterprises";
+import Enterprise from "./components/views/Enterprises/Enterprise";
 //import Pets from "./components/views/Clients/Pets";
 //import Assignments from "./components/views/Assignments/Assignments";
 //import Appointments from "./components/views/Appointments/Appointments";
@@ -25,16 +26,16 @@ import i18n from "i18next";
 
 import { NavMenu } from "./components/NavMenu";
 import LanguageSwitcher from "./components/LanguageSwitcher";
-//import AddAssignment from "./components/views/Assignments/AddAssignment";
+import AddEnterprise from "./components/views/Enterprises/AddEnterprise";
 //import PetMedNotes from "./components/views/PetMedNotes/PetMedNotes";
 //import Pet from "./components/views/Clients/Pet";
 //import AddPetMedNote from "./components/views/PetMedNotes/AddPetMedNote";
 
 
-//const ProfessionalsComponent = withTranslation()(Professionals);
+const EnterprisesComponent = withTranslation()(Enterprises);
 const HomeComponent = withTranslation()(Home);
 //const AddAppComponent = withTranslation()(AddAppointment);
-//const AddAssComponent = withTranslation()(AddAssignment);
+const AddEnterComponent = withTranslation()(AddEnterprise);
 
 export default class App extends Component { 
     static displayName = App.name;
@@ -47,25 +48,21 @@ export default class App extends Component {
         <Layout>
             <LanguageSwitcher />
             
-                <Route exact path="/" component={HomeComponent} />
-                
+            <Route path="/enterprise-add/" component={AddEnterComponent} />
             <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-
+            <Route path="/enterprise/" component={Enterprise} />
+            <Switch>
+                <Route exact path="/" component={HomeComponent} />
+                <Route path="/enterprises" component={EnterprisesComponent} />
+               {/* <Route path={`/enterprises/${Enterprise}`} component={Enterprise} />
+                 <Route path="/pets" component={Pets} />
+                <Route path="/assignments" component={Assignments} />
+                <Route path="/appointments" component={Appointments} />
+                <Route path="/schedule" component={Schedule} />*/}
+                <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+            </Switch>
 
         </Layout> 
     );
   }
 }
-//<Route path="/petMedNote-add/" component={AddPetMedNote} />
-//            <Route path="/assignments-add/" component={AddAssComponent} />
-//            <Route path="/appointments-add/" component={AddAppComponent} />
-//            <Route path="/medcard/" component={PetMedNotes} />
-//            <Route path="/pet/" component={Pet} />
-
-// after switch
-
-//<Route path="/professionals" component={ProfessionalsComponent} />
-                //<Route path="/pets" component={Pets} />
-                //<Route path="/assignments" component={Assignments} />
-                //<Route path="/appointments" component={Appointments} />
-                //<Route path="/schedule" component={Schedule} />

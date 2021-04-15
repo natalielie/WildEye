@@ -8,8 +8,14 @@ class EnterpriseApi {
             .catch(EnterpriseApi.errorHandler);
     }
 
+    static getMyEnterprise = (enterpriseId, callback) => {
+        Axios.get('api/client/getEnterpriseById/' + enterpriseId)
+            .then(res => callback(res.data))
+            .catch(EnterpriseApi.errorHandler);
+    }
+
     static getAllEnterprisesInSystem = (callback) => {
-        Axios.get('api/admin/getAllEnterprisesInSystem')
+        Axios.get('api/client/getAllEnterprisesInSystem')
             .then(res => callback(res.data))
             .catch(EnterpriseApi.errorHandler);
     }

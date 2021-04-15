@@ -52,7 +52,7 @@ export class LoginMenu extends Component {
         if (userName != "admin@gmail.com") {
             return (<Fragment>
                  <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/my-enterprise">{t("My Enterprises")}</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/enterprises">{t("My Enterprises")}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/statistics">{t("Statistics")}</NavLink>
@@ -77,7 +77,7 @@ export class LoginMenu extends Component {
         else {
             return (<Fragment>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/all-enterprises">{t("All Enterprises")}</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/enterprises">{t("All Enterprises")}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/statistics">{t("Statistics")}</NavLink>

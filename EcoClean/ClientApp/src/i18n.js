@@ -57,6 +57,13 @@ i18n
                     Cancel: "Cancel",
                     "Are you sure?": "Are you sure?",
 
+
+                    "Add a new enterprise": "Add a new enterprise",
+                    /*"EnterpriseId": EnterpriseId,
+                    "Enterprise Name": "Enterprise Name",
+                    "Enterprises": Enterprises,*/
+
+                    
                 },
             },
             ua: {
@@ -106,6 +113,12 @@ i18n
                     Confirmation: "Підтвердження",
                     Cancel: "Відмінити",
                     "Are you sure?": "Ви впевнені?",
+
+
+                    "Add a new enterprise": "Додати нове підприємство",
+                   /* "EnterpriseId": EnterpriseId,
+                    "Enterprise Name": "Назва підприємства",
+                    "Enterprises": Підприємства,*/
 
                 },
             },

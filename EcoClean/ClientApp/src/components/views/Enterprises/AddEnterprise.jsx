@@ -1,7 +1,7 @@
 ﻿import React, { Component, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import AssignmentApi from '../../services/AssignmentApi';
+import AssignmentApi from '../../services/EnterpriseApi';
 
 
 const ComboboxProfessional = (props) => {
@@ -83,7 +83,7 @@ const ComboboxPet = (props) => {
 }
 
 
-class AddAssignment extends Component {
+class AddEnterprise extends Component {
 
     constructor() {
         super();
@@ -152,4 +152,4 @@ class AddAssignment extends Component {
 }
 
 
-export default withTranslation()(AddAssignment);
+export default withTranslation()(AddEnterprise);

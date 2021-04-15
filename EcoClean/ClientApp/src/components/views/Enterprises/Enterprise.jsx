@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import ProfessionalApi from '../../services/AssignmentApi';
+import EnterpriseApi from '../../services/EnterpriseApi';
 
-class Assignment extends Component {
+class Enterprise extends Component {
 
     constructor() {
         super();
 
-        this.state = { assignment: {} };
+        this.state = { enterprise: {} };
         
-        this.getAssignmentHandler = this.getAssignmentHandler.bind(this);
+        this.getEnterpriseHandler = this.getEnterpriseHandler.bind(this);
     }
 
     componentDidMount() {
-        document.title = "Assignment";        
-        this.getAssignmentHandler(this.props.match.params.professionalId);
+        document.title = "Enterprise";
+        this.getEnterpriseHandler(this.props.match.params.enterpriseId);
     }
 
-    getAssignmentHandler = (professionalId) => AssignmentlApi.getMyAssignment(
-        professionalId, assignment => this.setState({ assignment: assignment }));
+    getEnterpriseHandler = (enterpriseId) => EnterpriseApi.getMyEnterprise(
+        enterpriseId, enterprise => this.setState({ enterprise: enterprise }));
 
 
     render() {
@@ -29,19 +29,23 @@ class Assignment extends Component {
                     <Col lg={6}>
                         <Card>
                             <CardHeader>
-                                <strong><i className="icon-info pr-1"></i>Professional id: {this.props.match.params.professionalId}</strong>
+                                <strong><i className="icon-info pr-1"></i>Enterprise id: {this.props.match.params.enterpriseId}</strong>
                             </CardHeader>
                             <CardBody>
                                 <Table responsive striped hover>
                                     <tbody>
                                         
                                         <tr>
-                                            <td>{`ID:`}</td>
-                                            <td><strong>{this.state.assignment.professionalId}</strong></td>
+                                            <td>{`¹`}</td>
+                                            <td><strong>{this.state.enterprise.enterpriseId}</strong></td>
                                         </tr>
                                         <tr>
-                                            <td>{`PetId:`}</td>
-                                            <td><strong>{this.state.assignment.petId}</strong></td>
+                                            <td>{`Name:`}</td>
+                                            <td><strong>{this.state.enterprise.name}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>{`Kind:`}</td>
+                                            <td><strong>{this.state.enterprise.kind}</strong></td>
                                         </tr>
                                         {/* {
                                             patientsTemplate.map(prop =>                                                
@@ -62,4 +66,4 @@ class Assignment extends Component {
     }
 }
 
-export default Assignment;
+export default Enterprise;
