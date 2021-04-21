@@ -34,6 +34,7 @@ i18n
                     "My Enterprises": "My Enterprises",
                     Statistics: "Statistics",
                     "Reports": "Reports",
+                    Report: "Report",
                     "Certificates": "Certificates",
                     "Smart Device Data": "Smart Device Data",
                     Taxes: "Taxes",
@@ -81,7 +82,8 @@ i18n
                     "Certificate Date": "Certificate Date",
 
                     "Add new data": "Add new data",
-                    
+
+                    "My Enterprise": "My Enterprise",
                 },
             },
             ua: {
@@ -106,6 +108,7 @@ i18n
                     "My Enterprises": "Мої підприємства",
                     Statistics: "Статистика",
                     "Reports": "Звіти",
+                    Report: "Звіт",
                     "Certificates": "Сертифікати",
                     "Smart Device Data": "Смарт-Пристрій",
                     Taxes: "Податки",
@@ -119,7 +122,7 @@ i18n
                     "End Date": "Кінець",
 
                    
-                    Terminate: "Розірвати договір",
+                    Terminate: "Видалити",
 
                     
                     Submit: "Підтвердити",
@@ -155,6 +158,8 @@ i18n
                     "Certificate Date": "Дата отримання сертифікату",
 
                     "Add new data": "Додати нові дані",
+
+                    "My Enterprise": "Моє підприємство",
 
                 },
             },

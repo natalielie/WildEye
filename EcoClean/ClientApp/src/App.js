@@ -33,6 +33,7 @@ import AddEnterprise from "./components/views/Enterprises/AddEnterprise";
 
 
 const EnterprisesComponent = withTranslation()(Enterprises);
+const EnterpriseComponent = withTranslation()(Enterprise);
 const HomeComponent = withTranslation()(Home);
 //const AddAppComponent = withTranslation()(AddAppointment);
 const AddEnterComponent = withTranslation()(AddEnterprise);
@@ -54,13 +55,13 @@ export default class App extends Component {
             
             <Route path="/enterprise-add/" component={AddEnterComponent} />
             <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-            <Route path="/enterprise/:id" component={Enterprise} />
-            <Route path="/report/" component={ReportComponent} />
+            <Route path="/enterprise/:id" component={EnterpriseComponent} />
+            <Route path="/report/:id" component={ReportComponent} />
             <Switch>
                 <Route exact path="/" component={HomeComponent} />
                 <Route path="/enterprises" component={EnterprisesComponent} />
                 <Route path="/statistics" component={StatComponent} />
-                <Route path="/reports" component={ReportsComponent} />
+                <Route path="/my-reports" component={ReportsComponent} />
                 <Route path="/certificates" component={CertificatesComponent} />
                {/* <Route path={`/enterprises/${Enterprise}`} component={Enterprise} />
                  <Route path="/pets" component={Pets} />

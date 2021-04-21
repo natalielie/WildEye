@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import EnterpriseApi from '../../services/EnterpriseApi';
 
+import { withTranslation } from "react-i18next";
+
 class Enterprise extends Component {
 
     constructor() {
@@ -23,13 +25,14 @@ class Enterprise extends Component {
 
     render() {
 
+        const { t } = this.props;
         return (
             <div className="animated fadeIn">
                 <Row>
                     <Col lg={6}>
                         <Card>
                             <CardHeader>
-                                <strong><i className="icon-info pr-1"></i>{this.props.match.params.id}</strong>
+                                <strong><i className="icon-info pr-1"></i>{t("My Enterprise")}</strong>
                             </CardHeader>
                             <CardBody>
                                 <Table responsive striped hover>
@@ -82,4 +85,4 @@ class Enterprise extends Component {
     }
 }
 
-export default Enterprise;
+export default withTranslation()(Enterprise);

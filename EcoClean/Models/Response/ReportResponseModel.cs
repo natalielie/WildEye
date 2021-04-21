@@ -8,7 +8,7 @@ namespace EcoClean.Models.Response
     public class ReportResponseModel
     {
         public int ReportId { get; set; }
-        public int EnterpriseId { get; set; }
+        public string EnterpriseName { get; set; }
         public int AirPollutionSubstance { get; set; }
         public int WaterPollutionSubstance { get; set; }
         public double AirEmissions { get; set; }
@@ -18,12 +18,13 @@ namespace EcoClean.Models.Response
         public DateTime ReportDate { get; set; }
 
         public ReportResponseModel() { }
-        public ReportResponseModel(int reportId, 
+        public ReportResponseModel(int reportId, string enterpriseName,
             int airPollutionSubstance, int waterPollutionSubstance, 
             double airEmissions, double waterEmissions, 
             double taxCost, string comment, DateTime reportDate)
         {
             this.ReportId = reportId;
+            this.EnterpriseName = enterpriseName;
             this.AirEmissions = airEmissions;
             this.AirPollutionSubstance = airPollutionSubstance;
             this.WaterPollutionSubstance = waterPollutionSubstance;

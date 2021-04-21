@@ -151,9 +151,11 @@ namespace EcoClean.Controllers.Api
                     {
                         if (report.TaxId == tax.TaxId)
                         {
+                            string enterpriseName = GetEnterpriseById(report.EnterpriseId).Name;
                             ReportResponseModel response = new ReportResponseModel
                             (
                                 report.ReportId,
+                                enterpriseName,
                                 tax.AirPollutionSubstance,
                                 tax.WaterPollutionSubstance,
                                 tax.AirEmissions,

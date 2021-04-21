@@ -399,33 +399,32 @@ namespace EcoClean.Controllers.Api
 
         }
 
-        //[HttpGet]
-        //[Route("getAllUsersReports")]
-        //public List<ReportResponseModel> getAllUsersReports()
-        //{
-        //    Client client = _dbContext.Clients.Single(x => x.UserId == id);
-        //    List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
+        [HttpGet]
+        [Route("getAllUsersReports")]
+        public List<ReportResponseModel> getAllUsersReports()
+        {
+            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
 
-        //    List<ReportResponseModel> responseReports = new List<ReportResponseModel>();
+            List<ReportResponseModel> responseReports = new List<ReportResponseModel>();
 
-        //    foreach(Enterprise enterprise in enterprises)
-        //    {
-        //        Report report = _dbContext.Reports.SingleOrDefault(x => x.EnterpriseId == enterprise.EnterpriseId);
-        //    }
-        //        if (responseReports.Count == 0)
-        //        {
-        //            throw new ArgumentException("There's no reports");
-        //        }
-        //        else
-        //        {
-        //            // List<Tax> taxes = _dbContext.Taxes.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
-        //            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+            foreach (Enterprise enterprise in enterprises)
+            {
+                List<ReportResponseModel> responseReportsOneEnterprise = GetAllReportsOfEnterprise(enterprise.EnterpriseId);
 
-        //            return responseModels;
-        //        }
-            
+                responseReports.AddRange(responseReportsOneEnterprise);
+            }
+            if (responseReports.Count == 0)
+            {
+                throw new ArgumentException("There's no reports");
+            }
+            else
+            {
+                return responseReports;
+            }
 
-        //}
+
+        }
 
 
         [HttpGet]
@@ -443,7 +442,8 @@ namespace EcoClean.Controllers.Api
 
                 if(reports.Count == 0)
                 {
-                    throw new ArgumentException("There's no reports");
+                    //throw new ArgumentException("There's no reports");
+                    return new List<ReportResponseModel>();
                 }
                 else
                 {
@@ -457,8 +457,8 @@ namespace EcoClean.Controllers.Api
         }
 
         [HttpGet]
-        [Route("getSingleReportOfEnterprise")]
-        public ReportResponseModel GetSingleReportOfEnterprise(int reportId)
+        [Route("getSingleReportOfEnterprise/{reportId?}")]
+        public ReportResponseModel GetSingleReportOfEnterprise([FromRoute] int reportId)
         {
             List<Report> reports = _dbContext.Reports.Where(x => x.ReportId == reportId).ToList();
 
@@ -479,6 +479,7 @@ namespace EcoClean.Controllers.Api
                         if (report.TaxId == tax.TaxId)
                         {
                             response.ReportId = report.ReportId;
+                            response.EnterpriseName = GetEnterpriseById(report.EnterpriseId).Name;
                             response.AirPollutionSubstance = tax.AirPollutionSubstance;
                             response.WaterPollutionSubstance = tax.WaterPollutionSubstance;
                             response.AirEmissions = tax.AirEmissions;
@@ -534,9 +535,11 @@ namespace EcoClean.Controllers.Api
                     {
                         if (report.TaxId == tax.TaxId)
                         {
+                            string enterpriseName = GetEnterpriseById(report.EnterpriseId).Name;
                             ReportResponseModel response = new ReportResponseModel
                             (
                                 report.ReportId,
+                                enterpriseName,
                                 tax.AirPollutionSubstance,
                                 tax.WaterPollutionSubstance,
                                 tax.AirEmissions,
