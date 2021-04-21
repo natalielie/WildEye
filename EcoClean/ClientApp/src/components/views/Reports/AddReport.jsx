@@ -1,17 +1,20 @@
 ﻿import React, { Component, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import AssignmentApi from '../../services/EnterpriseApi';
+import ReportsApi from '../../services/ReportsApi';
+import EnterpriseApi from '../../services/EnterpriseApi';
 
-
-const ComboboxProfessional = (props) => {
+const ComboboxEnterprise = (props) => {
 
     const onChange = e => {
         const { name, value } = e.target;
     }
     const {
-        current_professional
+        current_enterprise
     } = 0;
+
+
+    var enterpriseData = EnterpriseApi.getAllEnterprises();
 
     const professionalOptions = [
         {
@@ -35,8 +38,8 @@ const ComboboxProfessional = (props) => {
     return (
         <>
             <div className="form-group">
-                <select value={current_professional} onChange={onChange} id="license_type" name="current_professional">
-                    {professionalOptions.map((option) => (
+                <select value={current_enterprise} onChange={onChange} id="license_type" name="current_enterprise">
+                    {enterpriseData.map((option) => (
                         <option value={option.value}>{option.label}</option>
                     ))}
                 </select>
@@ -45,7 +48,7 @@ const ComboboxProfessional = (props) => {
     )
 }
 
-const ComboboxPet = (props) => {
+const ComboboxTax = (props) => {
 
     const onChange = e => {
         const { name, value } = e.target;
@@ -53,6 +56,9 @@ const ComboboxPet = (props) => {
     const {
         current_pet
     } = 0;
+
+
+    const enterpriseData = EnterpriseApi.getAllEnterprises();
 
     const petOptions = [
         {
@@ -83,30 +89,34 @@ const ComboboxPet = (props) => {
 }
 
 
-class AddEnterprise extends Component {
+class AddReport extends Component {
 
     constructor() {
         super();
 
-        this.addAppointmentHandler = this.addAppointmentHandler.bind(this);
+        this.addReportHandler = this.addReportHandler.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         document.title = "Add Assignment";
+
+        var taxData = ReportsApi.getAllTaxes();
     }
 
-    addAppointmentHandler = (appointment, callback) => AssignmentApi.addAssignment(appointment, callback);
+
+    addReportHandler = (report, callback) => ReportsApi.createReport(report, callback);
 
     handleSubmit = (event) => {
         event.preventDefault();
 
         var data = {
-            name: event.target.elements['professional'].value,
-            pet: event.target.elements['pet'].value
+            name: event.target.elements['enterprise'].value,
+            tax: event.target.elements['tax'].value,
+            comment: event.target.elements['comment'].value
         };
 
-        this.addAppointmentHandler(data, () => this.props.history.push('/assignments'));
+        this.addReportHandler(data, () => this.props.history.push('/reports'));
     }
 
     render() {
@@ -117,28 +127,36 @@ class AddEnterprise extends Component {
                     <Col xs="12" md="7">
                         <Card>
                             <CardHeader>
-                                <strong>{t("Add Assignment")}</strong>
+                                <strong>{t("Add Report")}</strong>
                             </CardHeader>
                             <CardBody>
                                 <form onSubmit={this.handleSubmit} className="form-horizontal">
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="professional">{t("ProfessionalsName")}</Label>
+                                            <Label htmlFor="enterprise">{t("Enterprise Name")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <ComboboxProfessional />
+                                            <ComboboxEnterprise />
                                         </Col>
                                     </FormGroup>
 
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="pet">{t("PetName")}</Label>
+                                            <Label htmlFor="tax">{t("Tax")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <ComboboxPet />
+                                            <ComboboxTax />
                                         </Col>
                                     </FormGroup>
 
+                                    <FormGroup row>
+                                        <Col md="3">
+                                            <Label htmlFor="comment">Comment</Label>
+                                        </Col>
+                                        <Col xs="12" md="9">
+                                            <Input type="text" id="comment" placeholder="Comment" />
+                                        </Col>
+                                    </FormGroup>
                                     
                                     <Button type="submit" color="primary">{t("Submit")}</Button>
                                 </form>
@@ -152,4 +170,4 @@ class AddEnterprise extends Component {
 }
 
 
-export default withTranslation()(AddEnterprise);
+export default withTranslation()(AddReport);

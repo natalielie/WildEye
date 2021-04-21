@@ -11,6 +11,40 @@ import { useTranslation } from 'react-i18next';
 
 import { withTranslation } from "react-i18next";
 
+const ComboboxSort = (props) => {
+
+    const onChange = e => {
+        const { name, value } = e.target;
+    }
+    const {
+        current_stat
+    } = 0;
+
+    const sortOptions = [
+        {
+            label: "↓",
+            value: 0,
+        },
+        {
+            label: "↑",
+            value: 1,
+        },
+    ];
+
+    return (
+        <>
+            <div className="form-group">
+                <select value={current_stat} onChange={onChange} id="license_type" name="current_stat">
+                    {sortOptions.map((option) => (
+                        <option value={option.value}>{option.label}</option>
+                    ))}
+                </select>
+            </div>
+        </>
+    )
+}
+
+
 function EnterpriseRow(props) {
     const enterprise = props.enterprise
     const enterpriseLink = `/enterprise/${enterprise.enterpriseId}`
@@ -38,7 +72,7 @@ class Statistics extends Component {
         const username = user.preferred_username;
         document.title = "Statistics";
         if (username == "admin@gmail.com") {
-            if (StatisticsSwitcher.current_stat == "desc") {
+            if (ComboboxSort.current_stat == 0) {
                 this.updateEnterprisesAdminHandler();
             }
             else {
@@ -78,7 +112,7 @@ class Statistics extends Component {
         const { t } = this.props;
         return (
             <div className="animated fadeIn">
-                <StatisticsSwitcher />
+                <ComboboxSort />
                 <Row>
                     <Col xl={8}>
                         <Card>

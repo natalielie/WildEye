@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+п»їimport React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import ReportsApi from '../../services/ReportsApi';
 import { withTranslation } from "react-i18next";
@@ -102,35 +102,35 @@ class Report extends Component {
                                     <Table responsive striped hover>
                                         <tbody>
                                             <tr>
-                                                <th scope="col">Назва</th>
+                                                <th scope="col">РќР°Р·РІР°</th>
                                                 <td><strong>{this.state.report.enterpriseName}</strong></td>
                                             </tr>
                                             <tr>
-                                                <td>{`Речовина забруднення повітря:`}</td>
+                                                <td>{`Р РµС‡РѕРІРёРЅР° Р·Р°Р±СЂСѓРґРЅРµРЅРЅСЏ РїРѕРІС–С‚СЂСЏ:`}</td>
                                                 <td><strong>{this.state.report.airPollutionSubstance}</strong></td>
                                             </tr>
                                             <tr>
-                                                <td>{`Речовина забруднення води:`}</td>
+                                                <td>{`Р РµС‡РѕРІРёРЅР° Р·Р°Р±СЂСѓРґРЅРµРЅРЅСЏ РІРѕРґРё:`}</td>
                                                 <td><strong>{this.state.report.waterPollutionSubstance}</strong></td>
                                             </tr>
                                             <tr>
-                                                <td>{`Об'єм викидів у повітря:`}</td>
-                                                <td><strong>{this.state.report.airEmissions} тонн</strong></td>
+                                                <td>{`РћР±'С”Рј РІРёРєРёРґС–РІ Сѓ РїРѕРІС–С‚СЂСЏ:`}</td>
+                                                <td><strong>{this.state.report.airEmissions} С‚РѕРЅРЅ</strong></td>
                                             </tr>
                                             <tr>
-                                                <td>{`Об'єм викидів у воду:`}</td>
-                                                <td><strong>{this.state.report.waterEmissions} тонн</strong></td>
+                                                <td>{`РћР±'С”Рј РІРёРєРёРґС–РІ Сѓ РІРѕРґСѓ:`}</td>
+                                                <td><strong>{this.state.report.waterEmissions} С‚РѕРЅРЅ</strong></td>
                                             </tr>
                                             <tr>
-                                                <td>{`Податок:`}</td>
-                                                <td><strong>{this.state.report.taxCost.toFixed(2)} грн</strong></td>
+                                                <td>{`РџРѕРґР°С‚РѕРє:`}</td>
+                                                <td><strong>{this.state.report.taxCost.toFixed(2)} РіСЂРЅ</strong></td>
                                             </tr>
                                             <tr>
-                                                <td>{`Коментар:`}</td>
+                                                <td>{`РљРѕРјРµРЅС‚Р°СЂ:`}</td>
                                                 <td><strong>{this.state.report.comment}</strong></td>
                                             </tr>
                                             <tr>
-                                                <td>{`Дата:`}</td>
+                                                <td>{`Р”Р°С‚Р°:`}</td>
                                                 <td><strong>{dateFormat(this.state.report.reportDate, "dd-mm-yyyy")}</strong></td>
                                             </tr>
                                         </tbody>

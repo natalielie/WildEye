@@ -373,6 +373,24 @@ namespace EcoClean.Controllers.Api
             }
         }
 
+        [HttpGet]
+        [Route("getAllTaxes")]
+        public List<Tax> GetAllTaxes()
+        {
+            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
+
+            List<Tax> taxes = new List<Tax>();
+
+            foreach (Enterprise enterprise in enterprises)
+            {
+                Tax tax = _dbContext.Taxes.SingleOrDefault(x => x.EnterpriseId == enterprise.EnterpriseId);
+                taxes.Add(tax);
+            }
+            return taxes;
+
+        }
+
 
         // reports //
 

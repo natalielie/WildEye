@@ -84,6 +84,10 @@ i18n
                     "Add new data": "Add new data",
 
                     "My Enterprise": "My Enterprise",
+
+                    "Add Report": "Add Report",
+
+                    "Add Enterprise": "Add Enterprise",
                 },
             },
             ua: {
@@ -161,6 +165,9 @@ i18n
 
                     "My Enterprise": "Моє підприємство",
 
+                    "Add Report": "Створити звіт",
+
+                    "Add Enterprise": "Додати підприємство",
                 },
             },
         },

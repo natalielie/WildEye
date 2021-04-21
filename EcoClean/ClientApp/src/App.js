@@ -21,6 +21,7 @@ import Enterprise from "./components/views/Enterprises/Enterprise";
 import Statistics from "./components/views/Statistics/Statistics";
 import Reports from "./components/views/Reports/Reports";
 import Report from "./components/views/Reports/Report";
+import AddReport from "./components/views/Reports/AddReport";
 import Certificates from "./components/views/Certificates/Certificates";
 //import Schedule from "./components/views/Schedule/Schedules";
 
@@ -40,6 +41,7 @@ const AddEnterComponent = withTranslation()(AddEnterprise);
 const StatComponent = withTranslation()(Statistics);
 const ReportsComponent = withTranslation()(Reports);
 const ReportComponent = withTranslation()(Report);
+const AddReportComponent = withTranslation()(AddReport);
 const CertificatesComponent = withTranslation()(Certificates);
 
 export default class App extends Component { 
@@ -54,6 +56,7 @@ export default class App extends Component {
             <LanguageSwitcher />
             
             <Route path="/enterprise-add/" component={AddEnterComponent} />
+            <Route path="/report-add/" component={AddReportComponent} />
             <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
             <Route path="/enterprise/:id" component={EnterpriseComponent} />
             <Route path="/report/:id" component={ReportComponent} />

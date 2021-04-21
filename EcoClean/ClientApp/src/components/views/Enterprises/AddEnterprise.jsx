@@ -1,25 +1,25 @@
 ﻿import React, { Component, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import AssignmentApi from '../../services/EnterpriseApi';
+import EnterpriseApi from '../../services/EnterpriseApi';
 
 
-const ComboboxProfessional = (props) => {
+const ComboboxProduct = (props) => {
 
     const onChange = e => {
         const { name, value } = e.target;
     }
     const {
-        current_professional
+        current_prod
     } = 0;
 
-    const professionalOptions = [
+    const productOptions = [
         {
-            label: "John Smith",
+            label: "Food",
             value: 1,
         },
         {
-            label: "Kate Wolson",
+            label: "Fuel",
             value: 2,
         },
         {
@@ -30,13 +30,17 @@ const ComboboxProfessional = (props) => {
             label: "Ahmad Amshanov",
             value: 4,
         },
+        {
+            label: "Ahmad Amshanov",
+            value: 4,
+        },
     ];
 
     return (
         <>
             <div className="form-group">
-                <select value={current_professional} onChange={onChange} id="license_type" name="current_professional">
-                    {professionalOptions.map((option) => (
+                <select value={current_prod} onChange={onChange} id="license_type" name="current_prod">
+                    {productOptions.map((option) => (
                         <option value={option.value}>{option.label}</option>
                     ))}
                 </select>
@@ -88,26 +92,30 @@ class AddEnterprise extends Component {
     constructor() {
         super();
 
-        this.addAppointmentHandler = this.addAppointmentHandler.bind(this);
+        this.addEnterpriseHandler = this.addEnterpriseHandler.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        document.title = "Add Assignment";
+        document.title = "Add Enterprise";
     }
 
-    addAppointmentHandler = (appointment, callback) => AssignmentApi.addAssignment(appointment, callback);
+    addEnterpriseHandler = (enterprise, callback) => EnterpriseApi.addEnterprise(enterprise, callback);
 
     handleSubmit = (event) => {
         event.preventDefault();
 
         var data = {
-            name: event.target.elements['professional'].value,
-            pet: event.target.elements['pet'].value
+            name: event.target.elements['name'].value,
+            pet: event.target.elements['kind'].value,
+            pet: event.target.elements['phoneNumber'].value,
+            name: event.target.elements['product'].value,
+            name: event.target.elements['address'].value,
         };
 
-        this.addAppointmentHandler(data, () => this.props.history.push('/assignments'));
+        this.addEnterpriseHandler(data, () => this.props.history.push('/enterprises'));
     }
+
 
     render() {
         const { t } = this.props;
@@ -117,25 +125,48 @@ class AddEnterprise extends Component {
                     <Col xs="12" md="7">
                         <Card>
                             <CardHeader>
-                                <strong>{t("Add Assignment")}</strong>
+                                <strong>{t("Add Enterprise")}</strong>
                             </CardHeader>
                             <CardBody>
                                 <form onSubmit={this.handleSubmit} className="form-horizontal">
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="professional">{t("ProfessionalsName")}</Label>
+                                            <Label htmlFor="name">{t("Name")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <ComboboxProfessional />
+                                            <Input type="text" id="name" required placeholder="name" />
                                         </Col>
                                     </FormGroup>
-
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="pet">{t("PetName")}</Label>
+                                            <Label htmlFor="kind">{t("Kind")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <ComboboxPet />
+                                            <Input type="text" id="kind" placeholder="kind" />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="3">
+                                            <Label htmlFor="phoneNumber">{t("Phone Number")}</Label>
+                                        </Col>
+                                        <Col xs="12" md="9">
+                                            <Input type="text" id="phoneNumber" placeholder="phoneNumber" />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="3">
+                                            <Label htmlFor="product">{t("Product")}</Label>
+                                        </Col>
+                                        <Col xs="12" md="9">
+                                            <Input type="text" id="product" placeholder="product" />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="3">
+                                            <Label htmlFor="address">{t("Address")}</Label>
+                                        </Col>
+                                        <Col xs="12" md="9">
+                                            <Input type="text" id="address" placeholder="address" />
                                         </Col>
                                     </FormGroup>
 

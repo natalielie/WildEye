@@ -47,6 +47,14 @@ class ReportsApi {
             .catch(ReportsApi.errorHandler);
     }
 
+
+    static getAllTaxes = (callback) => {
+        Axios.get('api/client/getAllTaxes')
+            .then(res => callback(res.data))
+            .catch(ReportsApi.errorHandler);
+    }
+
+
     errorHandler = error => console.log(error);
 
 }
