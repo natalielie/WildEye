@@ -27,6 +27,9 @@ i18n
                     Delete: "Delete",
                     Workplace: "Workplace",
 
+                    Sort: "Sort",
+                    "Create a new report": "Create a new report",
+
                     "All Enterprises": "All Enterprises",
                     "My Enterprises": "My Enterprises",
                     Statistics: "Statistics",
@@ -63,6 +66,21 @@ i18n
                     "Enterprise Name": "Enterprise Name",
                     "Enterprises": Enterprises,*/
 
+                    Statistics: "Statistics",
+                    Rate: "Rate",
+
+                    "Enterprise Name": "Enterprise Name",
+                    "Air Pollution Substance": "Air Pollution Substance",
+                    "Water Pollution Substance": "Water Pollution Substance",
+                    "Air Emissions": "Air Emissions",
+                    "Water Emissions": "Water Emissions",
+                    "Tax": "Tax",
+                    "Comment": "Comment",
+                    "Date": "Date",
+
+                    "Certificate Date": "Certificate Date",
+
+                    "Add new data": "Add new data",
                     
                 },
             },
@@ -80,6 +98,9 @@ i18n
                     Edit: "Відредагувати",
                     Delete: "Видалити",
                     Workplace: "Місце роботи",
+
+                    Sort: "Сортувати",
+                    "Create a new report": "Сформувати новий звіт",
 
                     "All Enterprises": "Підприємства",
                     "My Enterprises": "Мої підприємства",
@@ -117,8 +138,23 @@ i18n
 
                     "Add a new enterprise": "Додати нове підприємство",
                    /* "EnterpriseId": EnterpriseId,
-                    "Enterprise Name": "Назва підприємства",
                     "Enterprises": Підприємства,*/
+
+                    Statistics: "Статистика",
+                    Rate: "Рейтинг",
+
+                    "Enterprise Name": "Назва підприємства",
+                    "Air Pollution Substance": "Речовина забруднення повітря",
+                    "Water Pollution Substance": "Речовина забруднення води",
+                    "Air Emissions": "Об'єм викидів у повітря",
+                    "Water Emissions": "Об'єм викидів у воду",
+                    "Tax": "Податок",
+                    "Comment": "Коментар",
+                    "Date": "Дата",
+
+                    "Certificate Date": "Дата отримання сертифікату",
+
+                    "Add new data": "Додати нові дані",
 
                 },
             },

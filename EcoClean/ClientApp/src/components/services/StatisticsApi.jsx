@@ -9,7 +9,7 @@ class StatisticsApi {
     }
 
     static getReversedStatistics = (callback) => {
-        Axios.get('api/client/getStatistics')
+        Axios.get('api/client/getReversedStatistics')
             .then(res => callback(res.data))
             .catch(StatisticsApi.errorHandler);
     }

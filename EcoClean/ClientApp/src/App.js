@@ -18,10 +18,10 @@ import { withTranslation } from 'react-i18next';
 import i18n from "i18next";
 import Enterprises from "./components/views/Enterprises/Enterprises";
 import Enterprise from "./components/views/Enterprises/Enterprise";
-//import Pets from "./components/views/Clients/Pets";
-//import Assignments from "./components/views/Assignments/Assignments";
-//import Appointments from "./components/views/Appointments/Appointments";
-//import AddAppointment from "./components/views/Appointments/AddAppointment";
+import Statistics from "./components/views/Statistics/Statistics";
+import Reports from "./components/views/Reports/Reports";
+import Report from "./components/views/Reports/Report";
+import Certificates from "./components/views/Certificates/Certificates";
 //import Schedule from "./components/views/Schedule/Schedules";
 
 import { NavMenu } from "./components/NavMenu";
@@ -36,6 +36,10 @@ const EnterprisesComponent = withTranslation()(Enterprises);
 const HomeComponent = withTranslation()(Home);
 //const AddAppComponent = withTranslation()(AddAppointment);
 const AddEnterComponent = withTranslation()(AddEnterprise);
+const StatComponent = withTranslation()(Statistics);
+const ReportsComponent = withTranslation()(Reports);
+const ReportComponent = withTranslation()(Report);
+const CertificatesComponent = withTranslation()(Certificates);
 
 export default class App extends Component { 
     static displayName = App.name;
@@ -51,9 +55,13 @@ export default class App extends Component {
             <Route path="/enterprise-add/" component={AddEnterComponent} />
             <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
             <Route path="/enterprise/" component={Enterprise} />
+            <Route path="/report/" component={ReportComponent} />
             <Switch>
                 <Route exact path="/" component={HomeComponent} />
                 <Route path="/enterprises" component={EnterprisesComponent} />
+                <Route path="/statistics" component={StatComponent} />
+                <Route path="/reports" component={ReportsComponent} />
+                <Route path="/certificates" component={CertificatesComponent} />
                {/* <Route path={`/enterprises/${Enterprise}`} component={Enterprise} />
                  <Route path="/pets" component={Pets} />
                 <Route path="/assignments" component={Assignments} />

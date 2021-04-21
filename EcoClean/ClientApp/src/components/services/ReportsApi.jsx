@@ -8,12 +8,24 @@ class ReportsApi {
             .catch(ReportsApi.errorHandler);
     }
 
+
+    static getAllReportsOfEnterprise = (enterpriseId, callback) => {
+        Axios.get('api/admin/getAllReportsOfEnterprise', enterpriseId)
+            .then(res => callback(res.data))
+            .catch(ReportsApi.errorHandler);
+    }
+
+    static GetSingleReportOfEnterprise = (reportId, callback) => {
+        Axios.get('api/admin/getAllReportsOfEnterprise', reportId)
+            .then(res => callback(res.data))
+            .catch(ReportsApi.errorHandler);
+    }
+
     static createReport = (report, callback) => {
         Axios.post('api/admin/createReport/', report)
             .then(() => ReportsApi.getAllReports(callback))
             .catch(ReportsApi.errorHandler);
     }
-
 
     //static editAppointment = (appointment, callback) => {
     //    let id = appointment.appointmentId;

@@ -35,13 +35,6 @@
     <Compile Remove="Data\Migrations\20210322213958_init3.Designer.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ClientApp\src\components\views\Certificates\" />
-    <Folder Include="ClientApp\src\components\views\Smart Device Data\" />
-    <Folder Include="ClientApp\src\components\views\Reports\" />
-    <Folder Include="ClientApp\src\components\views\Statistics\" />
-  </ItemGroup>
-
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

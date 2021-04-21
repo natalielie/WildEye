@@ -3,7 +3,7 @@
 class CertificatesApi {
 
     static getAllCertificates = (callback) => {
-        Axios.get('api/admin/getAllEnterprises')
+        Axios.get('api/admin/getAllCertificates')
             .then(res => callback(res.data))
             .catch(CertificatesApi.errorHandler);
     }

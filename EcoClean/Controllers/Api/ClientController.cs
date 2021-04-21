@@ -107,9 +107,9 @@ namespace EcoClean.Controllers.Api
 
 
         [HttpGet]
-        [Route("getEnterpriseById")]
-        public Enterprise GetEnterpriseById(int enterpriseId)
-        {
+        [Route("getEnterpriseById/{id?}")]
+        public Enterprise GetEnterpriseById(int? enterpriseId = 1)
+         {
            // Client client = _dbContext.Clients.Single(x => x.UserId == id);
             Enterprise enterprise = _dbContext.Enterprises.SingleOrDefault(x => x.EnterpriseId == enterpriseId);
 
