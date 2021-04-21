@@ -18,8 +18,8 @@ function EnterpriseRow(props) {
 
         return (
             <tr key={enterprise.enterpriseId.toString()}>
-                <th scope="row"><Link to={enterpriseLink}>{enterprise.enterpriseId}</Link></th>
-                <td>{enterprise.name}</td>
+                <th scope="row"><Link to={enterpriseLink}>{enterprise.name}</Link></th>
+                <td>{enterprise.kind}</td>
                 <td>
                     <DeleteModal onDelete={() => props.deleteEnterpriseHandler(
                         enterprise.enterpriseId)} />
@@ -84,8 +84,8 @@ class Enterprises extends Component {
                                 <Table responsive hover>
                                     <thead>
                                         <tr>
-                                            <th scope="col">№</th>
                                             <th scope="col">{t("Enterprise Name")}</th>
+                                            <th scope="col">{t("Kind")}</th>
                                             <th scope="col">{t("Terminate")}</th>
                                         </tr>
                                     </thead>

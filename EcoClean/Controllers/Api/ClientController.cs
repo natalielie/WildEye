@@ -107,10 +107,10 @@ namespace EcoClean.Controllers.Api
 
 
         [HttpGet]
-        [Route("getEnterpriseById/{id?}")]
-        public Enterprise GetEnterpriseById(int? enterpriseId = 1)
-         {
-           // Client client = _dbContext.Clients.Single(x => x.UserId == id);
+        [Route("GetEnterpriseById/{enterpriseId?}")]
+        public Enterprise GetEnterpriseById([FromRoute] int enterpriseId)
+        {
+            // Client client = _dbContext.Clients.Single(x => x.UserId == id);
             Enterprise enterprise = _dbContext.Enterprises.SingleOrDefault(x => x.EnterpriseId == enterpriseId);
 
             return enterprise;
@@ -398,6 +398,35 @@ namespace EcoClean.Controllers.Api
             
 
         }
+
+        //[HttpGet]
+        //[Route("getAllUsersReports")]
+        //public List<ReportResponseModel> getAllUsersReports()
+        //{
+        //    Client client = _dbContext.Clients.Single(x => x.UserId == id);
+        //    List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
+
+        //    List<ReportResponseModel> responseReports = new List<ReportResponseModel>();
+
+        //    foreach(Enterprise enterprise in enterprises)
+        //    {
+        //        Report report = _dbContext.Reports.SingleOrDefault(x => x.EnterpriseId == enterprise.EnterpriseId);
+        //    }
+        //        if (responseReports.Count == 0)
+        //        {
+        //            throw new ArgumentException("There's no reports");
+        //        }
+        //        else
+        //        {
+        //            // List<Tax> taxes = _dbContext.Taxes.Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
+        //            List<ReportResponseModel> responseModels = GetLisOfReports(reports);
+
+        //            return responseModels;
+        //        }
+            
+
+        //}
+
 
         [HttpGet]
         [Route("getAllReportsOfEnterprise")]

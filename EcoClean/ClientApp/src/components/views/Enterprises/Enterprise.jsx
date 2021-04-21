@@ -14,7 +14,7 @@ class Enterprise extends Component {
 
     componentDidMount() {
         document.title = "Enterprise";
-        this.getEnterpriseHandler(this.props.match.params.enterpriseId);
+        this.getEnterpriseHandler(parseInt(this.props.match.params.id, 10));
     }
 
     getEnterpriseHandler = (enterpriseId) => EnterpriseApi.getMyEnterprise(
@@ -29,16 +29,16 @@ class Enterprise extends Component {
                     <Col lg={6}>
                         <Card>
                             <CardHeader>
-                                <strong><i className="icon-info pr-1"></i>Enterprise id: {this.props.match.params.enterpriseId}</strong>
+                                <strong><i className="icon-info pr-1"></i>{this.props.match.params.id}</strong>
                             </CardHeader>
                             <CardBody>
                                 <Table responsive striped hover>
                                     <tbody>
                                         
-                                        <tr>
-                                            <td>{`¹`}</td>
+                                        {/*  <tr>
+                                            <td>{`#`}</td>
                                             <td><strong>{this.state.enterprise.enterpriseId}</strong></td>
-                                        </tr>
+                                        </tr>*/}
                                         <tr>
                                             <td>{`Name:`}</td>
                                             <td><strong>{this.state.enterprise.name}</strong></td>
@@ -46,6 +46,22 @@ class Enterprise extends Component {
                                         <tr>
                                             <td>{`Kind:`}</td>
                                             <td><strong>{this.state.enterprise.kind}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>{`Product:`}</td>
+                                            <td><strong>{this.state.enterprise.product}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>{`Phone Number:`}</td>
+                                            <td><strong>{this.state.enterprise.phoneNumber}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>{`Address:`}</td>
+                                            <td><strong>{this.state.enterprise.address}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>{`Rate:`}</td>
+                                            <td><strong>{this.state.enterprise.rate}</strong></td>
                                         </tr>
                                         {/* {
                                             patientsTemplate.map(prop =>                                                

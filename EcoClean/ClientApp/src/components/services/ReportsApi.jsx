@@ -8,6 +8,11 @@ class ReportsApi {
             .catch(ReportsApi.errorHandler);
     }
 
+    static getAllUsersReports = (callback) => {
+        Axios.get('api/admin/getAllUsersReports')
+            .then(res => callback(res.data))
+            .catch(ReportsApi.errorHandler);
+    }
 
     static getAllReportsOfEnterprise = (enterpriseId, callback) => {
         Axios.get('api/admin/getAllReportsOfEnterprise', enterpriseId)

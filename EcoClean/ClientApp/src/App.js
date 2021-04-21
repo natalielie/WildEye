@@ -54,7 +54,7 @@ export default class App extends Component {
             
             <Route path="/enterprise-add/" component={AddEnterComponent} />
             <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-            <Route path="/enterprise/" component={Enterprise} />
+            <Route path="/enterprise/:id" component={Enterprise} />
             <Route path="/report/" component={ReportComponent} />
             <Switch>
                 <Route exact path="/" component={HomeComponent} />

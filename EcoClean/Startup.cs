@@ -35,25 +35,23 @@ namespace EcoClean
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddDefaultIdentity<ApplicationUser>()
+            /*services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>();*/
 
             services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerJwt()
-            .AddCookie();
-
-            //services.AddIdentityServer()
-            //    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
-            //services.AddAuthentication()
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             //    .AddIdentityServerJwt()
-            // .AddCookie();
+            //.AddCookie();
+
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt()
+             .AddCookie();
 
             services.AddCors(c =>
             {
