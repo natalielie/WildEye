@@ -11,20 +11,6 @@ import i18next from "i18next";
 
 import { withTranslation } from "react-i18next";
 
-{/*function DateElement() {
-
-    const report = this.props.report
-    const { t, i18n } = useTranslation();
-
-    var dateFormat = require("dateformat");
-
-    if (i18next.language == "en") {
-       return <td>{dateFormat(report.reportDate, "yyyy/mm/dd")}</td>
-    }
-    else {
-        return <td>{dateFormat(report.reportDate, "dd-mm-yyyy")}</td>
-    }
-}*/}
 
 function ReportRow(props) {
     const report = props.report

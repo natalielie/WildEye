@@ -88,6 +88,13 @@ i18n
                     "Add Report": "Add Report",
 
                     "Add Enterprise": "Add Enterprise",
+
+                    "Smart Device Date": "Smart Device Date",
+                    "Smart Device Data": "Smart Device Data",
+
+                    "Air Pollution": "Air Pollution",
+                    "Water Pollution": "Water Pollution",
+                    "Get data from your Smart Device": "Get data from your Smart Device",
                 },
             },
             ua: {
@@ -168,6 +175,12 @@ i18n
                     "Add Report": "Створити звіт",
 
                     "Add Enterprise": "Додати підприємство",
+
+                    "Smart Device Date": "Дата збору показників",
+                    "Smart Device Data": "Дані смарт-пристрою",
+                    "Air Pollution": "Забруднення повітря",
+                    "Water Pollution": "Забруднення води",
+                    "Get data from your Smart Device": "Отримати дані зі Смарт-пристрою",
                 },
             },
         },

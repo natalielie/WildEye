@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import CertificateApi from '../../services/CertificateApi';
+import SmartDeviceApi from '../../services/SmartDeviceApi';
 
-class Certificate extends Component {
+class SmartDeviceData extends Component {
 
     constructor() {
         super();
@@ -17,7 +17,7 @@ class Certificate extends Component {
         this.getEnterpriseHandler(this.props.match.params.enterpriseId);
     }
 
-    getEnterpriseHandler = (enterpriseId) => EnterpriseApi.getMyEnterprise(
+    getEnterpriseHandler = (enterpriseId) => SmartDeviceApi.getMyEnterprise(
         enterpriseId, enterprise => this.setState({ enterprise: enterprise }));
 
 
@@ -66,4 +66,4 @@ class Certificate extends Component {
     }
 }
 
-export default Certificate;
+export default SmartDeviceData;

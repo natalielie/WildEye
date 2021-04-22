@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EcoClean.Controllers.Api
@@ -25,7 +26,7 @@ namespace EcoClean.Controllers.Api
         private readonly ApplicationDbContext _dbContext;
         private string id = "cf38fb1b-0b68-4cbb-a74c-f1983be40010";
 
-       // string[] airSubstance = new string[] { "NO", "CO2", "CH2O", "Hg", "H2S" };
+        // string[] airSubstance = new string[] { "NO", "CO2", "CH2O", "Hg", "H2S" };
         //string[] waterSubstance = new string[] { "NH4+", "", "", "", ""};
 
         public ClientController(ApplicationDbContext dbContext,
@@ -41,6 +42,11 @@ namespace EcoClean.Controllers.Api
             return Content(User.Identity.Name);
         }
 
+        //public IActionResult YourMethodName()
+        //{
+        //    var userId = User.Identity.Name;
+        //    return userId;
+        //}
 
         // enterprises //
 
@@ -81,6 +87,10 @@ namespace EcoClean.Controllers.Api
         [Route("getAllEnterprises")]
         public List<EnterpriseResponseModel> GetAllClientsEnterprises()
         {
+            //var userId = _dbContext._httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //string userIdStringified = _userManager.GetUserId(User);
+            //Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == userIdStringified);
+
             Client client = _dbContext.Clients.Single(x => x.UserId == id);
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
 
@@ -434,7 +444,7 @@ namespace EcoClean.Controllers.Api
             }
             if (responseReports.Count == 0)
             {
-                throw new ArgumentException("There's no reports");
+                return responseReports;
             }
             else
             {
@@ -616,6 +626,30 @@ namespace EcoClean.Controllers.Api
 
         // pollution data //
 
+
+        [HttpPost]
+        [Route("addSmartDeviceData")]
+        public void addSmartDeviceData(SmartDeviceDataRequestModel request)
+        {
+            SmartDeviceData data = new SmartDeviceData
+            {
+                EnterpriseId = request.EnterpriseId,
+                AirPollution = request.AirPollution,
+                WaterPollution = request.WaterPollution,
+                SmartDeviceDataDate = DateTime.Now
+            };
+
+            try
+            {
+                _dbContext.SmartDeviceData.Add(data);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException) { }
+
+
+        }
+
+
         [HttpGet]
         [Route("getLatestPollutionData")]
         public SmartDeviceDataResponseModel GetLatestPollutionData(int enterpriseId)
@@ -647,6 +681,46 @@ namespace EcoClean.Controllers.Api
 
                 return response;
             }
+        }
+
+        [HttpGet]
+        [Route("getAllData")]
+        public List<SmartDeviceData> getAllData()
+        {
+            //var userId = _dbContext._httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //string userIdStringified = _userManager.GetUserId(User);
+            //Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == userIdStringified);
+
+            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
+
+            List<SmartDeviceData> responseModels = new List<SmartDeviceData>();
+
+            foreach(Enterprise enterprise in enterprises)
+            {
+                List<SmartDeviceData> data = _dbContext.SmartDeviceData
+                    .Where(x => x.EnterpriseId == enterprise.EnterpriseId).ToList();
+                responseModels.AddRange(data);
+
+            }
+            //enterprises
+            //.Select(x => new EnterpriseResponseModel(x.EnterpriseId, x.Name,
+            //x.Kind, x.PhoneNumber, x.Product, x.Address, x.Rate))
+            //.ToList();
+            return responseModels.OrderBy(x => x.EnterpriseId).ToList();
+        }
+
+        [HttpGet]
+        [Route("getAllDataInSystem")]
+        public List<SmartDeviceData> getAllDataInSystem()
+        {
+            List<SmartDeviceData> data = _dbContext.SmartDeviceData.ToList();
+
+            //List<EnterpriseResponseModel> responseModels = enterprises
+            //    .Select(x => new EnterpriseResponseModel(x.EnterpriseId, x.Name,
+            //    x.Kind, x.PhoneNumber, x.Product, x.Address, x.Rate))
+            //    .ToList();
+            return data;
         }
 
         // rating //

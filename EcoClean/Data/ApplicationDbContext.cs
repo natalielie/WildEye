@@ -4,6 +4,7 @@ using EcoClean.Models.Enterprise;
 using EcoClean.Models.SmartDevice;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -15,10 +16,14 @@ namespace EcoClean.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
+        public readonly IHttpContextAccessor _httpContextAccessor;
+
         public ApplicationDbContext(
             DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+            IOptions<OperationalStoreOptions> operationalStoreOptions, 
+            IHttpContextAccessor httpContextAccessor) : base(options, operationalStoreOptions)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
    
         public DbSet<Enterprise> Enterprises { get; set; }
@@ -28,32 +33,12 @@ namespace EcoClean.Data
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<SmartDeviceData> SmartDeviceData { get; set; }
 
-        //public DbSet<PetDiaryNote> PetDiaryNotes { get; set; }
-        //public DbSet<PetMedCardNote> PetMedCardNotes { get; set; }
-        //public DbSet<SmartDeviceData> SmartDeviceData { get; set; }
-        //public DbSet<Appointment> Appointments { get; set; }
-        //public DbSet<ProfessionalRole> ProfessionalRoles { get; set; }
-        //public DbSet<ProfessionalSchedule> ProfessionalSchedules { get; set; }
-
-        //public DbSet<PetAssignment> PetAssignments { get; set; }
-        //public DbSet<ProfessionalAppointment> ProfessionalAppointments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.ConfigurePersistedGrantContext(operationalStoreOptions.Value);
-
-            //modelBuilder.Entity<PetAssignment>()
-            //   .HasKey(c => new { c.PetId, c.ProfessionalId });
-
-            //modelBuilder.Entity<ProfessionalAppointment>()
-            //    .HasKey(c => new { c.ProfessionalId, c.PetId, c.AppointmentDateTime });
-
-            //modelBuilder.Entity<ProfessionalSchedule>()
-            //    .HasKey(c => new { c.ProfessionalId, c.Weekday, c.DateTimeBegin, c.DateTimeEnd });
 
 
             modelBuilder.Entity<Enterprise>().HasData(

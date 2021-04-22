@@ -8,67 +8,78 @@ import DeleteModal from './DeleteModal';
 import SmartDeviceApi from '../../services/SmartDeviceApi';
 import { useTranslation } from 'react-i18next';
 
+import i18next from "i18next";
+
 
 import { withTranslation } from "react-i18next";
 
 function DataRow(props) {
-    const data = props.smartDeviceData
-    //const enterpriseLink = `/certificate/${enterprise.enterpriseId}`
+    const data = props.data
+
     const { t, i18n } = useTranslation();
+
+    var dateFormat = require("dateformat");
+
+    if (i18next.language == "en") {
 
         return (
             <tr key={data.smartDeviceDataId.toString()}>
                 <th scope="row">{data.smartDeviceDataId}</th>
                 <td>{data.enterpriseId}</td>
-                <td>{data.smartDeviceDataDate}</td>
-                <td>
-                    <DeleteModal onDelete={() => props.deleteCertificateHandler(
-                        data.certificateeId)} />
-                </td>
+                <td>{data.airPollution} (ppm)</td>
+                <td>{data.waterPollution} (mg/l)</td>
+                <td>{dateFormat(data.smartDeviceDataDate, "yyyy/mm/dd")}</td>
             </tr>
         )
+    }
+    else {
+        return (
+            <tr key={data.smartDeviceDataId.toString()}>
+                <th scope="row">{data.smartDeviceDataId}</th>
+                <td>{data.enterpriseId}</td>
+                <td>{data.airPollution} (ппм)</td>
+                <td>{data.waterPollution} (мг/л)</td>
+                <td>{dateFormat(data.smartDeviceDataDate, "dd-mm-yyyy")}</td>
+            </tr>
+        )
+    }
     }
 
 class SmartDevice extends Component {
 
     constructor() {
         super();
-        this.state = { smartDevice: [] };
+        this.state = { data: [] };
 
     }
 
     async componentDidMount() {
         var user = await authService.getUser();
         const username = user.preferred_username;
-        document.title = "Certificates";
+        document.title = "Smart Device";
         if (username == "admin@gmail.com") {
             this.updateSmartDeviceAdminHandler();
         }
         else {
-            this.updateCertificatesHandler(user.sub);
+            this.updateSmartDeviceHandler(user.sub);
 
         }
     }
 
     // for admin
-    updateSmartDeviceAdminHandler = () => SmartDeviceApi.getAllCertificates(
-        certificates => this.setState({ certificates: certificates }));
+    updateSmartDeviceAdminHandler = () => SmartDeviceApi.getAllDataInSystem(
+        data => this.setState({ data: data }));
 
-    addSmartDeviceAdminHandler = (certificate) => SmartDeviceApi.createCertificate(
-        certificate, this.updateSmartDeviceAdminHandler);
-
-    deleteEnterpriseHandler = (certificateId) => SmartDeviceApi.deleteCertificateById(
-        certificateId, this.updateSmartDeviceAdminHandler);
+    addSmartDeviceAdminHandler = (data) => SmartDeviceApi.addSmartDeviceData(
+        data, this.updateSmartDeviceAdminHandler);
 
     //for user
-    //updateCertificatesHandler = () => CertificateApi.getAllCertificates(
-    //    enterprises => this.setState({ enterprises: enterprises }));
+    updateSmartDeviceHandler = () => SmartDeviceApi.getAllData(
+        data => this.setState({ data: data }));
 
-    addEnterpriseHandler = (certificate) => SmartDeviceApi.createCertificate(
-        certificate, this.updateCertificatesHandler);
+    addSmartDeviceHandler = (data) => SmartDeviceApi.addSmartDeviceData(
+        data, this.updateSmartDeviceHandler);
 
-    deleteEnterpriseHandler = (certificateId) => SmartDeviceApi.deleteCertificateById(
-        certificateId, this.updateCertificatesHandler);
 
 
     render() {
@@ -87,13 +98,14 @@ class SmartDevice extends Component {
                                         <tr>
                                             <th scope="col">№</th>
                                             <th scope="col">{t("Enterprise Name")}</th>
-                                            <th scope="col">{t("Certificate Date")}</th>
-                                            <th scope="col">{t("Terminate")}</th>
+                                            <th scope="col">{t("Air Pollution")}</th>
+                                            <th scope="col">{t("Water Pollution")}</th>
+                                            <th scope="col">{t("Smart Device Date")}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.state.smartDevice.map((data, index) =>
-                                            <DataRow key={index} data={data} deleteDataHandler={this.deleteDataHandler} />
+                                        {this.state.data.map((data, index) =>
+                                            <DataRow key={index} data={data} />
                                         )}
                                     </tbody>
                                 </Table>
@@ -103,6 +115,9 @@ class SmartDevice extends Component {
                 </Row>
                 <Button class="btn btn-primary" style={{ marginTop: 20 }}>
                     <Link tag={Link} className="text-dark" to="/data-add/" >{t("Add new data")}</Link>
+                </Button>
+                <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+                    <Link tag={Link} className="text-dark" to="/data-пуе/" >{t("Get data from your Smart Device")}</Link>
                 </Button>
             </div>
         )

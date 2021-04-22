@@ -64,7 +64,7 @@ export class LoginMenu extends Component {
                     <NavLink tag={Link} className="text-dark" to="/my-certificates">{t("Certificates")}</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/smart-device-data">{t("Smart Device Data")}</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/smart-device">{t("Smart Device Data")}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello")} {userName}</NavLink>

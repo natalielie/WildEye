@@ -1,33 +1,23 @@
 ﻿import Axios from 'axios';
 
-class ReportsApi {
+class SmartDeviceApi {
 
-    static getAllReports = (callback) => {
-        Axios.get('api/admin/getAllReports')
+    static getAllData = (callback) => {
+        Axios.get('api/client/getAllData')
             .then(res => callback(res.data))
-            .catch(ReportsApi.errorHandler);
+            .catch(SmartDeviceApi.errorHandler);
     }
 
-    static createReport = (report, callback) => {
-        Axios.post('api/admin/createReport/', report)
-            .then(() => ReportsApi.getAllReports(callback))
-            .catch(ReportsApi.errorHandler);
+    static getAllDataInSystem = (callback) => {
+        Axios.get('api/client/getAllDataInSystem')
+            .then(res => callback(res.data))
+            .catch(SmartDeviceApi.errorHandler);
     }
 
-
-    //static editAppointment = (appointment, callback) => {
-    //    let id = appointment.appointmentId;
-    //    delete appointment.appointmentId;
-    //    Axios.put('api/doctor/changeAppointment/' + id, appointment)
-    //        .then(() => AppointmentApi.getAllAppointments(callback))
-    //        .catch(AppointmentApi.errorHandler);
-    //}
-
-
-    static deleteCertificateById = (id, callback) => {
-        Axios.delete('api/client/deleteCertificateById' + id)
-            .then(() => ReportsApi.getAllReports(callback))
-            .catch(ReportsApi.errorHandler);
+    static addSmartDeviceData = (data, callback) => {
+        Axios.post('api/client/addSmartDeviceData/', data)
+            .then(() => SmartDeviceApi.getAllData(callback))
+            .catch(SmartDeviceApi.errorHandler);
     }
 
     errorHandler = error => console.log(error);
@@ -35,4 +25,4 @@ class ReportsApi {
 }
 
 
-export default ReportsApi;
+export default SmartDeviceApi;

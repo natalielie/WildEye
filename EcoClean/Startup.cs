@@ -47,7 +47,7 @@ namespace EcoClean
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             //    .AddIdentityServerJwt()
             //.AddCookie();
-
+            services.AddHttpContextAccessor();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt()
@@ -127,6 +127,7 @@ namespace EcoClean
                 configuration.RootPath = "ClientApp/build";
             });
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

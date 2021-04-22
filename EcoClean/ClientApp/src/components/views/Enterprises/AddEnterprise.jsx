@@ -4,88 +4,6 @@ import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, 
 import EnterpriseApi from '../../services/EnterpriseApi';
 
 
-const ComboboxProduct = (props) => {
-
-    const onChange = e => {
-        const { name, value } = e.target;
-    }
-    const {
-        current_prod
-    } = 0;
-
-    const productOptions = [
-        {
-            label: "Food",
-            value: 1,
-        },
-        {
-            label: "Fuel",
-            value: 2,
-        },
-        {
-            label: "Anatolii Kompotov",
-            value: 3,
-        },
-        {
-            label: "Ahmad Amshanov",
-            value: 4,
-        },
-        {
-            label: "Ahmad Amshanov",
-            value: 4,
-        },
-    ];
-
-    return (
-        <>
-            <div className="form-group">
-                <select value={current_prod} onChange={onChange} id="license_type" name="current_prod">
-                    {productOptions.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-            </div>
-        </>
-    )
-}
-
-const ComboboxPet = (props) => {
-
-    const onChange = e => {
-        const { name, value } = e.target;
-    }
-    const {
-        current_pet
-    } = 0;
-
-    const petOptions = [
-        {
-            label: "Twinkle",
-            value: 1,
-        },
-        {
-            label: "Jim",
-            value: 2,
-        },
-        {
-            label: "Cinnabon",
-            value: 3,
-        },
-    ];
-
-    return (
-        <>
-            <div className="form-group">
-                <select value={current_pet} onChange={onChange} id="license_type" name="current_pet">
-                    {petOptions.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-            </div>
-        </>
-    )
-}
-
 
 class AddEnterprise extends Component {
 
@@ -107,10 +25,10 @@ class AddEnterprise extends Component {
 
         var data = {
             name: event.target.elements['name'].value,
-            pet: event.target.elements['kind'].value,
-            pet: event.target.elements['phoneNumber'].value,
-            name: event.target.elements['product'].value,
-            name: event.target.elements['address'].value,
+            kind: event.target.elements['kind'].value,
+            phoneNumber: event.target.elements['phoneNumber'].value,
+            product: event.target.elements['product'].value,
+            address: event.target.elements['address'].value,
         };
 
         this.addEnterpriseHandler(data, () => this.props.history.push('/enterprises'));
@@ -134,7 +52,7 @@ class AddEnterprise extends Component {
                                             <Label htmlFor="name">{t("Name")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="name" required placeholder="name" />
+                                            <Input type="text" id="name" required placeholder="Enterprise Name" />
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -142,7 +60,7 @@ class AddEnterprise extends Component {
                                             <Label htmlFor="kind">{t("Kind")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="kind" placeholder="kind" />
+                                            <Input type="text" id="kind" placeholder="Kind" />
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -150,7 +68,7 @@ class AddEnterprise extends Component {
                                             <Label htmlFor="phoneNumber">{t("Phone Number")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="phoneNumber" placeholder="phoneNumber" />
+                                            <Input type="text" id="phoneNumber" placeholder="Phone Number" />
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -158,7 +76,7 @@ class AddEnterprise extends Component {
                                             <Label htmlFor="product">{t("Product")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="product" placeholder="product" />
+                                            <Input type="text" id="product" placeholder="Product" />
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -166,7 +84,7 @@ class AddEnterprise extends Component {
                                             <Label htmlFor="address">{t("Address")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="address" placeholder="address" />
+                                            <Input type="text" id="address" placeholder="Address" />
                                         </Col>
                                     </FormGroup>
 
