@@ -110,39 +110,77 @@ class Statistics extends Component {
 
     render() {
         const { t } = this.props;
-        return (
-            <div className="animated fadeIn">
-                <ComboboxSort />
-                <Row>
-                    <Col xl={8}>
-                        <Card>
-                            <CardHeader>
-                                <i className="fa fa-align-justify"></i> {t("Statistics")}
-                            </CardHeader>
-                            <CardBody>
-                                <Table responsive hover>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">№</th>
-                                            <th scope="col">{t("Enterprise Name")}</th>
-                                            <th scope="col">{t("Rate")}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.enterprises.map((enterprise, index) =>
-                                            <EnterpriseRow key={index} enterprise={enterprise}  />
-                                        )}
-                                    </tbody>
-                                </Table>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-                {/*  <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+
+        if (authService.getUser().preferred_username == "admin@gmail.com") {
+
+            return (
+                <div className="animated fadeIn">
+                    <ComboboxSort />
+                    <Row>
+                        <Col xl={8}>
+                            <Card>
+                                <CardHeader>
+                                    <i className="fa fa-align-justify"></i> {t("Statistics")}
+                                </CardHeader>
+                                <CardBody>
+                                    <Table responsive hover>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">№</th>
+                                                <th scope="col">{t("Enterprise Name")}</th>
+                                                <th scope="col">{t("Rate")}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.enterprises.map((enterprise, index) =>
+                                                <EnterpriseRow key={index} enterprise={enterprise} />
+                                            )}
+                                        </tbody>
+                                    </Table>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+                    <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Set Statistics")}</Link>
+                </Button>*/}
+                </div>
+            )
+        } else {
+            return (
+                <div className="animated fadeIn">
+                    <ComboboxSort />
+                    <Row>
+                        <Col xl={8}>
+                            <Card>
+                                <CardHeader>
+                                    <i className="fa fa-align-justify"></i> {t("Statistics")}
+                                </CardHeader>
+                                <CardBody>
+                                    <Table responsive hover>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">№</th>
+                                                <th scope="col">{t("Enterprise Name")}</th>
+                                                <th scope="col">{t("Rate")}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.enterprises.map((enterprise, index) =>
+                                                <EnterpriseRow key={index} enterprise={enterprise} />
+                                            )}
+                                        </tbody>
+                                    </Table>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                    {/*  <Button class="btn btn-primary" style={{ marginTop: 20 }}>
                     <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Add a new Enterprise")}</Link>
                 </Button>*/}
-            </div>
-        )
+                </div>
+            )
+        }
     }
 }
 

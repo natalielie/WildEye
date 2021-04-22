@@ -47,6 +47,7 @@ export class LoginMenu extends Component {
         }
     }
 
+
     authenticatedView(userName, profilePath, logoutPath) {
         const { t } = this.props;
         if (userName != "admin@gmail.com") {
@@ -87,9 +88,6 @@ export class LoginMenu extends Component {
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/certificates">{t("Certificates")}</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/taxes">{t("Taxes")}</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to={profilePath}>{t("Hello")} {userName}</NavLink>

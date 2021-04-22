@@ -1,7 +1,7 @@
 ﻿import React, { Component, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import AssignmentApi from '../../services/EnterpriseApi';
+import CertificatesApi from '../../services/CertificatesApi';
 
 
 const ComboboxProfessional = (props) => {
@@ -15,20 +15,12 @@ const ComboboxProfessional = (props) => {
 
     const professionalOptions = [
         {
-            label: "John Smith",
+            label: "WOG",
             value: 1,
         },
         {
-            label: "Kate Wolson",
+            label: "Johnny's",
             value: 2,
-        },
-        {
-            label: "Anatolii Kompotov",
-            value: 3,
-        },
-        {
-            label: "Ahmad Amshanov",
-            value: 4,
         },
     ];
 
@@ -45,68 +37,31 @@ const ComboboxProfessional = (props) => {
     )
 }
 
-const ComboboxPet = (props) => {
-
-    const onChange = e => {
-        const { name, value } = e.target;
-    }
-    const {
-        current_pet
-    } = 0;
-
-    const petOptions = [
-        {
-            label: "Twinkle",
-            value: 1,
-        },
-        {
-            label: "Jim",
-            value: 2,
-        },
-        {
-            label: "Cinnabon",
-            value: 3,
-        },
-    ];
-
-    return (
-        <>
-            <div className="form-group">
-                <select value={current_pet} onChange={onChange} id="license_type" name="current_pet">
-                    {petOptions.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-            </div>
-        </>
-    )
-}
 
 
-class AddEnterprise extends Component {
+class AddCertificate extends Component {
 
     constructor() {
         super();
 
-        this.addAppointmentHandler = this.addAppointmentHandler.bind(this);
+        this.addCertificateHandler = this.addCertificateHandler.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        document.title = "Add Assignment";
+        document.title = "Add Certificate";
     }
 
-    addAppointmentHandler = (appointment, callback) => AssignmentApi.addAssignment(appointment, callback);
+    addCertificateHandler = (appointment, callback) => CertificatesApi.createCertificate(appointment, callback);
 
     handleSubmit = (event) => {
         event.preventDefault();
 
         var data = {
-            name: event.target.elements['professional'].value,
-            pet: event.target.elements['pet'].value
+            enterpriseId: 1,
         };
 
-        this.addAppointmentHandler(data, () => this.props.history.push('/assignments'));
+        this.addCertificateHandler(data, () => this.props.history.push('/certificates'));
     }
 
     render() {
@@ -117,28 +72,18 @@ class AddEnterprise extends Component {
                     <Col xs="12" md="7">
                         <Card>
                             <CardHeader>
-                                <strong>{t("Add Assignment")}</strong>
+                                <strong>{t("Add Certificate")}</strong>
                             </CardHeader>
                             <CardBody>
                                 <form onSubmit={this.handleSubmit} className="form-horizontal">
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="professional">{t("ProfessionalsName")}</Label>
+                                            <Label htmlFor="professional">{t("Enterprise Name")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
                                             <ComboboxProfessional />
                                         </Col>
                                     </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="3">
-                                            <Label htmlFor="pet">{t("PetName")}</Label>
-                                        </Col>
-                                        <Col xs="12" md="9">
-                                            <ComboboxPet />
-                                        </Col>
-                                    </FormGroup>
-
                                     
                                     <Button type="submit" color="primary">{t("Submit")}</Button>
                                 </form>
@@ -152,4 +97,4 @@ class AddEnterprise extends Component {
 }
 
 
-export default withTranslation()(AddEnterprise);
+export default withTranslation()(AddCertificate);

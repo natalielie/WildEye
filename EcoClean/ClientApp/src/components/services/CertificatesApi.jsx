@@ -3,13 +3,13 @@
 class CertificatesApi {
 
     static getAllCertificates = (callback) => {
-        Axios.get('api/admin/getAllCertificates')
+        Axios.get('api/client/getAllCertificates')
             .then(res => callback(res.data))
             .catch(CertificatesApi.errorHandler);
     }
 
     static createCertificate = (certificate, callback) => {
-        Axios.post('api/admin/createCertificate/', certificate)
+        Axios.post('api/client/createCertificate/', certificate)
             .then(() => CertificatesApi.getAllCertificates(callback))
             .catch(CertificatesApi.errorHandler);
     }

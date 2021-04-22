@@ -13,25 +13,14 @@ const ComboboxEnterprise = (props) => {
         current_enterprise
     } = 0;
 
-
-    var enterpriseData = EnterpriseApi.getAllEnterprises();
-
-    const professionalOptions = [
+    const enterpriseOptions = [
         {
-            label: "John Smith",
-            value: 1,
+            label: "WOG",
+            value: 6,
         },
         {
-            label: "Kate Wolson",
-            value: 2,
-        },
-        {
-            label: "Anatolii Kompotov",
-            value: 3,
-        },
-        {
-            label: "Ahmad Amshanov",
-            value: 4,
+            label: "Shoes On",
+            value: 8,
         },
     ];
 
@@ -39,7 +28,7 @@ const ComboboxEnterprise = (props) => {
         <>
             <div className="form-group">
                 <select value={current_enterprise} onChange={onChange} id="license_type" name="current_enterprise">
-                    {enterpriseData.map((option) => (
+                    {enterpriseOptions.map((option) => (
                         <option value={option.value}>{option.label}</option>
                     ))}
                 </select>
@@ -47,47 +36,6 @@ const ComboboxEnterprise = (props) => {
         </>
     )
 }
-
-const ComboboxTax = (props) => {
-
-    const onChange = e => {
-        const { name, value } = e.target;
-    }
-    const {
-        current_pet
-    } = 0;
-
-
-    const enterpriseData = EnterpriseApi.getAllEnterprises();
-
-    const petOptions = [
-        {
-            label: "Twinkle",
-            value: 1,
-        },
-        {
-            label: "Jim",
-            value: 2,
-        },
-        {
-            label: "Cinnabon",
-            value: 3,
-        },
-    ];
-
-    return (
-        <>
-            <div className="form-group">
-                <select value={current_pet} onChange={onChange} id="license_type" name="current_pet">
-                    {petOptions.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-            </div>
-        </>
-    )
-}
-
 
 class AddReport extends Component {
 
@@ -99,9 +47,8 @@ class AddReport extends Component {
     }
 
     componentDidMount() {
-        document.title = "Add Assignment";
+        document.title = "Add Report";
 
-        var taxData = ReportsApi.getAllTaxes();
     }
 
 
@@ -111,8 +58,7 @@ class AddReport extends Component {
         event.preventDefault();
 
         var data = {
-            name: event.target.elements['enterprise'].value,
-            tax: event.target.elements['tax'].value,
+            enterpriseId: 3,
             comment: event.target.elements['comment'].value
         };
 
@@ -133,19 +79,10 @@ class AddReport extends Component {
                                 <form onSubmit={this.handleSubmit} className="form-horizontal">
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="enterprise">{t("Enterprise Name")}</Label>
+                                            <Label htmlFor="enterpriseId">{t("Enterprise Name")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
                                             <ComboboxEnterprise />
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="3">
-                                            <Label htmlFor="tax">{t("Tax")}</Label>
-                                        </Col>
-                                        <Col xs="12" md="9">
-                                            <ComboboxTax />
                                         </Col>
                                     </FormGroup>
 

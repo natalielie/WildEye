@@ -23,6 +23,7 @@ import Reports from "./components/views/Reports/Reports";
 import Report from "./components/views/Reports/Report";
 import AddReport from "./components/views/Reports/AddReport";
 import Certificates from "./components/views/Certificates/Certificates";
+import AddCertificate from "./components/views/Certificates/AddCertificate";
 import SmartDevice from "./components/views/SmartDevice/SmartDevice";
 
 import { NavMenu } from "./components/NavMenu";
@@ -39,6 +40,7 @@ const ReportsComponent = withTranslation()(Reports);
 const ReportComponent = withTranslation()(Report);
 const AddReportComponent = withTranslation()(AddReport);
 const CertificatesComponent = withTranslation()(Certificates);
+const AddCertificateComponent = withTranslation()(AddCertificate);
 const SmartDeviceComponent = withTranslation()(SmartDevice);
 
 export default class App extends Component { 
@@ -54,6 +56,7 @@ export default class App extends Component {
             
             <Route path="/enterprise-add/" component={AddEnterComponent} />
             <Route path="/report-add/" component={AddReportComponent} />
+            <Route path="/certificate-add/" component={AddCertificateComponent} />
             <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
             <Route path="/enterprise/:id" component={EnterpriseComponent} />
             <Route path="/report/:id" component={ReportComponent} />
@@ -62,6 +65,7 @@ export default class App extends Component {
                 <Route path="/enterprises" component={EnterprisesComponent} />
                 <Route path="/statistics" component={StatComponent} />
                 <Route path="/my-reports" component={ReportsComponent} />
+                <Route path="/reports" component={ReportsComponent} />
                 <Route path="/certificates" component={CertificatesComponent} />
                 <Route path="/smart-device" component={SmartDeviceComponent} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />

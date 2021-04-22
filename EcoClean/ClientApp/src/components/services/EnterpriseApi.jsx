@@ -2,8 +2,6 @@
 
 class EnterpriseApi {
 
-    enterpriseId = 1;
-
     static getAllEnterprises = (callback) => {
         Axios.get('api/client/getAllEnterprises')
             .then(res => callback(res.data))
@@ -27,15 +25,6 @@ class EnterpriseApi {
             .then(() => EnterpriseApi.getAllEnterprises(callback))
             .catch(EnterpriseApi.errorHandler);
     }
-
-
-    //static editAppointment = (appointment, callback) => {
-    //    let id = appointment.appointmentId;
-    //    delete appointment.appointmentId;
-    //    Axios.put('api/doctor/changeAppointment/' + id, appointment)
-    //        .then(() => AppointmentApi.getAllAppointments(callback))
-    //        .catch(AppointmentApi.errorHandler);
-    //}
 
 
     static DeleteEnterpriseById = (id, callback) => {

@@ -64,7 +64,7 @@ namespace EcoClean.Controllers.Api
 
             if (certificates.Count == 0)
             {
-                throw new ArgumentException("There's no certificate");
+                return certificates;
             }
             else
             {

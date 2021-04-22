@@ -27,19 +27,10 @@ class ReportsApi {
     }
 
     static createReport = (report, callback) => {
-        Axios.post('api/admin/createReport/', report)
+        Axios.post('api/client/createReport/', report)
             .then(() => ReportsApi.getAllReports(callback))
             .catch(ReportsApi.errorHandler);
     }
-
-    //static editAppointment = (appointment, callback) => {
-    //    let id = appointment.appointmentId;
-    //    delete appointment.appointmentId;
-    //    Axios.put('api/doctor/changeAppointment/' + id, appointment)
-    //        .then(() => AppointmentApi.getAllAppointments(callback))
-    //        .catch(AppointmentApi.errorHandler);
-    //}
-
 
     static deleteReportById = (id, callback) => {
         Axios.delete('api/client/deleteReportById' + id)

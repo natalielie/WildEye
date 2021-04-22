@@ -223,7 +223,7 @@ namespace EcoClean.Controllers.Api
             Certificate certificate = new Certificate
             {
                 EnterpriseId = request.EnterpriseId,
-                CertificateDate = request.CertificateDate
+                CertificateDate = DateTime.Now
             };
             try
             {
@@ -408,11 +408,13 @@ namespace EcoClean.Controllers.Api
         [Route("createReport")]
         public void CreateReport(ReportRequestModel request)
         {
+            Tax tax = _dbContext.Taxes.Where(x => x.EnterpriseId == request.EnterpriseId)
+                .OrderBy(x => x.TaxId).First();
 
             Report report  = new Report
             {
                 EnterpriseId = request.EnterpriseId,
-                TaxId = request.TaxId,
+                TaxId = tax.TaxId,
                 Comment = request.Comment,
                 ReportDate = DateTime.Now
             };

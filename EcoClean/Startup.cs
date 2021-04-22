@@ -44,18 +44,15 @@ namespace EcoClean
 
             services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
+            // services.AddHttpContextAccessor();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt()
+             .AddCookie();
+
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             //    .AddIdentityServerJwt()
             //.AddCookie();
-            // services.AddHttpContextAccessor();
-
-            //services.AddAuthentication()
-            //    .AddIdentityServerJwt()
-            // .AddCookie();
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerJwt()
-            .AddCookie();
 
             services.Configure<JwtBearerOptions>(
         IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
@@ -85,17 +82,7 @@ namespace EcoClean
                     });
             });
 
-            services.Configure<JwtBearerOptions>(
-        IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
-        options =>
-        {
-            var onTokenValidated = options.Events.OnTokenValidated;
 
-            options.Events.OnTokenValidated = async context =>
-            {
-                await onTokenValidated(context);
-            };
-        });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -159,7 +146,6 @@ namespace EcoClean
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
