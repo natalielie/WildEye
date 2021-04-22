@@ -102,12 +102,13 @@ export class LoginMenu extends Component {
     }
 
     anonymousView(registerPath, loginPath) {
+        const { t } = this.props;
         return (<Fragment>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to={registerPath}>Register</NavLink>
+                <NavLink tag={Link} className="text-dark" to={registerPath}>{t("Register")}</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to={loginPath}>Login</NavLink>
+                <NavLink tag={Link} className="text-dark" to={loginPath}>{t("Login")}</NavLink>
             </NavItem>
         </Fragment>);
     }

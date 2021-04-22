@@ -47,11 +47,27 @@ namespace EcoClean
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             //    .AddIdentityServerJwt()
             //.AddCookie();
-            services.AddHttpContextAccessor();
+            // services.AddHttpContextAccessor();
 
-            services.AddAuthentication()
+            //services.AddAuthentication()
+            //    .AddIdentityServerJwt()
+            // .AddCookie();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerJwt()
-             .AddCookie();
+            .AddCookie();
+
+            services.Configure<JwtBearerOptions>(
+        IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
+        options =>
+        {
+            var onTokenValidated = options.Events.OnTokenValidated;
+
+            options.Events.OnTokenValidated = async context =>
+            {
+                await onTokenValidated(context);
+            };
+        });
 
             services.AddCors(c =>
             {

@@ -4,7 +4,6 @@ import { UserManager, WebStorageStateStore } from 'oidc-client';
 import authService from '../../api-authorization/AuthorizeService';
 import { Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
-import DeleteModal from './DeleteModal';
 import SmartDeviceApi from '../../services/SmartDeviceApi';
 import { useTranslation } from 'react-i18next';
 
@@ -116,7 +115,7 @@ class SmartDevice extends Component {
                 <Button class="btn btn-primary" style={{ marginTop: 20 }}>
                     <Link tag={Link} className="text-dark" to="/data-add/" >{t("Add new data")}</Link>
                 </Button>
-                <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+                <Button class="btn btn-primary" style={{ marginTop: 20, marginLeft: 10 }}>
                     <Link tag={Link} className="text-dark" to="/data-пуе/" >{t("Get data from your Smart Device")}</Link>
                 </Button>
             </div>
