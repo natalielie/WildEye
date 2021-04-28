@@ -76,7 +76,7 @@ class Statistics extends Component {
                 this.updateEnterprisesAdminHandler();
             }
             else {
-                this.updateReverseEnterpriseHandler();
+                this.updateEnterpriseHandler();
             }
         }
         else {
@@ -175,9 +175,9 @@ class Statistics extends Component {
                             </Card>
                         </Col>
                     </Row>
-                    {/*  <Button class="btn btn-primary" style={{ marginTop: 20 }}>
-                    <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Add a new Enterprise")}</Link>
-                </Button>*/}
+                    <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+                    <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Set Statistics")}</Link>
+                </Button>
                 </div>
             )
         }

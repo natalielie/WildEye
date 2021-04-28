@@ -63,7 +63,7 @@ class Certificates extends Component {
         certificateId, this.updateCertificatesAdminHandler);
 
     //for user
-    updateCertificatesHandler = () => CertificateApi.getAllCertificates(
+    updateCertificatesHandler = () => CertificatesApi.getAllCertificates(
         certificates => this.setState({ certificates: certificates }));
 
     addEnterpriseHandler = (certificate) => CertificatesApi.createCertificate(
