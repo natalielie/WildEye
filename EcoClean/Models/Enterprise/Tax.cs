@@ -16,9 +16,23 @@ namespace EcoClean.Models.Enterprise
         public double WaterEmissions { get; set; }
         public double TaxCost { get; set; }
 
-        public Tax(int enterpriseId,int airPollutionSubstance,
+        public Tax() { }
+
+        public Tax(int enterpriseId, int airPollutionSubstance,
+           int waterPollutionSubstance, double airEmissions, double waterEmissions, double taxCost)
+        {
+            this.EnterpriseId = enterpriseId;
+            this.AirEmissions = airEmissions;
+            this.AirPollutionSubstance = airPollutionSubstance;
+            this.WaterPollutionSubstance = waterPollutionSubstance;
+            this.WaterEmissions = waterEmissions;
+            this.TaxCost = taxCost;
+        }
+
+        public Tax(int taxId, int enterpriseId,int airPollutionSubstance,
             int waterPollutionSubstance, double airEmissions, double waterEmissions, double taxCost)
         {
+            this.TaxId = taxId;
             this.EnterpriseId = enterpriseId;
             this.AirEmissions = airEmissions;
             this.AirPollutionSubstance = airPollutionSubstance;

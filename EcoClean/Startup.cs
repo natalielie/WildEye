@@ -33,12 +33,20 @@ namespace EcoClean
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+    //        services.AddIdentity<ApplicationUser>(options =>
+    //        {
+    //            options.User.RequireUniqueEmail = false;
+    //        })
+    //.AddEntityFrameworkStores<ApplicationDbContext>()
+    //.AddDefaultTokenProviders();
+
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddMvc();
             services.AddControllersWithViews();

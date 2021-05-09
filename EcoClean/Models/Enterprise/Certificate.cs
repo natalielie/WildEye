@@ -12,8 +12,9 @@ namespace EcoClean.Models.Enterprise
         public DateTime CertificateDate { get; set; }
         public Certificate(){ }
 
-        public Certificate(int enterpriseId, DateTime certificateDate) 
+        public Certificate(int certificateId, int enterpriseId, DateTime certificateDate) 
         {
+            this.CertificateId = certificateId;
             this.EnterpriseId = enterpriseId;
             this.CertificateDate = certificateDate;
         }

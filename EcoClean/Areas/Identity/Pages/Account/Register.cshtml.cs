@@ -84,21 +84,21 @@ namespace EcoClean.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            [Display(Name = "Enterprise Name")]
-            public string EnterpriseName { get; set; }
-            [Required]
-            [Display(Name = "Enterprise Kind")]
-            public string EnterpriseKind { get; set; }
-            [Required]
-            [Display(Name = "Enterprise Phone Number")]
-            public string EnterprisePhoneNumber { get; set; }
-            [Required]
-            [Display(Name = "Enterprise Product")]
-            public string EnterpriseProduct { get; set; }
-            [Required]
-            [Display(Name = "Enterprise Address")]
-            public string EnterpriseAddress { get; set; }
+            //[Required]
+            //[Display(Name = "Enterprise Name")]
+            //public string EnterpriseName { get; set; }
+            //[Required]
+            //[Display(Name = "Enterprise Kind")]
+            //public string EnterpriseKind { get; set; }
+            //[Required]
+            //[Display(Name = "Enterprise Phone Number")]
+            //public string EnterprisePhoneNumber { get; set; }
+            //[Required]
+            //[Display(Name = "Enterprise Product")]
+            //public string EnterpriseProduct { get; set; }
+            //[Required]
+            //[Display(Name = "Enterprise Address")]
+            //public string EnterpriseAddress { get; set; }
 
         }
 
@@ -121,7 +121,7 @@ namespace EcoClean.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var client = new Client
+                    Client client = new Client
                     {
                         UserId = id,
                         FirstName = Input.FirstName,
@@ -131,8 +131,9 @@ namespace EcoClean.Areas.Identity.Pages.Account
                     };
 
                     _dbContext.Clients.Add(client);
+                    _dbContext.SaveChanges();
 
-                   
+
                     _logger.LogInformation("User created a new account with password.");
                    // await _userManager.AddToRoleAsync(user, "enterprise worker");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

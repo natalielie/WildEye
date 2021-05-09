@@ -9,8 +9,8 @@ namespace EcoClean.Models.SmartDevice
     {
         public int SmartDeviceDataId { get; set; }
         public int EnterpriseId { get; set; }
-        public float AirPollution { get; set; }
-        public float WaterPollution { get; set; }
+        public double AirPollution { get; set; }
+        public double WaterPollution { get; set; }
         public DateTime SmartDeviceDataDate { get; set; }
     }
 }

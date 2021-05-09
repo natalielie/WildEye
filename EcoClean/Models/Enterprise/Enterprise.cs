@@ -18,7 +18,8 @@ namespace EcoClean.Models.Enterprise
 
         public Enterprise() { }
         public Enterprise(int enterpriseId, string name,
-            string kind, string phoneNumber, string product, string address)
+            string kind, string phoneNumber, string product,
+            string address, double rate, int clientId)
         {
             this.EnterpriseId = enterpriseId;
             this.Name = name;
@@ -26,6 +27,8 @@ namespace EcoClean.Models.Enterprise
             this.PhoneNumber = phoneNumber;
             this.Product = product;
             this.Address = address;
+            this.Rate = rate;
+            this.ClientId = clientId;
         }
 
     }

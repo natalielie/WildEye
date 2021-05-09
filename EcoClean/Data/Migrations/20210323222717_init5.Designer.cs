@@ -4,14 +4,16 @@ using EcoClean.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EcoClean.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210323222717_init5")]
+    partial class init5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,22 +324,6 @@ namespace EcoClean.Data.Migrations
                             EnterpriseId = 2,
                             SmartDeviceDataDate = new DateTime(2020, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             WaterPollution = 1.1000000000000001
-                        },
-                        new
-                        {
-                            SmartDeviceDataId = 7,
-                            AirPollution = 499.0,
-                            EnterpriseId = 2,
-                            SmartDeviceDataDate = new DateTime(2021, 2, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 1.23
-                        },
-                        new
-                        {
-                            SmartDeviceDataId = 8,
-                            AirPollution = 1189.0,
-                            EnterpriseId = 3,
-                            SmartDeviceDataDate = new DateTime(2021, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WaterPollution = 2.9300000000000002
                         });
                 });
 
