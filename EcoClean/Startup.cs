@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EcoClean
 {
@@ -135,7 +136,7 @@ namespace EcoClean
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsLocalDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -159,6 +160,7 @@ namespace EcoClean
 
             app.UseCors(options => options.AllowAnyOrigin());
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -169,11 +171,12 @@ namespace EcoClean
 
             app.UseSpa(spa => {
                 spa.Options.SourcePath = "ClientApp";
-                if (env.IsDevelopment())
+                if (env.IsLocalDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
         }
+        
     }
 }
