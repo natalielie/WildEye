@@ -73,7 +73,7 @@ class SmartDevice extends Component {
         data, this.updateSmartDeviceAdminHandler);
 
     //for user
-    updateSmartDeviceHandler = () => SmartDeviceApi.getAllData(
+    updateSmartDeviceHandler = async () => await SmartDeviceApi.getAllData(
         data => this.setState({ data: data }));
 
     addSmartDeviceHandler = (data) => SmartDeviceApi.addSmartDeviceData(

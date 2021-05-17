@@ -14,12 +14,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 
 namespace EcoClean
 {
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -33,95 +36,105 @@ namespace EcoClean
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+               options.UseSqlServer(
+                   Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            /*services.AddDefaultIdentity<ApplicationUser>()
-                .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();*/
-
-            services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
-            // services.AddHttpContextAccessor();
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
-                .AddIdentityServerJwt()
-             .AddCookie();
+                .AddIdentityServerJwt();
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddIdentityServerJwt()
-            //.AddCookie();
 
-            services.Configure<JwtBearerOptions>(
-        IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
-        options =>
-        {
-            var onTokenValidated = options.Events.OnTokenValidated;
 
-            options.Events.OnTokenValidated = async context =>
-            {
-                await onTokenValidated(context);
-            };
-        });
+
+            //services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+            //       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //        .AddJwtBearer(options =>
+            //        {
+            //            options.RequireHttpsMetadata = false;
+            //            options.TokenValidationParameters = new
+            //TokenValidationParameters
+            //            {
+            //                ValidateIssuer = true,
+            //                ValidIssuer = AuthOptions.Issuer,
+            //                ValidateAudience = true,
+            //                ValidAudience =
+            //AuthOptions.Audience,
+            //                ValidateLifetime = true,
+            //                IssuerSigningKey =
+            //AuthOptions.GetSymmetricSecurityKey(),
+            //                ValidateIssuerSigningKey = true
+            //            };
+            //        }).AddIdentityServerJwt()
+            //        .AddCookie();
+
+
+            ///////////////////////
+            ///
+
+
+            //    services.Configure<JwtBearerOptions>(
+            //IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
+            //options =>
+            //{
+            //    var onTokenValidated = options.Events.OnTokenValidated;
+
+            //    options.Events.OnTokenValidated = async context =>
+            //    {
+            //        await onTokenValidated(context);
+            //    };
+            //});
 
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("IsAdmin",
-                    policy =>
-                    {
-                        // Even though we are using JwtClaimTypes in the ProfileService of the IdentityServer
-                        // the actual user claims are converted to those in ClaimTypes so check for them here
-                        policy.RequireClaim(ClaimTypes.Role, "administrator");
-                    });
-            });
+            //    services.AddAuthorization(options =>
+            //    {
+            //        options.AddPolicy("IsAdmin",
+            //            policy =>
+            //            {
+            //                // Even though we are using JwtClaimTypes in the ProfileService of the IdentityServer
+            //                // the actual user claims are converted to those in ClaimTypes so check for them here
+            //                policy.RequireClaim(ClaimTypes.Role, "administrator");
+            //            });
+            //    });
 
 
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings.
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                "àabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-                "àáâãäå¸æçèéêëìíîïðñòóôõö÷øùúûüýþÿº¿ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßª¯" +
-                "0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
-            });
-
-            //services.ConfigureApplicationCookie(options =>
+            //services.Configure<IdentityOptions>(options =>
             //{
-            //    // Cookie settings
-            //    options.Cookie.HttpOnly = true;
-            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.LoginPath = "/Identity/Account/Login";
-            //    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-            //    options.SlidingExpiration = true;
-            //    options.Cookie.Name = GlobalConstants.AuthCookieName;
+            //    // Password settings.
+            //    options.Password.RequireDigit = true;
+            //    options.Password.RequireLowercase = true;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequiredLength = 6;
+            //    options.Password.RequiredUniqueChars = 1;
+
+            //    // Lockout settings.
+            //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            //    options.Lockout.MaxFailedAccessAttempts = 5;
+            //    options.Lockout.AllowedForNewUsers = true;
+
+            //    // User settings.
+            //    options.User.AllowedUserNameCharacters =
+            //    "àabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+            //    "àáâãäå¸æçèéêëìíîïðñòóôõö÷øùúûüýþÿº¿ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßª¯" +
+            //    "0123456789-._@+";
+            //    options.User.RequireUniqueEmail = false;
             //});
 
-            services.AddControllers().AddNewtonsoftJson();
+            //services.AddControllers().AddNewtonsoftJson();
 
             services.AddMvc();
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -130,6 +143,8 @@ namespace EcoClean
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+
         }
 
 
@@ -147,6 +162,7 @@ namespace EcoClean
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -158,8 +174,11 @@ namespace EcoClean
             app.UseIdentityServer();
             app.UseAuthorization();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.UseCors(options => options.AllowAnyOrigin());
-
 
             app.UseEndpoints(endpoints =>
             {
@@ -169,13 +188,17 @@ namespace EcoClean
                 endpoints.MapRazorPages();
             });
 
-            app.UseSpa(spa => {
+            app.UseSpa(spa =>
+            {
                 spa.Options.SourcePath = "ClientApp";
+
                 if (env.IsLocalDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+
         }
         
     }

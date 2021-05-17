@@ -211,3 +211,4 @@ export const AuthenticationResultStatus = {
     Success: 'success',
     Fail: 'fail'
 };
+

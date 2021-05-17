@@ -1,15 +1,26 @@
 ﻿import Axios from 'axios';
+import authService from '../api-authorization/AuthorizeService'
 
 class EnterpriseApi {
 
-    static getAllEnterprises = (callback) => {
-        Axios.get('api/client/getAllEnterprises')
+    
+    static getAllEnterprises = async (callback) => {
+        const token = await authService.getAccessToken();
+
+        Axios.get('api/client/getAllEnterprises', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+            })
             .then(res => callback(res.data))
             .catch(EnterpriseApi.errorHandler);
     }
 
-    static getMyEnterprise = (enterpriseId, callback) => {
-        Axios.get('api/client/GetEnterpriseById/'+ enterpriseId)
+
+    static getMyEnterprise = async (enterpriseId, callback) => {
+        const token = await authService.getAccessToken();
+
+        Axios.get('api/client/GetEnterpriseById/' + enterpriseId, {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(res => callback(res.data))
             .catch(EnterpriseApi.errorHandler);
     }
@@ -20,15 +31,22 @@ class EnterpriseApi {
             .catch(EnterpriseApi.errorHandler);
     }
 
-    static addEnterprise = (enterprise, callback) => {
-        Axios.post('api/client/addEnterprise/', enterprise)
+    static addEnterprise = async (enterprise, callback) => {
+        const token = await authService.getAccessToken();
+
+        Axios.post('api/client/addEnterprise/', enterprise, {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(() => EnterpriseApi.getAllEnterprises(callback))
             .catch(EnterpriseApi.errorHandler);
     }
 
 
-    static DeleteEnterpriseById = (id, callback) => {
-        Axios.delete('api/client/DeleteEnterpriseById' + id)
+    static DeleteEnterpriseById = async (id, callback) => {
+        const token = await authService.getAccessToken();
+        Axios.delete('api/client/DeleteEnterpriseById' + id, {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(() => EnterpriseApi.getAllEnterprises(callback))
             .catch(EnterpriseApi.errorHandler);
     }

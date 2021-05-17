@@ -82,7 +82,7 @@ class Reports extends Component {
         reportId, this.updateReportsAdminHandler);
 
     //for user
-    updateReportsHandler = () => ReportsApi.getAllUsersReports(
+    updateReportsHandler = async () => await ReportsApi.getAllUsersReports(
         reports => this.setState({ reports: reports }));
 
     addReportsHandler = (report) => ReportsApi.createReport(

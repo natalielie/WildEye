@@ -31,8 +31,10 @@ export class NavMenu extends Component {
         const { t } = this.props;
     return (
       <header>
-            <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3">
-                
+            <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3"
+                style={{
+                    backgroundColor: 'lightsteelblue',
+                }}>
           <Container>
             <NavbarBrand tag={Link} to="/">EcoPrise</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />

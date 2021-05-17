@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router-dom'
 import { ApplicationPaths, QueryParameterNames } from './ApiAuthorizationConstants'
 import authService from './AuthorizeService'
 
+
 export default class AuthorizeRoute extends Component {
     constructor(props) {
         super(props);

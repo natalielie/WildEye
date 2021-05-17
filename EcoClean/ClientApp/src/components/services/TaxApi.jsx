@@ -1,4 +1,5 @@
 ﻿import Axios from 'axios';
+import authService from '../api-authorization/AuthorizeService'
 
 class TaxApi {
 
@@ -24,8 +25,12 @@ class TaxApi {
     //}
 
 
-    static deleteCertificateById = (id, callback) => {
-        Axios.delete('api/client/deleteCertificateById' + id)
+    static deleteCertificateById = async (id, callback) => {
+        const token = await authService.getAccessToken();
+
+        Axios.delete('api/client/deleteCertificateById' + id, {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        }))
             .then(() => TaxApi.getAllCertificates(callback))
             .catch(TaxApi.errorHandler);
     }

@@ -1,4 +1,5 @@
 ﻿import Axios from 'axios';
+import authService from '../api-authorization/AuthorizeService'
 
 class ReportsApi {
 
@@ -8,8 +9,11 @@ class ReportsApi {
             .catch(ReportsApi.errorHandler);
     }
 
-    static getAllUsersReports = (callback) => {
-        Axios.get('api/client/getAllUsersReports')
+    static getAllUsersReports = async (callback) => {
+        const token = await authService.getAccessToken();
+        Axios.get('api/client/getAllUsersReports', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(res => callback(res.data))
             .catch(ReportsApi.errorHandler);
     }
@@ -39,8 +43,12 @@ class ReportsApi {
     }
 
 
-    static getAllTaxes = (callback) => {
-        Axios.get('api/client/getAllTaxes')
+    static getAllTaxes = async (callback) => {
+        const token = await authService.getAccessToken();
+
+        Axios.get('api/client/getAllTaxes', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(res => callback(res.data))
             .catch(ReportsApi.errorHandler);
     }

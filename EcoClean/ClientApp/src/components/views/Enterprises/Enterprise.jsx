@@ -19,7 +19,7 @@ class Enterprise extends Component {
         this.getEnterpriseHandler(parseInt(this.props.match.params.id, 10));
     }
 
-    getEnterpriseHandler = (enterpriseId) => EnterpriseApi.getMyEnterprise(
+    getEnterpriseHandler = async (enterpriseId) => await EnterpriseApi.getMyEnterprise(
         enterpriseId, enterprise => this.setState({ enterprise: enterprise }));
 
 

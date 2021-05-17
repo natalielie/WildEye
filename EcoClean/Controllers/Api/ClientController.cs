@@ -5,6 +5,7 @@ using EcoClean.Models.Enterprise;
 using EcoClean.Models.Request;
 using EcoClean.Models.Response;
 using EcoClean.Models.SmartDevice;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,6 @@ namespace EcoClean.Controllers.Api
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
-        private string id = "cf38fb1b-0b68-4cbb-a74c-f1983be40010";
 
         // string[] airSubstance = new string[] { "NO", "CO2", "CH2O", "Hg", "H2S" };
         //string[] waterSubstance = new string[] { "NH4+", "", "", "", ""};
@@ -37,16 +37,20 @@ namespace EcoClean.Controllers.Api
             _signInManager = signInManager;
         }
 
+
+        private string GetCurrentUser()
+        {
+            Claim userClaim =
+           HttpContext?.User.Claims.FirstOrDefault(c => c.Type ==
+           ClaimTypes.NameIdentifier);
+            return userClaim?.Value;
+        }
+
+
         public IActionResult Index()
         {
             return Content(User.Identity.Name);
         }
-
-        //public IActionResult YourMethodName()
-        //{
-        //    var userId = User.Identity.Name;
-        //    return userId;
-        //}
 
         // enterprises //
 
@@ -54,10 +58,10 @@ namespace EcoClean.Controllers.Api
         [Route("addEnterprise")]
         public void AddEnterprise(EnterpriseRequestModel request)
         {
-
             if(request != null)
             {
-                Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == id);
+                string userid = GetCurrentUser();
+                Client client = _dbContext.Clients.Single(x => x.UserId == userid);
                 Enterprise enterprise = new Enterprise
                 {
                     Name = request.Name,
@@ -83,22 +87,20 @@ namespace EcoClean.Controllers.Api
 
         }
 
+
         [HttpGet]
         [Route("getAllEnterprises")]
-        public List<EnterpriseResponseModel> GetAllClientsEnterprises()
+        public IActionResult GetAllClientsEnterprises()
         {
-            //var userId = _dbContext._httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //string userIdStringified = _userManager.GetUserId(User);
-            //Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == userIdStringified);
-
-            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            string userid = GetCurrentUser();
+            Client client = _dbContext.Clients.Single(x => x.UserId == userid);
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
 
             List<EnterpriseResponseModel> responseModels = enterprises
                 .Select(x => new EnterpriseResponseModel(x.EnterpriseId, x.Name,
                 x.Kind, x.PhoneNumber, x.Product, x.Address, x.Rate))
                 .ToList();
-            return responseModels;
+            return Ok(responseModels);
         }
 
         [HttpGet]
@@ -120,7 +122,6 @@ namespace EcoClean.Controllers.Api
         [Route("GetEnterpriseById/{enterpriseId?}")]
         public Enterprise GetEnterpriseById([FromRoute] int enterpriseId)
         {
-            // Client client = _dbContext.Clients.Single(x => x.UserId == id);
             Enterprise enterprise = _dbContext.Enterprises.SingleOrDefault(x => x.EnterpriseId == enterpriseId);
 
             return enterprise;
@@ -130,8 +131,8 @@ namespace EcoClean.Controllers.Api
         [Route("DeleteEnterpriseById")]
         public void DeleteEnterpriseById(int enterpriseId)
         {
-            //string userIdStringified = _userManager.GetUserId(User);
-            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            string userid = GetCurrentUser();
+            Client client = _dbContext.Clients.Single(x => x.UserId == userid);
 
 
             Enterprise chosenEnterprise = _dbContext.Enterprises.SingleOrDefault(
@@ -387,7 +388,8 @@ namespace EcoClean.Controllers.Api
         [Route("getAllTaxes")]
         public List<Tax> GetAllTaxes()
         {
-            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            string userid = GetCurrentUser();
+            Client client = _dbContext.Clients.Single(x => x.UserId == userid);
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
 
             List<Tax> taxes = new List<Tax>();
@@ -433,7 +435,8 @@ namespace EcoClean.Controllers.Api
         [Route("getAllUsersReports")]
         public List<ReportResponseModel> getAllUsersReports()
         {
-            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            string userid = GetCurrentUser();
+            Client client = _dbContext.Clients.Single(x => x.UserId == userid);
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
 
             List<ReportResponseModel> responseReports = new List<ReportResponseModel>();
@@ -693,7 +696,8 @@ namespace EcoClean.Controllers.Api
             //string userIdStringified = _userManager.GetUserId(User);
             //Client client = _dbContext.Clients.SingleOrDefault(x => x.UserId == userIdStringified);
 
-            Client client = _dbContext.Clients.Single(x => x.UserId == id);
+            string userid = GetCurrentUser();
+            Client client = _dbContext.Clients.Single(x => x.UserId == userid);
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
 
             List<SmartDeviceData> responseModels = new List<SmartDeviceData>();

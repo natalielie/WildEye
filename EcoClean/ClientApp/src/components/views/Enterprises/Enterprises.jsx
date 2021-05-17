@@ -53,20 +53,20 @@ class Enterprises extends Component {
     updateEnterprisesAdminHandler = () => EnterpriseApi.getAllEnterprisesInSystem(
         enterprises => this.setState({ enterprises: enterprises }));
 
-    addEnterpriseAdminHandler = (enterprise) => EnterpriseApi.addEnterprise(
+    addEnterpriseAdminHandler = async (enterprise) => await EnterpriseApi.addEnterprise(
         enterprise, this.updateEnterprisesAdminHandler);
 
-    deleteEnterpriseHandler = (enterpriseId) => EnterpriseApi.DeleteEnterpriseById(
+    deleteEnterpriseHandler = async (enterpriseId) => await EnterpriseApi.DeleteEnterpriseById(
         enterpriseId, this.updateEnterprisesAdminHandler);
 
     //for user
-    updateEnterpriseHandler = () => EnterpriseApi.getAllEnterprises(
+    updateEnterpriseHandler = async () => await EnterpriseApi.getAllEnterprises(
         enterprises => this.setState({ enterprises: enterprises }));
 
-    addEnterpriseHandler = (enterprise) => EnterpriseApi.addEnterprise(
+    addEnterpriseHandler = async (enterprise) => await EnterpriseApi.addEnterprise(
         enterprise, this.updateEnterpriseHandler);
 
-    deleteEnterpriseHandler = (enterpriseId) => EnterpriseApi.DeleteEnterpriseById(
+    deleteEnterpriseHandler = async (enterpriseId) => await EnterpriseApi.DeleteEnterpriseById(
         enterpriseId, this.updateEnterpriseHandler);
 
 

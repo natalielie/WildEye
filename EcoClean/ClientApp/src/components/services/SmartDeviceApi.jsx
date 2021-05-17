@@ -1,9 +1,13 @@
 ﻿import Axios from 'axios';
+import authService from '../api-authorization/AuthorizeService'
 
 class SmartDeviceApi {
 
-    static getAllData = (callback) => {
-        Axios.get('api/client/getAllData')
+    static getAllData = async (callback) => {
+        const token = await authService.getAccessToken();
+        Axios.get('api/client/getAllData', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(res => callback(res.data))
             .catch(SmartDeviceApi.errorHandler);
     }
