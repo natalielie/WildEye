@@ -50,7 +50,7 @@ class Enterprises extends Component {
     }
 
     // for admin
-    updateEnterprisesAdminHandler = () => EnterpriseApi.getAllEnterprisesInSystem(
+    updateEnterprisesAdminHandler = async () => await EnterpriseApi.getAllEnterprisesInSystem(
         enterprises => this.setState({ enterprises: enterprises }));
 
     addEnterpriseAdminHandler = async (enterprise) => await EnterpriseApi.addEnterprise(

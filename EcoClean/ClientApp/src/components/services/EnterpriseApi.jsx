@@ -25,8 +25,11 @@ class EnterpriseApi {
             .catch(EnterpriseApi.errorHandler);
     }
 
-    static getAllEnterprisesInSystem = (callback) => {
-        Axios.get('api/client/getAllEnterprisesInSystem')
+    static getAllEnterprisesInSystem = async (callback) => {
+        const token = await authService.getAccessToken();
+        Axios.get('api/client/getAllEnterprisesInSystem/', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(res => callback(res.data))
             .catch(EnterpriseApi.errorHandler);
     }

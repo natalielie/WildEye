@@ -16,14 +16,12 @@ namespace EcoClean.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public readonly IHttpContextAccessor _httpContextAccessor;
+
 
         public ApplicationDbContext(
             DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions, 
-            IHttpContextAccessor httpContextAccessor) : base(options, operationalStoreOptions)
+            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
-            _httpContextAccessor = httpContextAccessor;
         }
    
         public DbSet<Enterprise> Enterprises { get; set; }
@@ -183,4 +181,3 @@ namespace EcoClean.Data
 
         }
     }
-}
