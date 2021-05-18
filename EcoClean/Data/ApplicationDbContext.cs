@@ -23,7 +23,7 @@ namespace EcoClean.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
-   
+
         public DbSet<Enterprise> Enterprises { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Report> Reports { get; set; }
@@ -181,3 +181,4 @@ namespace EcoClean.Data
 
         }
     }
+}
