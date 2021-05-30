@@ -3,6 +3,15 @@
     "mssql1": {
       "type": "mssql.local",
       "connectionId": "DefaultConnection"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/ecoprisedbserver/databases/Ecoprise_db",
+      "type": "mssql.azure",
+      "connectionId": "SQL",
+      "secretStore": null
+    },
+    "secrets1": {
+      "type": "secrets.user"
     }
   }
 }
