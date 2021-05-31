@@ -49,7 +49,7 @@ namespace EcoClean
                 .AddIdentityServerJwt();
 
 
-
+            
 
             //services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 

@@ -4,12 +4,12 @@
       "type": "mssql",
       "connectionId": "DefaultConnection"
     },
+    "secrets1": {
+      "type": "secrets"
+    },
     "mssql2": {
       "type": "mssql",
       "connectionId": "SQL"
-    },
-    "secrets1": {
-      "type": "secrets"
     }
   }
 }

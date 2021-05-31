@@ -7,8 +7,9 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-  </PropertyGroup>
 
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.13" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.13" />
@@ -33,6 +34,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20210322213958_init3.cs" />
     <Compile Remove="Data\Migrations\20210322213958_init3.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210512104359_initdontknow.cs" />
+    <Compile Remove="Data\Migrations\20210512104359_initdontknow.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
