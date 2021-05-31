@@ -12,6 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT2": "Development",
         "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
       },
       "ancmHostingModel": "OutOfProcess"
