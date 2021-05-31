@@ -33,6 +33,10 @@ namespace EcoClean
                         config.AddUserSecrets<Program>();
                     }
                 }).UseStartup<Startup>();
+        }).ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+            logging.AddConsole();
         });
     }
 }
