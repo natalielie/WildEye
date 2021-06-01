@@ -21,3 +21,4 @@ class BackupApi {
     }
 
     errorHandler = error => console.log(error);
+}

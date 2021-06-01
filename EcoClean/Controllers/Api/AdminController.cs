@@ -257,7 +257,7 @@ namespace EcoClean.Controllers.Api
             {
                 enterpriseData = GetAveragePollutionOfEnterprise(enterprise.EnterpriseId);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
             }
 

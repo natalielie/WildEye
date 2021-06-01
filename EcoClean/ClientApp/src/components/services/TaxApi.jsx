@@ -30,8 +30,7 @@ class TaxApi {
 
         Axios.delete('api/client/deleteCertificateById' + id, {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        }))
-            .then(() => TaxApi.getAllCertificates(callback))
+        }).then(() => TaxApi.getAllCertificates(callback))
             .catch(TaxApi.errorHandler);
     }
 
