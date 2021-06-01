@@ -105,7 +105,7 @@ namespace EcoClean.Controllers.Api
 
         [HttpGet]
         [Route("getAllEnterprisesInSystem")]
-        public List<EnterpriseResponseModel> GetAllEnterprisesInSystem()
+        public IActionResult GetAllEnterprisesInSystem()
         {
             List<Enterprise> enterprises = _dbContext.Enterprises.ToList();
 
@@ -113,7 +113,7 @@ namespace EcoClean.Controllers.Api
                 .Select(x => new EnterpriseResponseModel(x.EnterpriseId, x.Name,
                 x.Kind, x.PhoneNumber, x.Product, x.Address, x.Rate))
                 .ToList();
-            return responseModels;
+            return Ok(responseModels);
         }
 
 
@@ -787,7 +787,7 @@ namespace EcoClean.Controllers.Api
                     airPollutionAverage += response.AirPollutionAverage;
                     waterPollutionAverage += response.WaterPollutionAverage;
                 }
-                catch(ArgumentException ex)
+                catch(ArgumentException)
                 {
                 }
             }
