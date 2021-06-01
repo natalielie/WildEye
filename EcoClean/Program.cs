@@ -21,24 +21,36 @@ namespace EcoClean
         {
             CreateHostBuilder(args).Build().Run();
         }
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            webBuilder
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    if (hostingContext.HostingEnvironment.IsEnvironment("LocalDevelopment"))
+                Host.CreateDefaultBuilder(args)
+                    .ConfigureWebHostDefaults(webBuilder =>
                     {
-                        config.AddUserSecrets<Program>();
-                    }
-                }).UseStartup<Startup>();
-        }).ConfigureLogging(logging =>
+                        webBuilder.UseStartup<Startup>();
+                    }).ConfigureLogging(logging =>
         {
             logging.ClearProviders();
             logging.AddConsole();
         });
     }
+    //public static IHostBuilder CreateHostBuilder(string[] args) =>
+    //Host.CreateDefaultBuilder(args)
+    //    .ConfigureWebHostDefaults(webBuilder =>
+    //    {
+    //        webBuilder
+    //            .ConfigureAppConfiguration((hostingContext, config) =>
+    //            {
+    //                if (hostingContext.HostingEnvironment.IsEnvironment("LocalDevelopment"))
+    //                {
+    //                    config.AddUserSecrets<Program>();
+    //                }
+    //            }).UseStartup<Startup>();
+    //    }).ConfigureLogging(logging =>
+    //    {
+    //        logging.ClearProviders();
+    //        logging.AddConsole();
+    //    });
+    //}
 }
 
             //        public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -153,7 +153,7 @@ namespace EcoClean
         {
             if (env.IsDevelopment() || env.IsLocalDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
