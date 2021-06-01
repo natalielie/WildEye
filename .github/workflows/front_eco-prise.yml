@@ -52,5 +52,5 @@ jobs:
       with:
         app-name: 'Eco-prise'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_624b8c4f56394bd7a99e02187ce1f64d }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_a1a4f79f1bc34053932e6defdfbb4577 }}
         package: .
