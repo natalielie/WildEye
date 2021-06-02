@@ -40,6 +40,8 @@
     <Compile Remove="Data\Migrations\20210512104359_initdontknow.Designer.cs" />
     <Compile Remove="Data\Migrations\20210601172558_test.cs" />
     <Compile Remove="Data\Migrations\20210601172558_test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210602093139_test.cs" />
+    <Compile Remove="Data\Migrations\20210602093139_test.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
