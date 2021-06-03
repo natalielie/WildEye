@@ -53,11 +53,11 @@ export class Logout extends Component {
             const action = this.props.action;
             switch (action) {
                 case LogoutActions.Logout:
-                    return (<div>Processing logout</div>);
+                    return (<div></div>);
                 case LogoutActions.LogoutCallback:
-                    return (<div>Processing logout callback</div>);
+                    return (<div>\</div>);
                 case LogoutActions.LoggedOut:
-                    return (<div>{message}</div>);
+                    return (<div></div>);
                 default:
                     throw new Error(`Invalid action '${action}'`);
             }

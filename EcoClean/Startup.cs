@@ -192,7 +192,7 @@ namespace EcoClean
             {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsLocalDevelopment())
+                if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }

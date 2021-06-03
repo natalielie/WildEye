@@ -7,7 +7,7 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-   <!-- <PlatformTarget>AnyCPU</PlatformTarget> -->
+    <PlatformTarget>AnyCPU</PlatformTarget> 
     <UserSecretsId>7deed479-878e-4dfd-ae74-dbebefc0c7e5</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
