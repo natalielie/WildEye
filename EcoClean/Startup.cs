@@ -153,7 +153,7 @@ namespace EcoClean
         {
             if (env.IsDevelopment() || env.IsLocalDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -195,7 +195,7 @@ namespace EcoClean
             {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                if (env.IsLocalDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
