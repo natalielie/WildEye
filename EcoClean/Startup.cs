@@ -174,6 +174,9 @@ namespace EcoClean
             app.UseIdentityServer();
             app.UseAuthorization();
 
+            app.UseDeveloperExceptionPage();
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -195,6 +198,10 @@ namespace EcoClean
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+                else{
+                    app.UseExceptionHandler("/error");
+
                 }
             });
 
