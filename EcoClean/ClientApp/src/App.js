@@ -29,6 +29,8 @@ import SmartDevice from "./components/views/SmartDevice/SmartDevice";
 import { NavMenu } from "./components/NavMenu";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import AddEnterprise from "./components/views/Enterprises/AddEnterprise";
+import AddData from "./components/views/SmartDevice/AddData";
+
 
 
 const EnterprisesComponent = withTranslation()(Enterprises);
@@ -42,6 +44,7 @@ const AddReportComponent = withTranslation()(AddReport);
 const CertificatesComponent = withTranslation()(Certificates);
 const AddCertificateComponent = withTranslation()(AddCertificate);
 const SmartDeviceComponent = withTranslation()(SmartDevice);
+const AddDataComponent = withTranslation()(AddData);
 
 export default class App extends Component { 
     static displayName = App.name;
@@ -60,6 +63,7 @@ export default class App extends Component {
             <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
             <Route path="/enterprise/:id" component={EnterpriseComponent} />
             <Route path="/report/:id" component={ReportComponent} />
+            <Route path="/data-add/" component={AddDataComponent} />
             <Switch>
                 <Route exact path="/" component={HomeComponent} />
                 <Route path="/enterprises" component={EnterprisesComponent} />

@@ -54,13 +54,14 @@ class Reports extends Component {
 
     constructor() {
         super();
-        this.state = { reports: [] };
+        this.state = { reports: [], username: "" };
 
     }
 
     async componentDidMount() {
         var user = await authService.getUser();
         const username = user.preferred_username;
+        this.state.username = username;
         document.title = "Reports";
         if (username == "admin@gmail.com") {
             this.updateReportsAdminHandler();
@@ -94,6 +95,13 @@ class Reports extends Component {
 
     render() {
         const { t } = this.props;
+        var isAdmin;
+        if (this.state.username == "admin@gmail.com") {
+            isAdmin = true;
+        }
+        else {
+            isAdmin = false;
+        }
         return (
             <div className="animated fadeIn">
                 <Row>
@@ -124,9 +132,10 @@ class Reports extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <Button class="btn btn-primary" style={{ marginTop: 20 }}>
-                    <Link tag={Link} className="text-dark" to="/report-add/" >{t("Create a new report")}</Link>
-                </Button>
+                {isAdmin ? (<></>) : (<Button className="btn btn-primary" style={{ marginTop: 20 }}>
+                        <Link tag={Link} className="text-dark" to="/report-add/" >{t("Create a new report")}</Link>
+                    </Button>)}
+                
             </div>
         )
     }

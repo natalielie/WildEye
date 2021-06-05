@@ -63,13 +63,14 @@ class Statistics extends Component {
 
     constructor() {
         super();
-        this.state = { enterprises: [] };
+        this.state = { enterprises: [], username: "" };
 
     }
 
     async componentDidMount() {
         var user = await authService.getUser();
         const username = user.preferred_username;
+        this.state.username = username;
         document.title = "Statistics";
         if (username == "admin@gmail.com") {
             if (ComboboxSort.current_stat == 0) {
@@ -110,77 +111,49 @@ class Statistics extends Component {
 
     render() {
         const { t } = this.props;
-
-        if (authService.getUser().preferred_username == "admin@gmail.com") {
-
-            return (
-                <div className="animated fadeIn">
-                    <ComboboxSort />
-                    <Row>
-                        <Col xl={8}>
-                            <Card>
-                                <CardHeader>
-                                    <i className="fa fa-align-justify"></i> {t("Statistics")}
-                                </CardHeader>
-                                <CardBody>
-                                    <Table responsive hover>
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">№</th>
-                                                <th scope="col">{t("Enterprise Name")}</th>
-                                                <th scope="col">{t("Rate")}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.state.enterprises.map((enterprise, index) =>
-                                                <EnterpriseRow key={index} enterprise={enterprise} />
-                                            )}
-                                        </tbody>
-                                    </Table>
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    </Row>
-                    <Button class="btn btn-primary" style={{ marginTop: 20 }}>
-                    <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Set Statistics")}</Link>
-                </Button>
-                </div>
-            )
-        } else {
-            return (
-                <div className="animated fadeIn">
-                    <ComboboxSort />
-                    <Row>
-                        <Col xl={8}>
-                            <Card>
-                                <CardHeader>
-                                    <i className="fa fa-align-justify"></i> {t("Statistics")}
-                                </CardHeader>
-                                <CardBody>
-                                    <Table responsive hover>
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">№</th>
-                                                <th scope="col">{t("Enterprise Name")}</th>
-                                                <th scope="col">{t("Rate")}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.state.enterprises.map((enterprise, index) =>
-                                                <EnterpriseRow key={index} enterprise={enterprise} />
-                                            )}
-                                        </tbody>
-                                    </Table>
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    </Row>
-                    <Button class="btn btn-primary" style={{ marginTop: 20 }}>
-                    <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Set Statistics")}</Link>
-                </Button>
-                </div>
-            )
+        var isAdmin;
+        if (this.state.username == "admin@gmail.com") {
+            isAdmin = true;
         }
+        else {
+            isAdmin = false;
+        }
+            return (
+                <div className="animated fadeIn">
+                    <ComboboxSort />
+                    <Row>
+                        <Col xl={8}>
+                            <Card>
+                                <CardHeader>
+                                    <i className="fa fa-align-justify"></i> {t("Statistics")}
+                                </CardHeader>
+                                <CardBody>
+                                    <Table responsive hover>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">№</th>
+                                                <th scope="col">{t("Enterprise Name")}</th>
+                                                <th scope="col">{t("Rate")}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.enterprises.map((enterprise, index) =>
+                                                <EnterpriseRow key={index} enterprise={enterprise} />
+                                            )}
+                                        </tbody>
+                                    </Table>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                    {isAdmin ? (
+                        <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+                            <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Set Statistics")}</Link>
+                        </Button>
+                    ) : (<></>)}
+                    
+                </div>
+            )
     }
 }
 

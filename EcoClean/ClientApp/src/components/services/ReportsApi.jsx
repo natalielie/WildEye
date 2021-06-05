@@ -37,7 +37,7 @@ class ReportsApi {
     }
 
     static deleteReportById = (id, callback) => {
-        Axios.delete('api/client/deleteReportById' + id)
+        Axios.delete('api/client/deleteReportById/' + id)
             .then(() => ReportsApi.getAllReports(callback))
             .catch(ReportsApi.errorHandler);
     }

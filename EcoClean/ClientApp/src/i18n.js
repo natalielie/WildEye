@@ -81,6 +81,8 @@ i18n
 
                     "Certificate Date": "Certificate Date",
 
+                    "Add a new Certificate": "Add a new Certificate",
+
                     "Add new data": "Add new data",
 
                     "My Enterprise": "My Enterprise",
@@ -167,6 +169,8 @@ i18n
                     "Date": "Дата",
 
                     "Certificate Date": "Дата отримання сертифікату",
+
+                    "Add a new Certificate": "Нагородити сертифікатом",
 
                     "Add new data": "Додати нові дані",
 

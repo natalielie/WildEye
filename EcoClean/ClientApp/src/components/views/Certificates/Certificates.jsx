@@ -18,10 +18,17 @@ function CertificateRow(props) {
 
 
     var dateFormat = require("dateformat");
+
+    var enterpr;
+    if (certificate.certificateId == 1) {
+        enterpr = "WOG"
+    }
+    else {
+        enterpr = "Johnny's"
+    }
         return (
             <tr key={certificate.certificateId.toString()}>
-                <th scope="row">{certificate.certificateId}</th>
-                <td>{certificate.enterpriseId}</td>
+                <td>{enterpr}</td>
                 <td>{dateFormat(certificate.certificateDate, "yyyy/mm/dd")}</td>
                 <td>
                     <DeleteModal onDelete={() => props.deleteCertificateHandler(
@@ -35,13 +42,14 @@ class Certificates extends Component {
 
     constructor() {
         super();
-        this.state = { certificates: [] };
+        this.state = { certificates: [], username: "" };
 
     }
 
     async componentDidMount() {
         var user = await authService.getUser();
         const username = user.preferred_username;
+        this.state.username = username;
         document.title = "Certificates";
         if (username == "admin@gmail.com") {
             this.updateCertificatesAdminHandler();
@@ -63,7 +71,7 @@ class Certificates extends Component {
         certificateId, this.updateCertificatesAdminHandler);
 
     //for user
-    updateCertificatesHandler = () => CertificatesApi.getAllCertificates(
+    updateCertificatesHandler = async () => await CertificatesApi.getAllUsersCertificates(
         certificates => this.setState({ certificates: certificates }));
 
     addEnterpriseHandler = (certificate) => CertificatesApi.createCertificate(
@@ -75,6 +83,13 @@ class Certificates extends Component {
 
     render() {
         const { t } = this.props;
+        var isAdmin;
+        if (this.state.username == "admin@gmail.com") {
+            isAdmin = true;
+        }
+        else {
+            isAdmin = false;
+        }
         return (
             <div className="animated fadeIn">
                 <Row>
@@ -87,7 +102,6 @@ class Certificates extends Component {
                                 <Table responsive hover>
                                     <thead>
                                         <tr>
-                                            <th scope="col">№</th>
                                             <th scope="col">{t("Enterprise Name")}</th>
                                             <th scope="col">{t("Certificate Date")}</th>
                                             <th scope="col">{t("Terminate")}</th>
@@ -103,9 +117,11 @@ class Certificates extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <Button class="btn btn-primary" style={{ marginTop: 20 }}>
-                    <Link tag={Link} className="text-dark" to="/certificate-add/" >{t("Add a new Certificate")}</Link>
-                </Button>
+                {isAdmin ? (
+                    <Button className="btn btn-primary" style={{ marginTop: 20 }}>
+                        <Link tag={Link} className="text-dark" to="/certificate-add/" >{t("Add a new Certificate")}</Link>
+                    </Button>
+                ):(<></>)}
             </div>
         )
     }

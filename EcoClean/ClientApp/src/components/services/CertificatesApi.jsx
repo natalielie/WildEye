@@ -1,9 +1,19 @@
 ﻿import Axios from 'axios';
+import authService from '../api-authorization/AuthorizeService'
 
 class CertificatesApi {
 
     static getAllCertificates = (callback) => {
-        Axios.get('api/client/getAllCertificates')
+        Axios.get('api/admin/getAllCertificates')
+            .then(res => callback(res.data))
+            .catch(CertificatesApi.errorHandler);
+    }
+
+    static getAllUsersCertificates = async (callback) => {
+        const token = await authService.getAccessToken();
+        Axios.get('api/client/getAllUsersCertificates', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(res => callback(res.data))
             .catch(CertificatesApi.errorHandler);
     }
@@ -25,7 +35,7 @@ class CertificatesApi {
 
 
     static deleteCertificateById = (id, callback) => {
-        Axios.delete('api/client/deleteCertificateById' + id)
+        Axios.delete('api/client/deleteCertificateById/' + id)
             .then(() => CertificatesApi.getAllCertificates(callback))
             .catch(CertificatesApi.errorHandler);
     }

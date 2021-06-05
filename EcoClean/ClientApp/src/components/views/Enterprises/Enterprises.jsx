@@ -99,7 +99,7 @@ class Enterprises extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+                <Button className="btn btn-primary" style={{ marginTop: 20 }}>
                     <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Add a new Enterprise")}</Link>
                 </Button>
             </div>

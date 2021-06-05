@@ -47,7 +47,7 @@ class EnterpriseApi {
 
     static DeleteEnterpriseById = async (id, callback) => {
         const token = await authService.getAccessToken();
-        Axios.delete('api/client/DeleteEnterpriseById' + id, {
+        Axios.delete('api/client/DeleteEnterpriseById/' + id, {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })
             .then(() => EnterpriseApi.getAllEnterprises(callback))

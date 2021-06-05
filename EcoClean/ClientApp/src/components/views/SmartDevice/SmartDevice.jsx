@@ -19,12 +19,19 @@ function DataRow(props) {
 
     var dateFormat = require("dateformat");
 
+    var enterpr;
+    if (data.enterpriseId == 1) {
+        enterpr = "WOG"
+    }
+    else {
+        enterpr = "ShoesOn"
+    }
+
     if (i18next.language == "en") {
 
         return (
             <tr key={data.smartDeviceDataId.toString()}>
-                <th scope="row">{data.smartDeviceDataId}</th>
-                <td>{data.enterpriseId}</td>
+                <td>{enterpr}</td>
                 <td>{data.airPollution} (ppm)</td>
                 <td>{data.waterPollution} (mg/l)</td>
                 <td>{dateFormat(data.smartDeviceDataDate, "yyyy/mm/dd")}</td>
@@ -34,8 +41,7 @@ function DataRow(props) {
     else {
         return (
             <tr key={data.smartDeviceDataId.toString()}>
-                <th scope="row">{data.smartDeviceDataId}</th>
-                <td>{data.enterpriseId}</td>
+                <td>{enterpr}</td>
                 <td>{data.airPollution} (ппм)</td>
                 <td>{data.waterPollution} (мг/л)</td>
                 <td>{dateFormat(data.smartDeviceDataDate, "dd-mm-yyyy")}</td>
@@ -95,7 +101,6 @@ class SmartDevice extends Component {
                                 <Table responsive hover>
                                     <thead>
                                         <tr>
-                                            <th scope="col">№</th>
                                             <th scope="col">{t("Enterprise Name")}</th>
                                             <th scope="col">{t("Air Pollution")}</th>
                                             <th scope="col">{t("Water Pollution")}</th>
@@ -112,10 +117,10 @@ class SmartDevice extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <Button class="btn btn-primary" style={{ marginTop: 20 }}>
+                <Button className="btn btn-primary" style={{ marginTop: 20 }}>
                     <Link tag={Link} className="text-dark" to="/data-add/" >{t("Add new data")}</Link>
                 </Button>
-                <Button class="btn btn-primary" style={{ marginTop: 20, marginLeft: 10 }}>
+                <Button className="btn btn-primary" style={{ marginTop: 20, marginLeft: 10 }}>
                     <Link tag={Link} className="text-dark" to="/data-пуе/" >{t("Get data from your Smart Device")}</Link>
                 </Button>
             </div>

@@ -52,7 +52,7 @@ class AddCertificate extends Component {
         document.title = "Add Certificate";
     }
 
-    addCertificateHandler = (appointment, callback) => CertificatesApi.createCertificate(appointment, callback);
+    addCertificateHandler = (certificate, callback) => CertificatesApi.createCertificate(certificate, callback);
 
     handleSubmit = (event) => {
         event.preventDefault();

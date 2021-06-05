@@ -58,7 +58,7 @@ namespace EcoClean.Controllers.Api
         [Route("addEnterprise")]
         public void AddEnterprise(EnterpriseRequestModel request)
         {
-            if(request != null)
+            if (request != null)
             {
                 string userid = GetCurrentUser();
                 Client client = _dbContext.Clients.Single(x => x.UserId == userid);
@@ -76,7 +76,7 @@ namespace EcoClean.Controllers.Api
                     _dbContext.Enterprises.Add(enterprise);
                     _dbContext.SaveChanges();
                 }
-                catch(DbUpdateException)
+                catch (DbUpdateException)
                 {
                 }
             }
@@ -128,8 +128,8 @@ namespace EcoClean.Controllers.Api
         }
 
         [HttpDelete]
-        [Route("DeleteEnterpriseById")]
-        public void DeleteEnterpriseById(int enterpriseId)
+        [Route("DeleteEnterpriseById/{enterpriseId?}")]
+        public void DeleteEnterpriseById([FromRoute]  int enterpriseId)
         {
             string userid = GetCurrentUser();
             Client client = _dbContext.Clients.Single(x => x.UserId == userid);
@@ -238,9 +238,27 @@ namespace EcoClean.Controllers.Api
 
         }
 
+        [HttpGet]
+        [Route("getAllUsersCertificates")]
+        public List<Certificate> GetAllUsersCertificates()
+        {
+            string userid = GetCurrentUser();
+            Client client = _dbContext.Clients.Single(x => x.UserId == userid);
+            List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
+            
+            List<Certificate> certificates = new List<Certificate>();
+
+            foreach (Enterprise enterprise in enterprises)
+            {
+                Certificate certificate = _dbContext.Certificates.SingleOrDefault(x => x.EnterpriseId == enterprise.EnterpriseId);
+                certificates.Add(certificate);
+            }
+            return certificates;
+        }
+
         [HttpDelete]
-        [Route("deleteCertificateById")]
-        public void DeleteCertificateById(int certificateId)
+        [Route("deleteCertificateById/{certificateId?}")]
+        public void DeleteCertificateById([FromRoute] int certificateId)
         {
             Certificate chosenCertificate = _dbContext.Certificates.SingleOrDefault(x => x.CertificateId == certificateId);
 
@@ -610,8 +628,8 @@ namespace EcoClean.Controllers.Api
 
 
         [HttpDelete]
-        [Route("deleteReportById")]
-        public void deleteReportById(int reportId)
+        [Route("deleteReportById/{reportId?}")]
+        public void deleteReportById([FromRoute] int reportId)
         {
             Report chosenReport = _dbContext.Reports.SingleOrDefault(x => x.ReportId == reportId);
 
