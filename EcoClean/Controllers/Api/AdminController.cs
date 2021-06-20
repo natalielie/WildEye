@@ -306,20 +306,6 @@ namespace EcoClean.Controllers.Api
 
         }
 
-        [HttpGet]
-        [Route("getAllDataInSystem")]
-        public List<SmartDeviceData> getAllDataInSystem()
-        {
-            List<SmartDeviceData> data = _dbContext.SmartDeviceData.ToList();
-
-            //List<EnterpriseResponseModel> responseModels = enterprises
-            //    .Select(x => new EnterpriseResponseModel(x.EnterpriseId, x.Name,
-            //    x.Kind, x.PhoneNumber, x.Product, x.Address, x.Rate))
-            //    .ToList();
-            return data;
-        }
-
-
         // database
         [HttpPost]
         [Route("backupDatabase")]

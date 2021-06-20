@@ -48,6 +48,9 @@ namespace EcoClean
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+
+            
+
             //services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             //       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
