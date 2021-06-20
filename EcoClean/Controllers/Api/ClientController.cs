@@ -5,6 +5,7 @@ using EcoClean.Models.Enterprise;
 using EcoClean.Models.Request;
 using EcoClean.Models.Response;
 using EcoClean.Models.SmartDevice;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -47,12 +48,22 @@ namespace EcoClean.Controllers.Api
         }
 
 
-        public IActionResult Index()
+        [HttpGet]
+        [Route("getToken")]
+        public string GetToken()
         {
-            return Content(User.Identity.Name);
+            string token = Token().Result;
+            return token;
         }
 
-        // enterprises //
+        public async Task<string> Token()
+        {
+            //string userid = HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string accessToken = await HttpContext.GetTokenAsync("access_token");
+            return accessToken;
+        }
+
+            // enterprises //
 
         [HttpPost]
         [Route("addEnterprise")]
