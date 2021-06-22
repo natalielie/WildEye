@@ -1,67 +1,69 @@
 ﻿import React, { Component, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import authService from '../../api-authorization/AuthorizeService';
+import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row } from 'reactstrap';
 import SmartDeviceApi from '../../services/SmartDeviceApi';
-
-
-const ComboboxProfessional = (props) => {
-
-    const onChange = e => {
-        const { name, value } = e.target;
-    }
-    const {
-        current_professional
-    } = 0;
-
-    const professionalOptions = [
-        {
-            label: "WOG",
-            value: 1,
-        },
-        {
-            label: "ShoesOn",
-            value: 3,
-        }
-    ];
-
-    return (
-        <>
-            <div className="form-group">
-                <select value={current_professional} onChange={onChange} id="license_type" name="current_professional">
-                    {professionalOptions.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-            </div>
-        </>
-    )
-}
-
-
-
+import '../../../custom.css';
 
 class AddData extends Component {
 
     constructor() {
-        super();
+    super();
 
-        this.addDataHandler = this.addDataHandler.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    this.addDataHandler = this.addDataHandler.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
-    componentDidMount() {
+    this.state = {
+        enterprises: [],
+        selectedEnterprise: "",
+        validationError: ""
+    };
+}
+   
+
+    async componentDidMount() {
+
         document.title = "Add Data";
+
+        const token = await authService.getAccessToken();
+
+        fetch(
+            'api/client/getAllEnterprises', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                let enterprisesFromApi = data.map(enterprise => {
+                    return { value: enterprise.enterpriseId, display: enterprise.name };
+                });
+                this.setState({
+                    enterprises: [
+                        {
+                            value: "",
+                            display:
+                                "(Select your enterprise)"
+                        }
+                    ].concat(enterprisesFromApi)
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     addDataHandler = (data, callback) => SmartDeviceApi.addSmartDeviceData(data, callback);
+
+
 
     handleSubmit = (event) => {
         event.preventDefault();
 
         var data = {
-            enterpriseId: 3,
+            enterpriseId: this.state.selectedEnterprise,
             airPollution: event.target.elements['airPollution'].value,
-            waterPoluttion: event.target.elements['waterPollution'].value,
+            waterPollution: event.target.elements['waterPollution'].value,
         };
 
         this.addDataHandler(data, () => this.props.history.push('/smart-device'));
@@ -69,6 +71,18 @@ class AddData extends Component {
 
     render() {
         const { t } = this.props;
+        const colourStyles = {
+            control: styles => ({ styles, backgroundColor: 'white' }),
+            option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+                const color = chroma(data.color);
+                return {
+                    ...styles,
+                    backgroundColor: isDisabled ? 'red' : blue,
+                    color: '#FFF',
+                    cursor: isDisabled ? 'not-allowed' : 'default'
+    };
+            },
+};
         return (
             <div className="animated fadeIn">
                 <Row>
@@ -81,10 +95,44 @@ class AddData extends Component {
                                 <form onSubmit={this.handleSubmit} className="form-horizontal">
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="professional">{t("Enterprise Name")}</Label>
+                                            <Label htmlFor="enterprise">{t("Enterprise")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <ComboboxProfessional />
+
+                                            <div>
+                                                <select
+                                                    value={this.state.selectedEnterprise}
+                                                    onChange={e =>
+                                                        this.setState({
+                                                            selectedEnterprise: e.target.value,
+                                                            validationError:
+                                                                e.target.value === ""
+                                                                    ? "You must select your enterprise"
+                                                                    : ""
+                                                        })
+                                                    }
+                                                styles={colourStyles}
+                                                >
+                                                    {this.state.enterprises.map(enterprise => (
+                                                        <option
+                                                            key={enterprise.value}
+                                                            value={enterprise.value}
+                                                        >
+                                                            {enterprise.display}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div
+                                                    style={{
+                                                        color: "red",
+                                                        marginTop: "5px"
+                                                    }}
+                                                >
+                                                    {this.state.validationError}
+                                                </div>
+                                            </div>
+
+
                                         </Col>
                                     </FormGroup>
 
@@ -93,7 +141,7 @@ class AddData extends Component {
                                             <Label htmlFor="airPollution">{t("Air Pollution")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="airPollution" placeholder="Air pollution" />
+                                            <Input type="text" id="airPollution" placeholder="Air pollution (ppm)" />
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -101,7 +149,7 @@ class AddData extends Component {
                                             <Label htmlFor="waterPollution">{t("Water Pollution")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="waterPollution" placeholder="Water pollution" />
+                                            <Input type="text" id="waterPollution" placeholder="Water pollution (mg/l)" />
                                         </Col>
                                     </FormGroup>
 

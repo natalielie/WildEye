@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
 
+import LanguageSwitcher from "./LanguageSwitcher";
+
 import App from "../App";
 import { withTranslation } from "react-i18next";
 
@@ -45,7 +47,9 @@ export class NavMenu extends Component {
                 </NavItem>
                             <LoginComponent>
                             </LoginComponent>
-              </ul>
+                        </ul>
+            <LanguageSwitcher />
+                        <ul></ul>
             </Collapse>
           </Container>
         </Navbar>

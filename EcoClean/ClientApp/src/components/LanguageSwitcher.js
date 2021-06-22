@@ -3,7 +3,7 @@
 import { useHistory } from "react-router-dom";
 //import i18n from "../../i18n";
 import { useTranslation } from 'react-i18next';
-
+import '../custom.css';
 
 const LanguageSwitcher = props => {
     const history = useHistory();
@@ -35,20 +35,19 @@ const LanguageSwitcher = props => {
 
     const languageOptions = [
         {
-            label: "English",
+            label: "en",
             value: "en",
         },
         {
-            label: "Українська",
+            label: "укр",
             value: "ua",
         },
     ];
 
     return (
         <>
-            <h5>{t("Selectlanguage")}</h5>
-            <div className="form-group">
-                <select value={current_language} onChange={onChange} id="license_type" name="current_language">
+            <div className="form-group" >
+                <select className="langSelect" value={current_language} onChange={onChange} id="license_type" name="current_language">
                     {languageOptions.map((option) => (
                         <option value={option.value}>{option.label}</option>
                     ))}

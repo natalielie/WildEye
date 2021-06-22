@@ -1,15 +1,23 @@
-﻿using EcoClean.Data;
+﻿using EcoClean.Areas.Identity.Pages.Account;
+using EcoClean.Data;
 using EcoClean.Models;
 using EcoClean.Models.Client;
 using EcoClean.Models.Enterprise;
 using EcoClean.Models.Request;
 using EcoClean.Models.Response;
 using EcoClean.Models.SmartDevice;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EcoClean.Controllers.Api
@@ -23,10 +31,18 @@ namespace EcoClean.Controllers.Api
 
         // string[] airSubstance = new string[] { "NO", "CO2", "CH2O", "Hg", "H2S" };
         //string[] waterSubstance = new string[] { "NH4+", "", "", "", ""};
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<LoginRequestModel> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MobileController(ApplicationDbContext dbContext)
+        public MobileController(ApplicationDbContext dbContext,
+            ILogger<LoginRequestModel> logger, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _dbContext = dbContext;
+            _logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -34,28 +50,87 @@ namespace EcoClean.Controllers.Api
             return View();
         }
 
+        private string GetCurrentUser()
+        {
+            Claim userClaim =
+           HttpContext?.User.Claims.FirstOrDefault(c => c.Type ==
+           ClaimTypes.NameIdentifier);
+            return userClaim?.Value;
+        }
+
         [HttpPost]
         [Route("login")]
-        public string LogIn(LoginRequestModel request)
+        public async Task<string> LogIn(LoginRequestModel request)
         {
             if(request != null)
             {
-                ApplicationUser user = _dbContext.Users.SingleOrDefault(
-               x => x.Email == request.Email && x.PasswordHash == request.Password);
-                if (user == null)
+                //       var result = await _signInManager.PasswordSignInAsync(request.Email,
+                //request.Password, false, false);
+                //       _logger.LogInformation("User logged in.");
+                //       await Authenticate(request.Email);
+                //       string userid = GetCurrentUser();
+                //       ApplicationUser user = _dbContext.Users.SingleOrDefault(
+                //      x => x.Email == request.Email && x.PasswordHash == request.Password);
+                //       if (user == null)
+                //       {
+                //           throw new NullReferenceException();
+                //       }
+                //       else
+                //       {
+                //           await Authenticate(request.Email);
+                //           userId = user.Id;
+
+                //           return userId;
+                //       }
+                var user = await _userManager.FindByEmailAsync(request.Email);
+                var subjectId = Guid.NewGuid().ToString();
+                if (user != null &&
+                    await _userManager.CheckPasswordAsync(user, request.Password))
                 {
-                    throw new NullReferenceException();
+                    var claims = new[] { 
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(JwtClaimTypes.Subject, subjectId)
+                    };
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var principal = new ClaimsPrincipal(identity);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTimeOffset.Now.AddDays(1),
+                        IsPersistent = true,
+                    };
+
+                    var result = await _signInManager.PasswordSignInAsync(request.Email,
+                    request.Password, false, false);
+
+                    await HttpContext.SignInAsync(principal);
+                    await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(principal), authProperties);
+
                 }
-                else
-                {
-                    userId = user.Id;
-                    return userId;
-                }
+                return HttpContext.User.Identity.Name;
             }
             else
             {
                 throw new NullReferenceException();
             }
+        }
+
+        private async Task Authenticate(string userName)
+        {
+            // создаем один claim
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+    };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         // enterprises //

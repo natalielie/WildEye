@@ -54,6 +54,18 @@ class EnterpriseApi {
             .catch(EnterpriseApi.errorHandler);
     }
 
+    static getAllEnterprisesForDrop = async (callback) => {
+        const token = await authService.getAccessToken();
+
+        Axios.get('api/client/getAllEnterprises', {
+
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+            .then(res => callback(res.data))
+            .catch(EnterpriseApi.errorHandler);
+    }
+
+
     errorHandler = error => console.log(error);
 
 }

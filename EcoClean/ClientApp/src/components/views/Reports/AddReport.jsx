@@ -1,41 +1,9 @@
 ﻿import React, { Component, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row } from 'reactstrap';
 import ReportsApi from '../../services/ReportsApi';
-import EnterpriseApi from '../../services/EnterpriseApi';
+import authService from '../../api-authorization/AuthorizeService';
 
-const ComboboxEnterprise = (props) => {
-
-    const onChange = e => {
-        const { name, value } = e.target;
-    }
-    const {
-        current_enterprise
-    } = 0;
-
-    const enterpriseOptions = [
-        {
-            label: "WOG",
-            value: 6,
-        },
-        {
-            label: "Shoes On",
-            value: 8,
-        },
-    ];
-
-    return (
-        <>
-            <div className="form-group">
-                <select value={current_enterprise} onChange={onChange} id="license_type" name="current_enterprise">
-                    {enterpriseOptions.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-            </div>
-        </>
-    )
-}
 
 class AddReport extends Component {
 
@@ -44,11 +12,43 @@ class AddReport extends Component {
 
         this.addReportHandler = this.addReportHandler.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.state = {
+            enterprises: [],
+            selectedEnterprise: "",
+            validationError: ""
+        };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         document.title = "Add Report";
 
+        const token = await authService.getAccessToken();
+
+        fetch(
+            'api/client/getAllEnterprises', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                let enterprisesFromApi = data.map(enterprise => {
+                    return { value: enterprise.enterpriseId, display: enterprise.name };
+                });
+                this.setState({
+                    enterprises: [
+                        {
+                            value: "",
+                            display:
+                                "(Select your enterprise)"
+                        }
+                    ].concat(enterprisesFromApi)
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
 
@@ -58,7 +58,7 @@ class AddReport extends Component {
         event.preventDefault();
 
         var data = {
-            enterpriseId: 3,
+            enterpriseId: this.state.selectedEnterprise,
             comment: event.target.elements['comment'].value
         };
 
@@ -82,7 +82,37 @@ class AddReport extends Component {
                                             <Label htmlFor="enterpriseId">{t("Enterprise Name")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <ComboboxEnterprise />
+                                            <div>
+                                                <select
+                                                    value={this.state.selectedEnterprise}
+                                                    onChange={e =>
+                                                        this.setState({
+                                                            selectedEnterprise: e.target.value,
+                                                            validationError:
+                                                                e.target.value === ""
+                                                                    ? "You must select your enterprise"
+                                                                    : ""
+                                                        })
+                                                    }
+                                                >
+                                                    {this.state.enterprises.map(enterprise => (
+                                                        <option
+                                                            key={enterprise.value}
+                                                            value={enterprise.value}
+                                                        >
+                                                            {enterprise.display}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div
+                                                    style={{
+                                                        color: "red",
+                                                        marginTop: "5px"
+                                                    }}
+                                                >
+                                                    {this.state.validationError}
+                                                </div>
+                                            </div>
                                         </Col>
                                     </FormGroup>
 

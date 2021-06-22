@@ -55,7 +55,6 @@ export default class App extends Component {
   render () {
     return (
         <Layout>
-            <LanguageSwitcher />
             
             <Route path="/enterprise-add/" component={AddEnterComponent} />
             <Route path="/report-add/" component={AddReportComponent} />

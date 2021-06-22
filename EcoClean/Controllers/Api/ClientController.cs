@@ -91,7 +91,7 @@ namespace EcoClean.Controllers.Api
         [HttpGet]
         [Route("getAllEnterprises")]
         public IActionResult GetAllClientsEnterprises()
-        {
+         {
             string userid = GetCurrentUser();
             Client client = _dbContext.Clients.Single(x => x.UserId == userid);
             List<Enterprise> enterprises = _dbContext.Enterprises.Where(x => x.ClientId == client.ClientId).ToList();
@@ -651,7 +651,7 @@ namespace EcoClean.Controllers.Api
 
 
         [HttpPost]
-        [Route("addSmartDeviceData")]
+        [Route("addSmarteData")]
         public void addSmartDeviceData(SmartDeviceDataRequestModel request)
         {
             SmartDeviceData data = new SmartDeviceData

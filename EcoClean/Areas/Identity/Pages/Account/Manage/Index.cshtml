@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+
 @{
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
@@ -47,8 +48,8 @@
             string fileListLogPath = Directory.GetParent(localDownloadFilePath).Parent.FullName + @"\DATA\" + fileListLogName + ".ldf";
 
             string sql = @"RESTORE DATABASE @dbName FROM DISK = @path WITH RECOVERY,
-                MOVE @fileListDataName TO @fileListDataPath,
-                MOVE @fileListLogName TO @fileListLogPath";
+            MOVE @fileListDataName TO @fileListDataPath,
+            MOVE @fileListLogName TO @fileListLogPath";
 
             string connectionString = "Server=(localdb)\\mssqllocaldb;Database=aspnet-PetthyDb;Trusted_Connection=True;MultipleActiveResultSets=true";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -72,19 +73,26 @@
         }
     }
 }
-
+@inject UserManager<ApplicationUser> UserManager
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <div style=" float: right;">
-    <button id="backup" onclick="function backup() {
+    @{var user = await UserManager.GetUserAsync(User);
+        if (user.Email == "admin@gmail.com")
+        {
+            <button id="backup" onclick="function backup() {
   alert('Database was succesfully backed up.');
     }; setTimeout(backup, 6000); " class="btn btn-primary">
-        Backup Database
-    </button>
-    <button id="restore" onclick="@RestoreDatabase()" class="btn btn-primary">Restore Database</button>
-    <!--<button id="backup" type="submit" class="btn btn-primary">Backup Database</button>
-    <button id="restore" type="submit" class="btn btn-primary">Restore Database</button>-->
+                Backup Database
+            </button>
+            <button id="restore" onclick="@RestoreDatabase()" class="btn btn-primary">Restore Database</button>
+            <!--<button id="backup" type="submit" class="btn btn-primary">Backup Database</button>
+            <button id="restore" type="submit" class="btn btn-primary">Restore Database</button>-->
+    } }
+
+
+
 </div>
 <div class="row">
     <div class="col-md-6">
