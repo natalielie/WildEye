@@ -11,13 +11,12 @@ on:
 
 jobs:
   delete-artifacts:
-      runs-on: windows-latest
-      steps:
-        - uses: kolpav/purge-artifacts-action@v1
-          with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            expire-in: 7days 
-            
+    runs-on: windows-latest
+    steps:
+      - uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          expire-in: 7days 
   build:
     runs-on: windows-latest
 
