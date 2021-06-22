@@ -23,11 +23,40 @@ class Report extends Component {
         reportId, report => this.setState({ report: report }));
 
     render() {
+        
 
         var dateFormat = require("dateformat");
 
         const { t } = this.props;
 
+        let airSubs = "";
+        let waterSubs = "";
+
+        switch (this.state.report.airPollutionSubstance) {
+            case 0: airSubs = "NO";
+                break;
+            case 1: airSubs = "CO₂";
+                break;
+            case 2: airSubs = "CH₂O";
+                break;
+            case 3: airSubs = "Hg";
+                break;
+            case 4: airSubs = "H₂S";
+                break;
+        }
+
+        switch (this.state.report.waterPollutionSubstance) {
+            case 0: waterSubs = "NH₄";
+                break;
+            case 1: waterSubs = t("Organic");
+                break;
+            case 2: waterSubs = t("Petroleum products");
+                break;
+            case 3: waterSubs = t("Nitrates");
+                break;
+            case 4: waterSubs = t("Phosphates");
+                break;
+        }
         if (i18next.language == "en") {
             return (
                 <div className="animated fadeIn">
@@ -46,11 +75,11 @@ class Report extends Component {
                                             </tr>
                                             <tr>
                                                 <td>{`Air Pollution Substance:`}</td>
-                                                <td><strong>{this.state.report.airPollutionSubstance}</strong></td>
+                                                <td><strong>{airSubs}</strong></td>
                                             </tr>
                                             <tr>
                                                 <td>{`Water Pollution Substance:`}</td>
-                                                <td><strong>{this.state.report.waterPollutionSubstance}</strong></td>
+                                                <td><strong>{waterSubs}</strong></td>
                                             </tr>
                                             <tr>
                                                 <td>{`Air Emissions:`}</td>
@@ -107,11 +136,11 @@ class Report extends Component {
                                             </tr>
                                             <tr>
                                                 <td>{`Речовина забруднення повітря:`}</td>
-                                                <td><strong>{this.state.report.airPollutionSubstance}</strong></td>
+                                                <td><strong>{airSubs}</strong></td>
                                             </tr>
                                             <tr>
                                                 <td>{`Речовина забруднення води:`}</td>
-                                                <td><strong>{this.state.report.waterPollutionSubstance}</strong></td>
+                                                <td><strong>{waterSubs}</strong></td>
                                             </tr>
                                             <tr>
                                                 <td>{`Об'єм викидів у повітря:`}</td>

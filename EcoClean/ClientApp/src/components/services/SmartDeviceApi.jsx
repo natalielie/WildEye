@@ -19,8 +19,8 @@ class SmartDeviceApi {
     }
 
     static addSmartDeviceData = (smartdata, callback) => {
-        Axios.post('api/client/addSmarteData/', smartdata)
-            .then(() => SmartDeviceApi.getAllDataInSystem(callback))
+        Axios.post('/api/admin/addSmartData', smartdata)
+            .then(() => SmartDeviceApi.getAllData(callback))
             .catch(SmartDeviceApi.errorHandler);
     }
 

@@ -61,9 +61,9 @@ class AddData extends Component {
         event.preventDefault();
 
         var data = {
-            enterpriseId: this.state.selectedEnterprise,
-            airPollution: event.target.elements['airPollution'].value,
-            waterPollution: event.target.elements['waterPollution'].value,
+            enterpriseId: parseFloat(this.state.selectedEnterprise),
+            airPollution: parseFloat(event.target.elements['airPollution'].value),
+            waterPollution: parseFloat(event.target.elements['waterPollution'].value),
         };
 
         this.addDataHandler(data, () => this.props.history.push('/smart-device'));
@@ -71,18 +71,7 @@ class AddData extends Component {
 
     render() {
         const { t } = this.props;
-        const colourStyles = {
-            control: styles => ({ styles, backgroundColor: 'white' }),
-            option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-                const color = chroma(data.color);
-                return {
-                    ...styles,
-                    backgroundColor: isDisabled ? 'red' : blue,
-                    color: '#FFF',
-                    cursor: isDisabled ? 'not-allowed' : 'default'
-    };
-            },
-};
+        
         return (
             <div className="animated fadeIn">
                 <Row>
@@ -111,7 +100,7 @@ class AddData extends Component {
                                                                     : ""
                                                         })
                                                     }
-                                                styles={colourStyles}
+                                                
                                                 >
                                                     {this.state.enterprises.map(enterprise => (
                                                         <option

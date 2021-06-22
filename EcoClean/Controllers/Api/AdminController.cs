@@ -306,6 +306,29 @@ namespace EcoClean.Controllers.Api
 
         }
 
+
+        [HttpPost]
+        [Route("addSmartData")]
+        public void addSmartDeviceData(SmartDeviceDataRequestModel request)
+        {
+            SmartDeviceData data = new SmartDeviceData
+            {
+                EnterpriseId = request.EnterpriseId,
+                AirPollution = request.AirPollution,
+                WaterPollution = request.WaterPollution,
+                SmartDeviceDataDate = DateTime.Now
+            };
+
+            try
+            {
+                _dbContext.SmartDeviceData.Add(data);
+                _dbContext.SaveChanges();
+            }
+            catch (DbUpdateException) { }
+
+
+        }
+
         // database
         [HttpPost]
         [Route("backupDatabase")]

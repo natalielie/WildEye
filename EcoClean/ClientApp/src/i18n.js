@@ -97,6 +97,12 @@ i18n
                     "Air Pollution": "Air Pollution",
                     "Water Pollution": "Water Pollution",
                     "Get data from your Smart Device": "Get data from your Smart Device",
+
+                    Organic: "Organic",
+                    "Petroleum products": "Petroleum products",
+                    Nitrates: "Nitrates",
+                    Phosphates: "Phosphates",
+
                 },
             },
             ua: {
@@ -185,6 +191,11 @@ i18n
                     "Air Pollution": "Забруднення повітря",
                     "Water Pollution": "Забруднення води",
                     "Get data from your Smart Device": "Отримати дані зі Смарт-пристрою",
+
+                    Organic: "Органічні речовини",
+                    "Petroleum products": "Нафтопродукти",
+                    Nitrates: "Нітрати",
+                    Phosphates: "Фосфати"
                 },
             },
         },

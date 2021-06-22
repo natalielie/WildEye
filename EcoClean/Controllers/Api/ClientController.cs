@@ -251,9 +251,13 @@ namespace EcoClean.Controllers.Api
             foreach (Enterprise enterprise in enterprises)
             {
                 Certificate certificate = _dbContext.Certificates.SingleOrDefault(x => x.EnterpriseId == enterprise.EnterpriseId);
-                certificates.Add(certificate);
+                if (certificate != null)
+                    certificates.Add(certificate);
+                else continue;
             }
-            return certificates;
+            if (certificates.Count != 0)
+                return certificates;
+            else throw new NullReferenceException();
         }
 
         [HttpDelete]
@@ -651,7 +655,7 @@ namespace EcoClean.Controllers.Api
 
 
         [HttpPost]
-        [Route("addSmarteData")]
+        [Route("addSmartData")]
         public void addSmartDeviceData(SmartDeviceDataRequestModel request)
         {
             SmartDeviceData data = new SmartDeviceData
@@ -850,7 +854,7 @@ namespace EcoClean.Controllers.Api
             double averageRatio = (airRatio + waterRatio) / 2;
 
             // 10-point system
-            double rate = 10 - Math.Abs(10 - (averageRatio * 10));
+            double rate = 10 - Math.Round(10 - (averageRatio * 10));
 
 
             var enterpriseToUpdate = await _dbContext.Enterprises.FindAsync(enterpriseId);

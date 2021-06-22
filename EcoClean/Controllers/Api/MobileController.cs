@@ -266,6 +266,26 @@ namespace EcoClean.Controllers.Api
         }
 
         [HttpGet]
+        [Route("getEnterprisesPollutionData")]
+        public List<SmartDeviceData> GetLatestEnterprisesPollutionData(int enterpriseId)
+        {
+            List<SmartDeviceData> latestPollutionData = _dbContext.SmartDeviceData
+                .Where(x => x.EnterpriseId == enterpriseId)
+                .OrderBy(x => x.SmartDeviceDataDate).ToList();
+            //List<Tax> tax = _dbContext.Taxes.Where(x => x.EnterpriseId == enterpriseId)
+            //.OrderByDescending(x => x.TaxId).ToList();
+
+            if (latestPollutionData.Count < 1)
+            {
+                throw new ArgumentException("There's not enough data");
+            }
+            else
+            {
+                return latestPollutionData;
+            }
+        }
+
+        [HttpGet]
         [Route("getAllData")]
         public List<SmartDeviceData> getAllData()
         {
@@ -285,12 +305,84 @@ namespace EcoClean.Controllers.Api
         }
 
         [HttpGet]
+        [Route("getEmissions/{enterpriseId?}")]
+        public double[] getEmissions([FromRoute] int enterpriseId)
+        {
+            List<Tax> taxes = _dbContext.Taxes.Where(x => x.EnterpriseId == enterpriseId).ToList();
+
+            double[] responseModels = new double[4];
+            double airEmission = 0;
+            double waterEmission = 0;
+            double airSubs = 0;
+            double waterSubs = 0;
+
+            if(taxes.Count > 3)
+            {
+                foreach (Tax tax in taxes)
+                {
+                    airEmission += tax.AirEmissions;
+                    waterEmission += tax.WaterEmissions;
+                    airSubs = tax.AirPollutionSubstance;
+                    waterSubs = tax.WaterPollutionSubstance;
+                }
+            }
+            else
+            {
+                foreach (Tax tax in taxes)
+                {
+                    airEmission += tax.AirEmissions * 4;
+                    waterEmission += tax.WaterEmissions * 4;
+                    airSubs = tax.AirPollutionSubstance;
+                    waterSubs = tax.WaterPollutionSubstance;
+                }
+            }
+            
+            responseModels[0] = airEmission;
+            responseModels[1] = airSubs;
+            responseModels[2] = waterEmission;
+            responseModels[3] = waterSubs;
+
+            return responseModels;
+        }
+
+        [HttpGet]
         [Route("getAllDataInSystem")]
         public List<SmartDeviceData> getAllDataInSystem()
         {
             List<SmartDeviceData> data = _dbContext.SmartDeviceData.ToList();
 
             return data;
+        }
+
+        [HttpGet]
+        [Route("getRisksOfEnterprise/{enterpriseId?}")]
+        public double[] getRisksOfEnterprise([FromRoute] int enterpriseId)
+        {
+            List<SmartDeviceData> smartDevice = GetLatestEnterprisesPollutionData(enterpriseId);
+            double prevAir = smartDevice[0].AirPollution;
+            double curAir = smartDevice[0].AirPollution;
+            double growAir = 0;
+
+            double prevWater = smartDevice[0].WaterPollution;
+            double curWater = smartDevice[0].WaterPollution;
+            double growWater = 0;
+
+            foreach(SmartDeviceData data in smartDevice)
+            {
+                growAir += data.AirPollution / prevAir * 100;
+                growWater += data.WaterPollution / prevWater * 100;
+                prevAir = data.AirPollution;
+                prevWater = data.WaterPollution;
+            }
+
+            growAir /= smartDevice.Count;
+            growWater /= smartDevice.Count;
+
+            double[] coefficientOfGrow = new double[2];
+            coefficientOfGrow[0] = Math.Round(growAir, 2);
+            coefficientOfGrow[1] = Math.Round(growWater, 2);
+
+            return coefficientOfGrow;
         }
     }
 }

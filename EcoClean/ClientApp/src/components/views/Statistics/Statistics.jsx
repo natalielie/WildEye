@@ -120,7 +120,6 @@ class Statistics extends Component {
         }
             return (
                 <div className="animated fadeIn">
-                    <ComboboxSort />
                     <Row>
                         <Col xl={8}>
                             <Card>

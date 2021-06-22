@@ -7,26 +7,48 @@ import { Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap'
 import DeleteModal from './DeleteModal';
 import CertificatesApi from '../../services/CertificatesApi';
 import { useTranslation } from 'react-i18next';
-
+import i18next from "i18next";
 
 import { withTranslation } from "react-i18next";
 
 function CertificateRow(props) {
     const certificate = props.certificate
-    //const enterpriseLink = `/certificate/${enterprise.enterpriseId}`
     const { t, i18n } = useTranslation();
 
 
     var dateFormat = require("dateformat");
 
-    var enterpr;
-    if (certificate.certificateId == 1) {
+    /*const token = await authService.getAccessToken();
+    let enterprisesFromApi = [];
+
+    fetch(
+        'api/client/getAllEnterprises', {
+        headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            enterprisesFromApi = data.map(enterprise => {
+                return { value: enterprise.enterpriseId, display: enterprise.name };
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+    let enterprise = enterprisesFromApi.filter(enterprise => enterprise.enterpriseId == certificate.enterpriseId)
+*/
+    var enterpr = "";
+    if (certificate.enterpriseId == 1) {
         enterpr = "WOG"
     }
     else {
-        enterpr = "Johnny's"
+        enterpr = "ShoesOn"
     }
+    if (i18next.language == "en") {
         return (
+
             <tr key={certificate.certificateId.toString()}>
                 <td>{enterpr}</td>
                 <td>{dateFormat(certificate.certificateDate, "yyyy/mm/dd")}</td>
@@ -36,6 +58,20 @@ function CertificateRow(props) {
                 </td>
             </tr>
         )
+    }
+    else {
+        return (
+
+            <tr key={certificate.certificateId.toString()}>
+                <td>{enterpr}</td>
+                <td>{dateFormat(certificate.certificateDate, "dd-mm-yyyy")}</td>
+                <td>
+                    <DeleteModal onDelete={() => props.deleteCertificateHandler(
+                        certificate.certificateId)} />
+                </td>
+            </tr>
+        )
+    }
     }
 
 class Certificates extends Component {
