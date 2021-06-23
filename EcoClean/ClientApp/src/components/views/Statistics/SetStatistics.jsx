@@ -1,31 +1,36 @@
 ﻿import React, { Component, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import CertificatesApi from '../../services/CertificatesApi';
+import authService from '../../api-authorization/AuthorizeService';
+import { Button, Card, CardBody, CardHeader, Col, FormGroup, Label, Input, Row } from 'reactstrap';
+import AdminApi from '../../services/AdminApi';
+import '../../../custom.css';
 
-
-
-class AddCertificate extends Component {
+class SetStatistics extends Component {
 
     constructor() {
-        super();
+    super();
 
-        this.addCertificateHandler = this.addCertificateHandler.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.setStatisticsHandler = this.setStatisticsHandler.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.state = {
-            enterprises: [],
-            selectedEnterprise: "",
-            validationError: ""
-        };
-    }
+    this.state = {
+        enterprises: [],
+        selectedEnterprise: "",
+        validationError: ""
+    };
+}
+   
 
-    componentDidMount() {
-        document.title = "Add Certificate";
+    async componentDidMount() {
 
+        document.title = "Set Statistics";
+
+        const token = await authService.getAccessToken();
 
         fetch(
-            'api/client/getAllEnterprisesInSystem')
+            'api/client/getAllEnterprisesInSystem', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
             .then(response => {
                 return response.json();
             })
@@ -48,35 +53,37 @@ class AddCertificate extends Component {
             });
     }
 
-    addCertificateHandler = (certificate, callback) => CertificatesApi.createCertificate(certificate, callback);
+    setStatisticsHandler = (enterpriseId, callback) => AdminApi.setEnterpriseRate(enterpriseId, callback);
+
+
 
     handleSubmit = (event) => {
         event.preventDefault();
 
-        var data = {
-            enterpriseId: parseFloat(this.state.selectedEnterprise),
-        };
+        let enterpriseId = parseFloat(this.state.selectedEnterprise)
 
-        this.addCertificateHandler(data, () => this.props.history.push('/certificates'));
+        this.setStatisticsHandler(enterpriseId, () => this.props.history.push('/statistics'));
     }
 
     render() {
         const { t } = this.props;
+        
         return (
             <div className="animated fadeIn">
                 <Row>
                     <Col xs="12" md="7">
                         <Card>
                             <CardHeader>
-                                <strong>{t("Add Certificate")}</strong>
+                                <strong>{t("Set Enterprise's Rate")}</strong>
                             </CardHeader>
                             <CardBody>
                                 <form onSubmit={this.handleSubmit} className="form-horizontal">
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="professional">{t("Enterprise Name")}</Label>
+                                            <Label htmlFor="enterprise">{t("Enterprise")}</Label>
                                         </Col>
                                         <Col xs="12" md="9">
+
                                             <div>
                                                 <select
                                                     value={this.state.selectedEnterprise}
@@ -89,7 +96,7 @@ class AddCertificate extends Component {
                                                                     : ""
                                                         })
                                                     }
-
+                                                
                                                 >
                                                     {this.state.enterprises.map(enterprise => (
                                                         <option
@@ -109,10 +116,12 @@ class AddCertificate extends Component {
                                                     {this.state.validationError}
                                                 </div>
                                             </div>
+
+
                                         </Col>
                                     </FormGroup>
-                                    
-                                    <Button type="submit" color="primary">{t("Submit")}</Button>
+                      
+                                    <Button class="btn btn-primary" style={{ marginTop: 20 }} type="submit" color="primary">{t("Submit")}</Button>
                                 </form>
                             </CardBody>
                         </Card>
@@ -124,4 +133,4 @@ class AddCertificate extends Component {
 }
 
 
-export default withTranslation()(AddCertificate);
+export default withTranslation()(SetStatistics);

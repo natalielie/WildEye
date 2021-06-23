@@ -18,8 +18,7 @@ function CertificateRow(props) {
 
     var dateFormat = require("dateformat");
 
-    /*const token = await authService.getAccessToken();
-    let enterprisesFromApi = [];
+   /* let enterprisesFromApi = [];
 
     fetch(
         'api/client/getAllEnterprises', {
@@ -44,14 +43,55 @@ function CertificateRow(props) {
         enterpr = "WOG"
     }
     else {
-        enterpr = "ShoesOn"
+        enterpr = "Johnny's"
     }
+
+
     if (i18next.language == "en") {
         return (
 
             <tr key={certificate.certificateId.toString()}>
                 <td>{enterpr}</td>
                 <td>{dateFormat(certificate.certificateDate, "yyyy/mm/dd")}</td>
+
+            </tr>
+        )
+    }
+    else {
+        return (
+
+            <tr key={certificate.certificateId.toString()}>
+                <td>{enterpr}</td>
+                <td>{dateFormat(certificate.certificateDate, "dd-mm-yyyy")}</td>
+
+            </tr>
+        )
+    }
+}
+
+function CertificateRowAdmin(props) {
+    const certificate = props.certificate
+    const { t, i18n } = useTranslation();
+
+
+    var dateFormat = require("dateformat");
+
+    var enterpr = "";
+    if (certificate.enterpriseId == 1) {
+        enterpr = "WOG"
+    }
+    else {
+        enterpr = "Johnny's"
+    }
+
+
+    if (i18next.language == "en") {
+        return (
+
+            <tr key={certificate.certificateId.toString()}>
+                <td>{enterpr}</td>
+                <td>{dateFormat(certificate.certificateDate, "yyyy/mm/dd")}</td>
+
                 <td>
                     <DeleteModal onDelete={() => props.deleteCertificateHandler(
                         certificate.certificateId)} />
@@ -65,6 +105,7 @@ function CertificateRow(props) {
             <tr key={certificate.certificateId.toString()}>
                 <td>{enterpr}</td>
                 <td>{dateFormat(certificate.certificateDate, "dd-mm-yyyy")}</td>
+
                 <td>
                     <DeleteModal onDelete={() => props.deleteCertificateHandler(
                         certificate.certificateId)} />
@@ -72,7 +113,7 @@ function CertificateRow(props) {
             </tr>
         )
     }
-    }
+}
 
 class Certificates extends Component {
 
@@ -140,14 +181,25 @@ class Certificates extends Component {
                                         <tr>
                                             <th scope="col">{t("Enterprise Name")}</th>
                                             <th scope="col">{t("Certificate Date")}</th>
-                                            <th scope="col">{t("Terminate")}</th>
+                                            {isAdmin ? (
+                                                <th scope="col">{t("Terminate")}</th>
+                                            ) : (<></>)}
                                         </tr>
                                     </thead>
+
+                                    {isAdmin ? (
                                     <tbody>
                                         {this.state.certificates.map((certificate, index) =>
-                                            <CertificateRow key={index} certificate={certificate} deleteCertificateHandler={this.deleteCertificateHandler} />
-                                        )}
-                                    </tbody>
+                                            <CertificateRowAdmin key={index} certificate={certificate} deleteCertificateHandler={this.deleteCertificateHandler} />
+                                            )
+                                            }
+                                        </tbody>
+                                    ) : (<tbody>
+                                        {this.state.certificates.map((certificate, index) =>
+                                            <CertificateRow key={index} certificate={certificate} />
+                                        )
+                                        }
+                                    </tbody>)}
                                 </Table>
                             </CardBody>
                         </Card>

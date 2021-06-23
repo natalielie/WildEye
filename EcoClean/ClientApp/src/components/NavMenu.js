@@ -35,7 +35,7 @@ export class NavMenu extends Component {
       <header>
             <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3"
                 style={{
-                    backgroundColor: 'lightsteelblue',
+                    backgroundColor: 'darkseagreen',
                 }}>
           <Container>
             <NavbarBrand tag={Link} to="/">EcoPrise</NavbarBrand>

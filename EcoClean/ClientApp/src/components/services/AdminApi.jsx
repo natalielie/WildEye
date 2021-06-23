@@ -15,7 +15,7 @@ class AdminApi {
     }
 
     static setEnterpriseRate = (id, callback) => {
-        Axios.post('api/admin/setEnterpriseRate/', id)
+        Axios.post('api/admin/setEnterpriseRate/' + id)
             .then(() => AdminApi.getAveragePollutionData(callback))
             .catch(AdminApi.errorHandler);
     }

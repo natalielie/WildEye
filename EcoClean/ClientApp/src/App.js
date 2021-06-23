@@ -19,6 +19,7 @@ import i18n from "i18next";
 import Enterprises from "./components/views/Enterprises/Enterprises";
 import Enterprise from "./components/views/Enterprises/Enterprise";
 import Statistics from "./components/views/Statistics/Statistics";
+import SetStatistics from "./components/views/Statistics/SetStatistics";
 import Reports from "./components/views/Reports/Reports";
 import Report from "./components/views/Reports/Report";
 import AddReport from "./components/views/Reports/AddReport";
@@ -45,6 +46,8 @@ const CertificatesComponent = withTranslation()(Certificates);
 const AddCertificateComponent = withTranslation()(AddCertificate);
 const SmartDeviceComponent = withTranslation()(SmartDevice);
 const AddDataComponent = withTranslation()(AddData);
+const SetStatComponent = withTranslation()(SetStatistics);
+
 
 export default class App extends Component { 
     static displayName = App.name;
@@ -63,6 +66,7 @@ export default class App extends Component {
             <Route path="/enterprise/:id" component={EnterpriseComponent} />
             <Route path="/report/:id" component={ReportComponent} />
             <Route path="/data-add/" component={AddDataComponent} />
+            <Route path="/set-statistics/" component={SetStatComponent} />
             <Switch>
                 <Route exact path="/" component={HomeComponent} />
                 <Route path="/enterprises" component={EnterprisesComponent} />

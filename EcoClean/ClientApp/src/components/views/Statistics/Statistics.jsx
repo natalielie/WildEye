@@ -147,7 +147,7 @@ class Statistics extends Component {
                     </Row>
                     {isAdmin ? (
                         <Button class="btn btn-primary" style={{ marginTop: 20 }}>
-                            <Link tag={Link} className="text-dark" to="/enterprise-add/" >{t("Set Statistics")}</Link>
+                            <Link tag={Link} className="text-dark" to="/set-statistics/" >{t("Set Statistics")}</Link>
                         </Button>
                     ) : (<></>)}
                     

@@ -25,7 +25,7 @@ function ReportRow(props) {
                 <td>{report.enterpriseName}</td>
                 <td>{report.comment}</td>
                 <td>{dateFormat(report.reportDate, "yyyy/mm/dd")}</td>
-                <td>{(report.taxCost / 28.15).toFixed(2)} USD</td>
+                <td>{(report.taxCost / 27.28).toFixed(2)} USD</td>
                 <td>
                     <DeleteModal onDelete={() => props.deleteReportHandler(
                         report.reportId)} />

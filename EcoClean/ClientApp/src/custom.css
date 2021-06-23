@@ -1,4 +1,10 @@
 /* Provide sufficient contrast against white background */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+
+body {
+    font-family: 'Comfortaa', cursive;
+    font-size: 11pt;
+}
 a {
   color: #0366d6;
 }
@@ -49,5 +55,13 @@ select:after {
     flex-direction: row;
     position: fixed;
     right: 60px;
-    top: 15px;
+    top: 18px;
+}
+
+.navbar-brand {
+    color: #343a40;
+}
+
+.eco_logo{
+    margin-left: 300px;
 }

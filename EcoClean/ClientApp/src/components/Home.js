@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import eco from '../img/eco.png';
+import "../custom.css";
 
 
 export class Home extends Component {
@@ -11,7 +13,7 @@ export class Home extends Component {
             <div>
                 <h1>{t("This is Ecoprise")}</h1>
                 <p>{t("The environment-friendly system, which provides the necessary and proper management of your enterprise.")}</p>
-
+                <img className="eco_logo" src={eco} alt={"think_green"} />
             </div>
         );
     }
