@@ -58,7 +58,7 @@ class AddReport extends Component {
         event.preventDefault();
 
         var data = {
-            enterpriseId: this.state.selectedEnterprise,
+            enterpriseId: parseFloat(this.state.selectedEnterprise),
             comment: event.target.elements['comment'].value
         };
 
