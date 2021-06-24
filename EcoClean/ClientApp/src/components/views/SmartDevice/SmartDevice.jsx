@@ -121,7 +121,7 @@ class SmartDevice extends Component {
                     <Link tag={Link} className="text-dark" to="/data-add/" >{t("Add new data")}</Link>
                 </Button>
                 <Button className="btn btn-primary" style={{ marginTop: 20, marginLeft: 10 }}>
-                    <Link tag={Link} className="text-dark" to="/data-пуе/" >{t("Get data from your Smart Device")}</Link>
+                    <Link tag={Link} className="text-dark" to="/data-get/" >{t("Get data from your Smart Device")}</Link>
                 </Button>
             </div>
         )

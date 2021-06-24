@@ -24,6 +24,12 @@ class SmartDeviceApi {
             .catch(SmartDeviceApi.errorHandler);
     }
 
+    static getSmartDeviceData = (callback) => {
+        Axios.post('/api/client/getDataFromArduino')
+            .then(() => SmartDeviceApi.getAllData(callback))
+            .catch(SmartDeviceApi.errorHandler);
+    }
+
     errorHandler = error => console.log(error);
 
 }

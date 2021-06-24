@@ -12,9 +12,30 @@
     }
 }
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
+    <ul class="navbar-nav">
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/" asp-route-returnUrl="@returnUrl">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">My Enterprises</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Statistics</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Reports</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Certificates</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Smart Device Data</a>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
         </li>
@@ -23,9 +44,9 @@
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </form>
         </li>
-    }
-    else
-    {
+        }
+        else
+        {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/" asp-route-returnUrl="@returnUrl">Home</a>
         </li>
@@ -35,5 +56,5 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">Login</a>
         </li>
-    }
-</ul>
+        }
+    </ul>

@@ -31,7 +31,7 @@ import { NavMenu } from "./components/NavMenu";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import AddEnterprise from "./components/views/Enterprises/AddEnterprise";
 import AddData from "./components/views/SmartDevice/AddData";
-
+import GetData from "./components/views/SmartDevice/GetData";
 
 
 const EnterprisesComponent = withTranslation()(Enterprises);
@@ -46,6 +46,7 @@ const CertificatesComponent = withTranslation()(Certificates);
 const AddCertificateComponent = withTranslation()(AddCertificate);
 const SmartDeviceComponent = withTranslation()(SmartDevice);
 const AddDataComponent = withTranslation()(AddData);
+const GetDataComponent = withTranslation()(GetData);
 const SetStatComponent = withTranslation()(SetStatistics);
 
 
@@ -66,6 +67,7 @@ export default class App extends Component {
             <Route path="/enterprise/:id" component={EnterpriseComponent} />
             <Route path="/report/:id" component={ReportComponent} />
             <Route path="/data-add/" component={AddDataComponent} />
+            <Route path="/data-get/" component={GetDataComponent} />
             <Route path="/set-statistics/" component={SetStatComponent} />
             <Switch>
                 <Route exact path="/" component={HomeComponent} />
